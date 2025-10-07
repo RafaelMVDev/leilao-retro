@@ -1,0 +1,2 @@
+class Leilao():
+    pass
