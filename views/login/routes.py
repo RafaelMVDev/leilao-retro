@@ -10,6 +10,10 @@ auth_bp = Blueprint(
     url_prefix="/login"
 )
 
-@auth_bp.route("/login", methods=["GET", "POST"])
+@auth_bp.route("/login", methods=["GET"]) # Rota responsavél por só retornar o html!
+def login():
+    pass
+
+@auth_bp.route("/request-login", methods=["POST"]) # Rota responsavél por enviar os dados da pagina de login pro servidor!
 def login():
     pass
