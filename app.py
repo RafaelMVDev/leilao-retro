@@ -15,10 +15,6 @@ app.secret_key = secrets.token_hex(16)
 # Registrando as Blueprints aqui
 
 
-@app.route("/")
-def index():
-    
-    return render_template('index.html')
 
 if __name__ == 'main':
     print("WHAT")
