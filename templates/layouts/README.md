@@ -1,0 +1,1 @@
+# Aqui vai os layouts base que poderão ser herdados por outras páginas ( esqueleto das páginas)
