@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acessar Conta - Leilão Retrô</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos específicos do Login */
+        .btn-login {
+            background-color: var(--roxo-retro);
+            color: var(--cinza-cartucho);
+            border: 3px solid var(--preto-principal);
+        }
+
+        .btn-login:hover {
+            background-color: var(--roxo-retro);
+            box-shadow: 0 0 15px var(--amarelo-enfase); /* Simulação Neon */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ACESSAR CONTA</h1>
+        
+        <form action="/login" method="POST">
+            
+            <div class="form-group">
+                <label for="email">E-mail/Usuário</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <div style="text-align: right; margin-bottom: 15px;">
+                <a href="#" class="forgot-password-link">Esqueci a Senha</a>
+            </div>
+
+            <button type="submit" class="btn btn-login">ENTRAR</button>
+            
+        </form>
+
+        <div class="link-secondary">
+            <p>Novo por aqui? <a href="criar-conta.html">CRIAR CONTA</a></p>
+        </div>
+    </div>
+</body>
+</html>

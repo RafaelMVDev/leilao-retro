@@ -1,0 +1,127 @@
+/* styles.css */
+
+/* Definições de Cores */
+:root {
+    --roxo-retro: #7B2CBF;
+    --azul-secundario: #3A86FF;
+    --amarelo-enfase: #FFD60A;
+    --verde-conforto: #00B894;
+    --vermelho-alerta: #D72638;
+    --cinza-cartucho: #ECECEC;
+    --preto-principal: #1E1E1E;
+    --cinza-estatico: #7C7C7C;
+}
+
+/* Base e Tipografia Retrô (Simulação Pixel/CRT) */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap'); /* Fonte que simula o estilo pixel/CRT */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'VT323', monospace; /* Fonte Retrô */
+    background-color: var(--cinza-cartucho);
+    color: var(--preto-principal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Estrutura do Painel (Simulação de Console/Arcade) */
+.container {
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    background: #fff; /* Fundo branco para contraste com o cinza do body */
+    border: 5px solid var(--roxo-retro);
+    box-shadow: 10px 10px 0 var(--roxo-retro), 
+                -10px -10px 0 var(--azul-secundario); /* Efeito de borda dupla nostálgica */
+    border-radius: 8px;
+}
+
+/* Título Principal (Simulação Display) */
+h1 {
+    font-size: 3.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px var(--cinza-estatico); /* Leve sombra para profundidade */
+    color: var(--preto-principal);
+}
+
+/* Estilo do Formulário */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.4rem;
+    color: var(--preto-principal);
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 3px solid var(--preto-principal);
+    background-color: #eee;
+    font-size: 1.5rem;
+    color: var(--preto-principal);
+    outline: none;
+    transition: box-shadow 0.2s;
+    font-family: 'VT323', monospace; 
+}
+
+/* Efeito de Glow/Neon ao Focar */
+input:focus {
+    border-color: var(--amarelo-enfase);
+    box-shadow: 0 0 10px var(--amarelo-enfase); /* Glow */
+}
+
+/* Botões */
+.btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    margin-top: 15px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    text-transform: uppercase;
+    font-family: 'VT323', monospace; 
+}
+
+/* Links e Texto Secundário */
+.link-secondary {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+}
+
+.link-secondary a, .forgot-password-link {
+    color: var(--cinza-estatico);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.link-secondary a:hover, .forgot-password-link:hover {
+    color: var(--azul-secundario);
+    text-decoration: underline;
+}
+
+/* Mensagens de Alerta (Exemplo) */
+.alert-message {
+    color: var(--vermelho-alerta);
+    font-size: 1.3rem;
+    margin-top: 10px;
+    text-align: center;
+}
