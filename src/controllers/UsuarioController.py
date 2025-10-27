@@ -23,7 +23,7 @@ def homepage():
 @bp.route('/login', methods=['POST','GET'])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('public/auth-pages/login.html')
     else:
         nome = request.form['nome']
         email = request.form['email']
