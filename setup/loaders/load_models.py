@@ -1,5 +1,5 @@
 import importlib
-import os
+#import os
 import pkgutil
 
 # carrega os modulos que estão em um folder
@@ -10,5 +10,6 @@ def load_models(package: str):
     for _, module_name, is_pkg in pkgutil.iter_modules(imp_package.__path__): # pkgutil uitera pelos modulos
         if not is_pkg: 
             full_module_name = f"{package}.{module_name}"
+            print(full_module_name)
             importlib.import_module(full_module_name)
             

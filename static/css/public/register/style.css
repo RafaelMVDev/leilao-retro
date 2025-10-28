@@ -40,16 +40,8 @@
       display: inline-block;
     }
 
-    .gradient-text {
-      background: linear-gradient(to right, #6c63ff, #8a85ff); /* Gradiente roxo para frases */
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: bold;
-      transition: all 0.3s;
-    }
-
     /* Estilo para rodapé com gradiente roxo */
     footer {
-      background: linear-gradient(to right, #6c63ff, #8a85ff); /* Gradiente refinado */
+      background: linear-gradient(to right, #6c63ff, #8a85ff);
       color: #ffffff;
     }

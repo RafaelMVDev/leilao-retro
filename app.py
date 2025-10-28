@@ -18,7 +18,6 @@ def create_app():
     # inicializando em ordem!
         init_db(app)
         load_models("src.models")
-    
         load_controllers(app,"src.controllers")
 
     return app
