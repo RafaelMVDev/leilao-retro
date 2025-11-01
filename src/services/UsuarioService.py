@@ -1,2 +1,4 @@
-def retornar_dados_usario():
+
+
+def validar_email(email:str) -> str | bool:
     pass

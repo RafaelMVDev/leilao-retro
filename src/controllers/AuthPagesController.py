@@ -40,6 +40,8 @@ def register_page():
             
 @bp.route('/submit_register', methods=['POST'])
 def submit_register():
+    # adicionar validação do servidor aqui
+    
     pass
         
 

@@ -5,19 +5,9 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table,Column,select
 
 
-#from app import app
+class ProductModel(db.Model):
 
-"""with app.app_context():
-    db.reflect(bind_key= "bares") # reflete os dados do bdd pra mapear pras classes bind key é qual schema do bdd eu quero refletir
-"""
-
-
-
-class UsuarioModel(db.Model):
-    #__table_args__ = {"schema": "bares"}   Define o schema aqui
-    #idEstabelecimento: Mapped[int] = Column(primary_key = True)
-    
-    __table__ = Table("usuario",DB_METADATA,autoload_with=db.engine)
+    __table__ = Table("product",DB_METADATA,autoload_with=db.engine)
     
     #FUNCIONOU GRAÇASSSSSSSSSSSSSS A DEUS 
     @classmethod
