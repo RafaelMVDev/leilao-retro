@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from setup import db_configs
 db = SQLAlchemy()
 from sqlalchemy import create_engine, text,MetaData
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session,sessionmaker
 
 
 DB_METADATA = False
@@ -18,7 +18,7 @@ def init_db(app):
 
         DB_METADATA = MetaData(schema = db_configs.DATABASE)
 
-        DB_SESSION = Session(db.engine)
+        DB_SESSION = sessionmaker(bind = db.engine)
         pass
         # Refletindo especificamente o schema 'bares'
         #metadata_bares = MetaData(schema="bares")  # sem bind aqui

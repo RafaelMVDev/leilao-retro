@@ -6,6 +6,7 @@ from setup.db_configs import * # aqui ta a instancia do bdd criado com o sql alc
 from setup.loaders.load_models import load_models
 from setup.loaders.database import init_db
 from setup.loaders.load_controllers import load_controllers
+from setup.loaders.load_services import load_services
 
 
 def create_app():
@@ -18,6 +19,7 @@ def create_app():
     # inicializando em ordem!
         init_db(app)
         load_models("src.models")
+        load_services("src.services")
         load_controllers(app,"src.controllers")
 
     return app

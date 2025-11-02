@@ -8,20 +8,4 @@ from sqlalchemy import Table,Column,select
 class ConditionTableModel(db.Model):
     __table__ = Table("conditiontable",DB_METADATA,autoload_with=db.engine)
     
-    #FUNCIONOU GRAÇASSSSSSSSSSSSSS A DEUS 
-    @classmethod
-    def get_all(classe):
-        query = select(classe)
-        estabelecimentos = DB_SESSION.execute(query).scalars().all()
-        for est in estabelecimentos:
-            print(est.idEstabelecimento, est.nome_enc) 
-        return DB_SESSION.execute(query).scalars().all()
-    @classmethod
-    def get_estabelecimento(id_estabelecimento: int):
-        return db.Query.get(id_estabelecimento)
     
-    @classmethod
-    def get_db_info():
-        inspector = inspect(db.engine)
-        tables = inspector.get_table_names(schema="nome_do_banco")
-        print(tables)

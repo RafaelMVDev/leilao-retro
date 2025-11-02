@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, session, Blueprint
 
-from src.models.UsuarioModel import UsuarioModel
+from src.models.UserModel import UserModel
 
 
 bp = Blueprint('public_pages', __name__)

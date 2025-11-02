@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table,Column,select
 
 
-class AchievementUserModel(db.Model):
-    __table__ = Table("achievementuser",DB_METADATA,autoload_with=db.engine)
- 
-  
+class TransactionsModel(db.Model):
+    __table__ = Table("transactions",DB_METADATA,autoload_with=db.engine)
+    
+   

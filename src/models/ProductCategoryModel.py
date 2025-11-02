@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table,Column,select
 
 
-class AchievementModel(db.Model):
-    __table__ = Table("achievement",DB_METADATA,autoload_with=db.engine)
+class ProductCategoryModel(db.Model):
+    __table__ = Table("productcategory",DB_METADATA,autoload_with=db.engine)
    
-  #
+  

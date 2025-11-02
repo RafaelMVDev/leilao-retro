@@ -21,4 +21,4 @@ HOST = ""
 PORT = ""
 DATABASE = "marauction"
 
-DATABASE_URI = f"mysql+pymysql://root:simba123@127.0.0.1:3306/maradindiduns"
+DATABASE_URI = f"mysql+pymysql://root:simba123@127.0.0.1:3306/marauction"
