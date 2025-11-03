@@ -30,6 +30,7 @@ def submit_login():
     email = request.form.get("email")
     password = request.form.get("password")
     user = get_user_data(email = email, password= password)
+    
     return jsonify(user)
 
 
