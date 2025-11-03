@@ -26,13 +26,4 @@ def homepage():
         return render_template('public/homepage.html')
     else:
         pass
-        """nome = request.form['nome']
-        email = request.form['email']
-        senha = request.form['senha']
-
-        for usuario in usuario_model._usuarios:
-            print(usuario)
-            if nome == usuario['nome'] and email == usuario['email'] and senha == usuario['senha']:
-                session['logado'] = True
-                return redirect(url_for('usuario.homepage'))"""
-
+    

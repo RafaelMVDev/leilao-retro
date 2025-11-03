@@ -1,11 +1,11 @@
 from flask import Flask
 
-#from controllers.usuario import usuario_bp
 
-from setup.db_configs import * # aqui ta a instancia do bdd criado com o sql alchemy ( por favor ler a docstring do arquivo db.py)
-from setup.loaders.load_models import load_models
+
+from setup.db_configs import * # here is the instance of the db created with sqlalchemy ( please read the docstring of the database.py file ) 
 from setup.loaders.database import init_db
 from setup.loaders.load_controllers import load_controllers
+from setup.loaders.load_models import load_models
 from setup.loaders.load_services import load_services
 
 

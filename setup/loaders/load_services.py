@@ -4,7 +4,7 @@ import os
 
 
 def load_services(package_name):
-    """Carrega automaticamente todos os Blueprints (bp) da pasta controllers e os registra no app."""
+    """Automatically loads services from the services folder by importing them"""
     print(package_name)
 
 

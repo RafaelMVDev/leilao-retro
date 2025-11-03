@@ -10,8 +10,6 @@ def init():
     session['logado'] = False
     return session['logado']
 
-def beforeRequest(): # futuro decorador pra rotas que precisam de verificações antes de retornar o request
-    pass 
 @bp.route('/')
 def homepage():
     if not session.get('logado'):
@@ -31,8 +29,8 @@ def login_page():
 def submit_login():
     email = request.form.get("email")
     password = request.form.get("password")
-    get_user_data(email = email, password= password)
-    return jsonify("yea")
+    user = get_user_data(email = email, password= password)
+    return jsonify(user)
 
 
 # Rotas da Pagina de Registro    

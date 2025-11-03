@@ -4,7 +4,7 @@ import os
 
 
 def load_controllers(app, package_name):
-    """Carrega automaticamente todos os Blueprints (bp) da pasta controllers e os registra no app."""
+    """Automatically loads the controllers and loads them as bp for the app"""
     print(package_name)
 
 

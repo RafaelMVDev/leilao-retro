@@ -4,7 +4,7 @@ import pkgutil
 
 # carrega os modulos que estão em um folder
 def load_models(package: str):
-    """Carrega dinamicamente todos os módulos dentro de um pacote (ex: models)."""
+    """Automatically loads the models from the models folder by importing them"""
     imp_package = importlib.import_module(package)
 
     for _, module_name, is_pkg in pkgutil.iter_modules(imp_package.__path__): # pkgutil uitera pelos modulos
