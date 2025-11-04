@@ -42,9 +42,15 @@ def register_page():
 @bp.route('/submit_register', methods=['POST'])
 def submit_register():
     print("recebendo dados!")
-    data = dict(request.form.items())
-    result = register_user(data) # function that validates the data and also commits the data to the db ( returns error if somehting went wrong)
-    return result
+    data = request.get_json()
+    result = False
+    user_data = data.get("user_data")
+    addr_data = data.get("addr_data")
+   
+    if user_data and addr_data:
+        result = register_user(user_data=user_data, addr_data=addr_data) # function that validates the data and also commits the data to the db ( returns error if somehting went wrong)
+    print(result)
+    return jsonify("Deu certo?")
         
 
 
