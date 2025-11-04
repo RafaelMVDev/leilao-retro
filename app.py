@@ -17,15 +17,15 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = TRACK_MODIFICATIONS
     app.secret_key = b'_5#y2L"F4Q8z\n\xec]/' # Replace with a strong, randomly generated key
     #initalizing flask - login
-    login_manager = flask_login.LoginManager()
+    """login_manager = flask_login.LoginManager()
     login_manager.init_app(app)
     @app.before_request
     def verify_login():
         current_route = request.endpoint
         public_routes = ['login', 'static']
 
-        if not current_user.is_authenticated and current_route not in public_routes:
-            return redirect(url_for('login'))
+        if not flask_login.current_user.is_authenticated and current_route not in public_routes:
+            return redirect(url_for('login'))"""
     with app.app_context():
     # inicializando em ordem!
         init_db(app)
@@ -36,6 +36,9 @@ def create_app():
     return app
 
 app = create_app()
+@app.before_request
+def verify_login():
+    pass
 if __name__ == '__main__':
     app.run(debug=True)
 

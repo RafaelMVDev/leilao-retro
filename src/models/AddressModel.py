@@ -6,4 +6,4 @@ from sqlalchemy import Table
 class AddressModel(db.Model):
     __table__ = Table("address",DB_METADATA,autoload_with=db.engine)
 
-  
+    users = db.relationship("UserModel", back_populates="address", cascade="all, delete")

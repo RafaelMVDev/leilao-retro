@@ -39,18 +39,18 @@
   <main class="container mx-auto px-6 py-12 flex-grow">
     <section class="max-w-md mx-auto bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-sm">
       <h2 class="text-2xl font-bold mb-6 text-center">Cadastre-se no Marauction</h2>
-      <form action="{{url_for('auth_pages.submit_register')}}" method="post" enctype="multipart/form-data"> <!-- enctype para upload de arquivo -->
+      <form id = "register_form" name = "register_form" action="{{url_for('auth_pages.submit_register')}}" method="post" enctype="multipart/form-data"> <!-- enctype para upload de arquivo -->
         <div class="mb-4">
           <label for="nickname" class="block text-sm font-medium mb-1">Nickname</label>
           <input type="text" id="nickname" name="nickname" maxlength="50" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" placeholder="Seu nickname" />
         </div>
         <div class="mb-4">
           <label for="nomeUsuario" class="block text-sm font-medium mb-1">Primeiro Nome</label>
-          <input type="text" id="nomeUsuario" name="nomeUsuario" maxlength="50" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" placeholder="Seu primeiro nome" />
+          <input type="text" id="firstName" name="firstName" maxlength="50" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" placeholder="Seu primeiro nome" />
         </div>
         <div class="mb-4">
           <label for="sobrenomeUsuario" class="block text-sm font-medium mb-1">Sobrenome</label>
-          <input type="text" id="sobrenomeUsuario" name="sobrenomeUsuario" maxlength="100" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" placeholder="Seu sobrenome" />
+          <input type="text" id="lastName" name="lastName" maxlength="100" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" placeholder="Seu sobrenome" />
         </div>
         <div class="mb-4">
           <label for="email" class="block text-sm font-medium mb-1">Email</label>
@@ -58,20 +58,20 @@
         </div>
         <div class="mb-4">
           <label for="senha" class="block text-sm font-medium mb-1">Senha</label>
-          <input type="password" id="senha" name="senha" maxlength="255" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" placeholder="Sua senha" />
+          <input type="password" id="password" name="password" maxlength="255" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" placeholder="Sua senha" />
           <small class="text-xs text-gray-500">A senha será criptografada com hash no backend (ex: bcrypt).</small>
         </div>
         <div class="mb-4">
           <label for="telefone" class="block text-sm font-medium mb-1">Telefone</label>
-          <input type="tel" id="telefone" name="telefone" maxlength="16" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" placeholder="(11) 99999-9999" />
+          <input type="tel" id="phone" name="phone" maxlength="16" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" placeholder="(11) 99999-9999" />
         </div>
         <div class="mb-4">
-          <label for="dataNascimento" class="block text-sm font-medium mb-1">Data de Nascimento</label>
-          <input type="date" id="dataNascimento" name="dataNascimento" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" />
+          <label for="birthDate" class="block text-sm font-medium mb-1">Data de Nascimento</label>
+          <input type="date" id="birthDate" name="birthDate" required class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" />
         </div>
         <div class="mb-4">
-          <label for="fotoPerfil" class="block text-sm font-medium mb-1">Foto de Perfil (Opcional)</label>
-          <input type="file" id="fotoPerfil" name="fotoPerfil" accept="image/*" class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" />
+          <label for="profilePhoto" class="block text-sm font-medium mb-1">Foto de Perfil (Opcional)</label>
+          <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" class="w-full px-4 py-2 border rounded-md light-theme:bg-white light-theme:border-gray-300" />
           <small class="text-xs text-gray-500">O caminho da imagem será armazenado (varchar(100)).</small>
         </div>
         <button type="submit" class="btn-primary w-full py-2">Cadastrar</button>

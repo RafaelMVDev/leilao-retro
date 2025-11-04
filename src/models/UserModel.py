@@ -8,4 +8,4 @@ from sqlalchemy import Table,Column,select
 class UserModel(db.Model):
 
     __table__ = Table("user",DB_METADATA,autoload_with=db.engine)
-   
+    address = db.relationship("AddressModel", back_populates="users")

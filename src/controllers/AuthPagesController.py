@@ -41,10 +41,10 @@ def register_page():
 
 @bp.route('/submit_register', methods=['POST'])
 def submit_register():
-    # adicionar validação do servidor aqui
-    email = request.form.get("email")
-    password = request.form.get("password")
-    pass
+    print("recebendo dados!")
+    data = dict(request.form.items())
+    result = register_user(data) # function that validates the data and also commits the data to the db ( returns error if somehting went wrong)
+    return result
         
 
 
