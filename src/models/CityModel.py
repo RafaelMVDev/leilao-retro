@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table,Column,select
 
 
-class AchievementModel(db.Model):
+class CityModel(db.Model):
     __table__ = Table("city",DB_METADATA,autoload_with=db.engine)
-   
+    adresses = db.relationship("AdressModel", back_populates = "cities" )
   #

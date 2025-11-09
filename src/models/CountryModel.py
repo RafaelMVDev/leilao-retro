@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table,Column,select
 
 
-class CurrencyModel(db.Model):
+class CountryModel(db.Model):
     
-    __table__ = Table("currency",DB_METADATA,autoload_with=db.engine)
-   
+    __table__ = Table("country",DB_METADATA,autoload_with=db.engine)
+    states = db.relationship("StateModel", back_populates = "" )

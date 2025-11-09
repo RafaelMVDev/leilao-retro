@@ -1,5 +1,6 @@
 from src.models.UserModel import UserModel
-from src.models.AddressModel import AddressModel
+
+
 from setup.loaders.database import DB_SESSION
 from sqlalchemy import select
 from flask import jsonify
@@ -46,6 +47,27 @@ def get_id_with_email(email:str) -> int | bool:
             return result
         return False
 
+""" Function that validates the fields sent from the front-end
+Returns a tuple (bool,<response>)
+bool: if the validation was a sucess,
+response: jsonify() with the response message
+"""
+
+def validate_register_data(user_data,addr_data):
+    #Check if the obrigatory fields are filled!
+    with DB_SESSION() as Session:
+        for field in _user_obrigatory_fields:
+            if not user_data.get(field):
+                print(f"Campo obrigatorio faltante em user: {field}")
+                return (False,jsonify({"error": f"Campo obrigatorio faltante em user: {field}"})) # retuyrn a tup
+        for field in _addr_obrigatory_fields:
+            if not addr_data.get(field):
+                print(f"Campo obrigatorio faltante em addr: {field}")
+                return (False,jsonify({"error": f"Campo obrigatorio faltante em addr: {field}"}))
+        existing = Session.query(UserModel).filter_by(email=user_data.get("email")).first()
+        #Checks if the user already exists in the db ( by email adress)
+        if existing:
+            return (False,jsonify({"error": "E-mail já cadastrado."}))
 
 """ This function inserts the user table and related tables that need to be initiated ( like wallet and adress)"""
 def register_user(user_data: dict,addr_data:dict) -> int | dict:
@@ -75,15 +97,7 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
 
     }
     """ 
-    for field in _user_obrigatory_fields:
-        if not user_data.get(field):
-            print(f"Campo obrigatorio faltante em user: {field}")
-            return jsonify({"error": f"Campo obrigatorio faltante em user: {field}"}), 400
-    for field in _addr_obrigatory_fields:
-         if not addr_data.get(field):
-            print(f"Campo obrigatorio faltante em addr: {field}")
-            return jsonify({"error": f"Campo obrigatorio faltante em addr: {field}"}), 400
-    print('Todos os campos passaram')
+    
     # verifies if there is already an ocurrency in the db ( may change to unique raise error on the db later)
     
     existing = db.session.query(UserModel).filter_by(email=user_data.get("email")).first()
@@ -100,6 +114,7 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
         cur_addr = ex_address
     else:
         cur_addr = AddressModel(**addr_data)
+    #add verification in the fields later
     new_user = UserModel(
         nickname=user_data.get("nickname"),
         firstName=user_data.get("firstName"),

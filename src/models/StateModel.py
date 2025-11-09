@@ -7,5 +7,5 @@ from sqlalchemy import Table,Column,select
 
 class StateModel(db.Model):
     __table__ = Table("state",DB_METADATA,autoload_with=db.engine)
-   
+    cities = db.relationship("CityModel", back_populates = "states" )
   #
