@@ -1,0 +1,191 @@
+/* Cores e Tipografia Base */
+:root {
+    --header-footer-bg: #411B62;   /* Roxo escuro do header/footer */
+    --purple-medium: #6c1ebf;      /* Fundo principal do Form */
+    --purple-button: #5a00b3;      /* Botão principal (usado se não houver gradiente) */
+    --gray-background: #1A1A1A;    /* Fundo principal do Body */
+    --input-background: #cfcfcf;   /* Fundo dos Inputs */
+    --text-color: #FFFFFF;
+    --highlight-color: #FFCE66;    /* Destaque (link ativo/hover) */
+}
+
+/* Reset e Configuração da Altura Total */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    height: 100%; 
+}
+
+body {
+    background-color: var(--gray-background);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+/* --- Cabeçalho (Header) --- */
+header {
+    width: 100%;
+    padding: 15px 50px; 
+    background: var(--header-footer-bg);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-esquerda {
+    display: flex;
+    align-items: center;
+}
+
+.header-esquerda .logo-img-placeholder {
+    width: 30px; 
+    height: 30px; 
+    background-color: #7b2cbf; 
+    border-radius: 5px;
+    margin-right: 10px; 
+    flex-shrink: 0;
+}
+
+.header-esquerda p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.header-direita ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+}
+
+.header-direita a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.header-direita a:hover,
+.header-direita a.ativo {
+    text-decoration: underline;
+    color: var(--highlight-color) !important;
+}
+
+/* --- Rodapé (Footer) CORRIGIDO --- */
+footer {
+    width: 100%;
+    padding: 20px 50px; 
+    background: var(--header-footer-bg);
+    color: white;
+    font-size: 14px;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.footer-telefone {
+    text-align: left;
+    flex-grow: 0;
+    flex-shrink: 0;
+    /* Adiciona uma margem FORÇADA à direita para separar do copyright */
+    margin-right: 40px; 
+}
+
+.footer-copyright {
+    text-align: center; 
+    /* Permite crescer um pouco, mas com o "empty-space" empurrando */
+    flex-grow: 1; 
+    flex-shrink: 0;
+    /* Garante um espaço à esquerda também, evitando colagem com o telefone */
+    margin-left: 14.5%; 
+}
+
+.footer-empty-space {
+    /* Ocupa todo o espaço restante (à direita do copyright) */
+    flex-grow: 1; 
+}
+
+/* --- Conteúdo Principal (Main) --- */
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px; 
+}
+
+/* Estilos de Formulário Genéricos */
+input:not([type="file"]) {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: var(--input-background);
+    color: #111;
+    font-size: 14px;
+    width: 100%;
+    margin: 8px 0; 
+}
+
+/* Estilos de Botão Genéricos */
+button {
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: filter 0.3s; /* Transição apenas para o filtro */
+    background: var(--purple-button);
+}
+
+/* Efeito HOVER CLAREANDO (Aplicado aqui para ser genérico) */
+button:hover {
+    filter: brightness(1.2); 
+    transform: none; 
+    opacity: 1; 
+}
+
+
+/* --- Media Queries --- */
+@media (max-width: 768px) {
+    header, footer {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 20px;
+    }
+    .header-direita ul {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+        text-align: center;
+    }
+    .header-esquerda {
+        margin-bottom: 10px;
+    }
+    footer {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 20px;
+        gap: 10px;
+    }
+    .footer-telefone, 
+    .footer-copyright,
+    .footer-empty-space { 
+        text-align: center; 
+        width: 100%;
+        flex-grow: 0;
+        /* Remove as margens fixas no mobile para quebrar a linha corretamente */
+        margin-right: 0; 
+        margin-left: 0;
+    }
+}

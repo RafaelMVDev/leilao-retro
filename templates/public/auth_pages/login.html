@@ -1,78 +1,49 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Apresentação - Marauction</title>
-  <!-- Link para Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" type="text/css" href="{{url_for('static',filename = 'css/public/login/style.css')}}">
-    <!-- estilo aqui por facilidade-->
-   <style>
-      form input {
-      color: black;         /* cor do texto dentro do campo */
-      }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maradindiduns - Entrar</title>
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/layouts/base.css')}}"> 
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/login/login_style.css')}}">
 </head>
-<body class="min-h-screen flex flex-col">
+<body>
+    <header>
+        <div class="header-left">
+            <div class="logo-img-placeholder"></div>
+            <p> Maradindinduns </p>
+        </div>
+        <div class="header-right">
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="#">Leilões</a></li>
+                <li><a class="activate" href="#">Entrar</a></li>
+                <li><a href="cadastro.html">Cadastrar-se</a></li>
+            </ul>
+        </div>
+    </header>
 
-  <!-- Header -->
-  <header class="bg-gray-900 py-4 px-6 shadow-md sticky top-0 z-10">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="flex items-center">
-        <div class="logo mr-2">Marauction</div>
-        <div class="bg-gray-700 dark:bg-gray-600 px-3 py-1 rounded text-sm">Pontos: 0 | Conquistas: 0</div>
-      </div>
-      <nav class="flex space-x-6">
-        <a href="index.html" class="text-gray-300 hover:text-white transition-colors">Início</a>
-        <a href="#" class="text-gray-300 hover:text-white transition-colors">Leilões</a>
-        <a href="#" class="text-gray-300 hover:text-white transition-colors">Perfil</a>
-      </nav>
-      <div class="flex items-center">
-        <button id="theme-toggle" class="btn-primary px-3 py-1 text-sm mr-2">Modo Escuro</button>
-        <button class="btn-primary px-4 py-2">Entrar / Cadastrar</button>
-      </div>
-    </div>
-  </header>
+    <main>
+        <div class="form-card login-card">
+            <h2 class="card-header-title">Entre com sua Conta</h2>
 
-  <!-- Main Content -->
-  <main class="container mx-auto px-6 py-12 flex-grow text-center">
-    <section class="mb-8">
-      <h1 class="text-5xl font-bold mb-6">Marauction</h1>
-      <p class="text-2xl font-semibold mb-4 text-purple-600 dark:text-purple-300">O Leilão Maravilhoso para Jogos Retrô</p>
-      <p class="gradient-text mb-4 text-xl">Descubra itens raros.</p> <!-- Frases estilizadas -->
-      <p class="gradient-text mb-4 text-xl">Ganhe pontos com lances.</p>
-      <p class="gradient-text mb-4 text-xl">Participe de leilões seguros.</p>
-      <p class="gradient-text mb-4 text-xl">Colecione tesouros do passado.</p>
-    </section>
+            <form method = "POST" action = "{{url_for('auth_pages.submit_login')}}">
+                <input name = "nickname" type="text" placeholder="Nickname">
+                <input name = "email" type="email" placeholder="E-mail">
+                <input name = "userPassword" type="password" placeholder="Senha">
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+    </main>
 
-    <!-- Espaço para Login -->
-    <section class="mb-8 max-w-md mx-auto bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-      <h2 class="text-xl font-semibold mb-4">Faça Login</h2>
-      <form action = "{{url_for('auth_pages.submit_login')}}", method = "POST">
-        <input name = "email" type="email" placeholder="Email" class="w-full px-4 py-2 mb-4 border rounded-md light-theme:bg-white light-theme:border-gray-300" />
-        <input name = "password" type="password" placeholder="Senha" class="w-full px-4 py-2 mb-4 border rounded-md light-theme:bg-white light-theme:border-gray-300" />
-        <button type="submit" class="btn-primary w-full py-2">Entrar</button>
-      </form>
-     <p class="mt-4 text-sm">Não tem conta? <a href="{{ url_for('auth_pages.register_page') }}" class="text-primary-color hover:underline">Cadastre-se</a></p>
-    </section>
-  </main>
-
-  <!-- Footer com Gradiente Roxa -->
-  <footer class="py-6 text-center">
-    <div class="container mx-auto">
-      <p class="text-white text-sm mb-2">Marauction © 2023</p>
-      <div class="flex justify-center space-x-4">
-        <a href="#" class="text-white hover:text-gray-200">Sobre</a>
-        <a href="#" class="text-white hover:text-gray-200">Contato</a>
-        <a href="#" class="text-white hover:text-gray-200">Termos</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Script para toggle de tema -->
-  <script src = href="{{url_for('static',filename = 'js/public/login/scripts.css')}}">
-  
-  </script>
+    <footer>
+        <div class="footer-cellphone">
+            <p> Telefone: (11) 97321-0013 </p>
+        </div>
+        <div class="footer-copyright">
+            <p> @Copyright 2025 </p>
+        </div>
+        <div class="footer-empty-space"></div>
+    </footer>
 </body>
 </html>

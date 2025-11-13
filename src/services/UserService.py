@@ -1,5 +1,6 @@
 from src.models.UserModel import UserModel
 
+from src.services.AdressService import *
 
 from setup.loaders.database import DB_SESSION
 from sqlalchemy import select
@@ -89,10 +90,13 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
     }
     addr_data
     {
-        "CEP":str,
+        "zipCode":str,
         "district": str,
         "street": str,
         "number": str,
+        "state": str,
+        "city":str,
+        "country": str
         "complement":str,
 
     }
@@ -108,12 +112,7 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
     #add hash here (CHANGE LATER)
     hashed_password = generate_password_hash(user_data.get("password"))
     # search for address or create new one if it doesn't exist
-    cur_addr = False
-    ex_address = AddressModel.query.filter_by(**addr_data).first()
-    if ex_address:
-        cur_addr = ex_address
-    else:
-        cur_addr = AddressModel(**addr_data)
+    address = adrres
     #add verification in the fields later
     new_user = UserModel(
         nickname=user_data.get("nickname"),
