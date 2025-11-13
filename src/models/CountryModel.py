@@ -8,4 +8,4 @@ from sqlalchemy import Table,Column,select
 class CountryModel(db.Model):
     
     __table__ = Table("country",DB_METADATA,autoload_with=db.engine)
-    states = db.relationship("StateModel", back_populates = "" )
+    states = db.relationship("StateModel", back_populates = "countries" )
