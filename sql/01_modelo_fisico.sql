@@ -132,13 +132,19 @@ CREATE TABLE User (
 	nickname VARCHAR(50) NOT NULL,
 	firstName VARCHAR(50) NOT NULL,
 	lastName VARCHAR(100),
-	email VARCHAR(150) NOT NULL,
+	email VARCHAR(150) NOT NULL UNIQUE,
 	userPassword VARCHAR(255) NOT NULL,
 	profilePhoto VARCHAR(100),
 	phone VARCHAR(20),
 	birthDate DATETIME,
 	registrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fkAddressIdAddress INT NOT NULL
+);
+
+CREATE TABLE UserAddress (
+	fkUserIdUser INT NOT NULL,
+	fkAddressIdAddress INT NOT NULL,
+	PRIMARY KEY (fkUserIdUser, fkAddressIdAddress)
 );
 
 CREATE TABLE Wallet (

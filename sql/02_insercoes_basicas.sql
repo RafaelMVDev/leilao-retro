@@ -23,11 +23,15 @@ VALUES ('12345678', 'Bairro das Rosas', 'Rua das Roseiras', 123, 'Ap 123', 1),
 
 -- PREDEFINED USERS
 
-INSERT INTO user (nickname, firstName, lastName, email, userPassword, profilePhoto, phone, birthDate, fkAddressIdAddress, userCookieHash)
-VALUES ('juliacalixto', 'Júlia', 'Calixto', 'juliacalixto@marauction.com.br', SHA2('senhaJulia', 256), 'fotojulia.jpg','5511987654321', '1900-01-01', 1, 'hashcookieJulia'),
-('rafaelmoreira', 'Rafael', 'Moreira', 'rafaelmoreira@marauction.com.br', SHA2('senhaMoreira', 256), 'fotomoreira.jpg', '5511988776655', '1900-02-02', 2, 'hashcookieMoreira'),
-('rafaelmorales', 'Rafael', 'Morales', 'rafaelmorales@marauction.com.br', SHA2('senhaMorales', 256), 'fotomorales.jpg', '5511912345678', '1900-03-03', 3, 'hashcookieMorales'),
-('luishenrique', 'Luis', 'Henrique', 'luishenrique@marauction.com.br', SHA2('senhaLuis', 256), 'fotoluis.jpg', '5511911223344', '1900-04-04', 4, 'hashcookieLuis');
+INSERT INTO user (nickname, firstName, lastName, email, userPassword, profilePhoto, phone, birthDate, userCookieHash)
+VALUES ('juliacalixto', 'Júlia', 'Calixto', 'juliacalixto@marauction.com.br', SHA2('senhaJulia', 256), 'fotojulia.jpg','5511987654321', '1900-01-01', 'hashcookieJulia'),
+('rafaelmoreira', 'Rafael', 'Moreira', 'rafaelmoreira@marauction.com.br', SHA2('senhaMoreira', 256), 'fotomoreira.jpg', '5511988776655', '1900-02-02', 'hashcookieMoreira'),
+('rafaelmorales', 'Rafael', 'Morales', 'rafaelmorales@marauction.com.br', SHA2('senhaMorales', 256), 'fotomorales.jpg', '5511912345678', '1900-03-03', 'hashcookieMorales'),
+('luishenrique', 'Luis', 'Henrique', 'luishenrique@marauction.com.br', SHA2('senhaLuis', 256), 'fotoluis.jpg', '5511911223344', '1900-04-04', 'hashcookieLuis');
+
+INSERT INTO useraddress (fkUserIdUser, fkAddressIdAddress)
+VALUES
+(1, 1), (2, 2), (3, 3), (4, 4);
 
 -- TEST ACHIEVEMENTS AND CONDITIONS
 
