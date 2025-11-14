@@ -7,7 +7,7 @@
 -- expected result: bid is accepted and registered
 
 INSERT INTO bid (bidValue, fkUserIdUser, fkLotIdLot)
-VALUES (500.00, 1, 1);
+VALUES (300.00, 2, 1);
 
 -- SCENARY B: valid user
 -- user is registered with his unique email

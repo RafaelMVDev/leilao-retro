@@ -271,3 +271,11 @@ ALTER TABLE Address ADD CONSTRAINT fkAddressCity
 	FOREIGN KEY (fkCityIdCity)
 	REFERENCES City (idCity)
 	ON DELETE CASCADE ON UPDATE CASCADE;
+    
+ALTER TABLE lot
+ADD COLUMN currentWinnerId INT NULL,
+ADD CONSTRAINT fk_currentWinner_user
+  FOREIGN KEY (currentWinnerId) REFERENCES user(idUser);
+  
+ALTER TABLE lot
+ADD COLUMN currentBidValue DECIMAL(10,2) DEFAULT 0;
