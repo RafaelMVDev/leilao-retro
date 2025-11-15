@@ -6,7 +6,6 @@ from src.models.UserModel import UserModel
 bp = Blueprint('public_pages', __name__)
 
 
-
 def init():
     session['logado'] = False
     return session['logado']
@@ -23,7 +22,7 @@ def default():
 @bp.route('/homepage', methods=['POST','GET'])
 def homepage():
     if request.method == 'GET':
-        return render_template('public/homepage.html')
+        return render_template('public/homepage/homepage.html')
     else:
         pass
     

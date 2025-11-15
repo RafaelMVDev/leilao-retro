@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maradindiduns - Entrar</title> 
-                                        
-    <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/login/login_style.css')}}"> 
-    <link rel="stylesheet" href="{{url_for('static',filename = 'css/layouts/base.css')}}">
+    <title>Maradindiduns - Entrar</title>
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/layouts/base.css')}}"> 
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/login/login_style.css')}}">
 </head>
 <body>
     <header>
@@ -28,10 +27,10 @@
         <div class="form-card login-card">
             <h2 class="card-header-title">Entre com sua Conta</h2>
 
-            <form>
-                <input type="text" placeholder="Nickname">
-                <input type="email" placeholder="E-mail">
-                <input type="password" placeholder="Senha">
+            <form method = "POST" action = "{{url_for('auth_pages.submit_login')}}">
+                <input name = "nickname" type="text" placeholder="Nickname">
+                <input name = "email" type="email" placeholder="E-mail">
+                <input name = "userPassword" type="password" placeholder="Senha">
                 <button type="submit">Entrar</button>
             </form>
         </div>

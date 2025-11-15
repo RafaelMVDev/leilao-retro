@@ -1,0 +1,436 @@
+/* * Specific styles for Profile and Achievements pages */
+
+/* --- Main Profile Page Layout --- */
+
+main.profile-main {
+    /* Occupies the maximum width of the container, aligned to the top */
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto;
+    /* Centers horizontally and provides vertical space */
+    padding: 0 20px;
+    /* Side spacing */
+    display: flex;
+    gap: 30px;
+    /* Space between the sidebar and the content */
+    /* Ensures the main content expands on mobile, but uses flex on desktop */
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+/* --- Side Navigation Column (Left) --- */
+
+.profile-sidebar {
+    width: 300px;
+    min-width: 250px;
+    background: var(--purple-medium);
+    /* Purple from base.css */
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: sticky;
+    /* Stays fixed when scrolling (desktop) */
+    top: 30px;
+}
+
+.profile-sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.profile-sidebar nav ul li a {
+    display: block;
+    padding: 10px 15px;
+    margin: 5px 0;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.profile-sidebar nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dynamic class added by JS */
+.profile-sidebar nav ul li a.active-tab {
+    background-color: var(--purple-button);
+    /* Darker purple from base.css */
+    color: var(--highlight-color);
+    font-weight: bold;
+}
+
+/* --- Basic Information Card --- */
+
+.profile-info-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-photo-placeholder {
+    width: 100px;
+    height: 100px;
+    background: #111111;
+    border-radius: 50%;
+    border: 3px solid var(--highlight-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.profile-info-card h3 {
+    margin-bottom: 5px;
+    font-size: 1.6rem;
+    color: var(--text-color);
+}
+
+.profile-info-card p {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+/* --- Balance Cards --- */
+
+.balance-cards {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.balance-card {
+    flex: 1;
+    background: #2b2b2b;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #444;
+}
+
+.balance-card span {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--highlight-color);
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.balance-card strong {
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+/* --- Main Content (Right) --- */
+
+.profile-content {
+    flex: 1;
+    width: 100%;
+    /* Ensures it occupies the remaining space */
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--purple-button);
+    padding-bottom: 10px;
+}
+
+.content-header h2 {
+    font-size: 2.2rem;
+    color: var(--highlight-color);
+}
+
+/* Hides inactive content (used in JS) */
+.content-tab:not(.active) {
+    display: none;
+}
+
+.content-tab.active {
+    display: block; /* Uses 'block' for the general container content */
+}
+
+/* Profile Edit/View Styles */
+
+.profile-content form input:read-only {
+    /* Highlights fields that cannot be edited (or are in view mode) */
+    background-color: #1a1a1a !important;
+    color: #ccc !important;
+    cursor: default;
+    /* Ensures the text has full opacity */
+    opacity: 1 !important;
+}
+
+.profile-content form input:not([readonly]) {
+    /* Highlights editable fields */
+    background-color: #cfcfcf;
+    color: #111;
+}
+
+/* Action Buttons in the Personal Data Tab */
+.button-group {
+    margin-top: 30px;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.button-group button {
+    min-width: 120px;
+}
+
+/* --- Auction Cards --- */
+
+.auction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auction-item-profile {
+    display: flex;
+    align-items: center;
+    /* Ensures there is space between element groups (Details, Status, Button) */
+    justify-content: space-between;
+    background: #2b2b2b;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    transition: background-color 0.2s;
+}
+
+.auction-item-profile:hover {
+    background-color: #383838;
+}
+
+/* 1. Icon/Placeholder: Order 1 */
+.auction-thumb-placeholder {
+    order: 1;
+    width: 80px;
+    height: 80px;
+    background-color: #111;
+    border-radius: 6px;
+    margin-right: 15px;
+    /* Maintains right spacing */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--highlight-color);
+}
+
+/* 2. Details: Order 2 (Occupies the center) */
+.auction-details {
+    order: 2;
+    flex-grow: 1;
+    /* Removes the previous flex: 1 and uses flex-grow: 1 to expand in the center */
+}
+
+.auction-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: var(--highlight-color);
+}
+
+.auction-details p {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+.auction-details strong {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+/* 3. Status (item-status): Order 3 */
+.item-status {
+    order: 3;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-left: auto;
+    /* Pushes to the right, next to the button */
+    margin-right: 15px;
+    /* Space between Status and Button */
+}
+
+/* 4. Button (Bid Button): Order 4 */
+/* Add a selector for bid buttons, e.g., .auction-item-profile button */
+.auction-item-profile button {
+    order: 4;
+    min-width: 120px;
+}
+
+
+.status-activate {
+    background-color: #28a745;
+    /* Green */
+}
+
+.status-passed {
+    background-color: #ffc107;
+    /* Yellow */
+    color: #111;
+}
+
+.status-lost {
+    background-color: #dc3545;
+    /* Red */
+}
+
+
+/* --- Achievement Cards (Achievement Grid) --- */
+
+.achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* Default 3 columns */
+    gap: 20px;
+}
+
+.achievement-card {
+    background: #2b2b2b;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.achievement-card.unlocked {
+    border-color: var(--highlight-color);
+    /* Highlight for unlocked achievements */
+    background: #333333;
+}
+
+.achievement-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.achievement-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: #6c757d;
+    /* Gray for locked */
+}
+
+.achievement-card.unlocked .achievement-icon {
+    color: var(--highlight-color);
+    /* Yellow for unlocked */
+    text-shadow: 0 0 10px rgba(255, 206, 102, 0.7);
+}
+
+.achievement-card h4 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.achievement-card p {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+/* --- Custom Alert Modal (used in JS) --- */
+
+.custom-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.custom-modal-content {
+    background-color: var(--purple-medium);
+    color: var(--text-color);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.custom-modal-content h3 {
+    color: var(--highlight-color);
+    margin-bottom: 15px;
+}
+
+.custom-modal-content button {
+    margin-top: 20px;
+    background: #8b3dff;
+    width: 100%;
+}
+
+
+/* --- Media Queries for Responsiveness --- */
+
+@media (max-width: 900px) {
+
+    /* On smaller screens, the sidebar becomes a top row */
+    main.profile-main {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .profile-sidebar {
+        width: 100%;
+        position: static;
+        /* Removes sticky on mobile */
+        order: -1;
+        /* Moves to the top */
+    }
+
+    .profile-sidebar nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .profile-sidebar nav ul li a {
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .balance-cards {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .achievement-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        /* Smaller on mobile */
+    }
+}

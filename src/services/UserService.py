@@ -26,11 +26,11 @@ _addr_obrigatory_fields = [
 
     "zipCode",
     "state",
-    "country",
+    "nameCountry",
     "street",
     "city",
     "district",
-    "number",
+    "numberAddress",
     
 ]
 

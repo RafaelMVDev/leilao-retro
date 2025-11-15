@@ -1,15 +1,15 @@
-/* Cores e Tipografia Base */
+/* Base Colors and Typography */
 :root {
-    --header-footer-bg: #411B62;   /* Roxo escuro do header/footer */
-    --purple-medium: #6c1ebf;      /* Fundo principal do Form */
-    --purple-button: #5a00b3;      /* Botão principal (usado se não houver gradiente) */
-    --gray-background: #1A1A1A;    /* Fundo principal do Body */
-    --input-background: #cfcfcf;   /* Fundo dos Inputs */
+    --header-footer-bg: #411B62;    /* Dark purple for header/footer */
+    --purple-medium: #6c1ebf;       /* Main Form background */
+    --purple-button: #5a00b3;       /* Main button (used if no gradient is present) */
+    --gray-background: #1A1A1A;     /* Main Body background */
+    --input-background: #cfcfcf;    /* Inputs background */
     --text-color: #FFFFFF;
-    --highlight-color: #FFCE66;    /* Destaque (link ativo/hover) */
+    --highlight-color: #FFCE66;     /* Highlight (active link/hover) */
 }
 
-/* Reset e Configuração da Altura Total */
+/* Reset and Full Height Configuration */
 * {
     margin: 0;
     padding: 0;
@@ -29,7 +29,7 @@ body {
     min-height: 100vh; 
 }
 
-/* --- Cabeçalho (Header) --- */
+/* --- Header --- */
 header {
     width: 100%;
     padding: 15px 50px; 
@@ -40,12 +40,12 @@ header {
     align-items: center;
 }
 
-.header-esquerda {
+.header-left {
     display: flex;
     align-items: center;
 }
 
-.header-esquerda .logo-img-placeholder {
+.header-left .logo-img-placeholder {
     width: 30px; 
     height: 30px; 
     background-color: #7b2cbf; 
@@ -54,12 +54,12 @@ header {
     flex-shrink: 0;
 }
 
-.header-esquerda p {
+.header-left p {
     font-size: 20px;
     font-weight: bold;
 }
 
-.header-direita ul {
+.header-right ul {
     display: flex;
     list-style: none;
     padding: 0;
@@ -67,20 +67,20 @@ header {
     gap: 20px;
 }
 
-.header-direita a {
+.header-right a {
     color: var(--text-color);
     text-decoration: none;
     font-size: 20px;
     transition: color 0.3s;
 }
 
-.header-direita a:hover,
-.header-direita a.ativo {
+.header-right a:hover,
+.header-right a.activate {
     text-decoration: underline;
     color: var(--highlight-color) !important;
 }
 
-/* --- Rodapé (Footer) CORRIGIDO --- */
+/* --- Footer (CORRECTED) --- */
 footer {
     width: 100%;
     padding: 20px 50px; 
@@ -92,29 +92,29 @@ footer {
     align-items: center;
 }
 
-.footer-telefone {
+.footer-cellphone {
     text-align: left;
     flex-grow: 0;
     flex-shrink: 0;
-    /* Adiciona uma margem FORÇADA à direita para separar do copyright */
+    /* Adds a FORCED right margin to separate it from the copyright */
     margin-right: 40px; 
 }
 
 .footer-copyright {
     text-align: center; 
-    /* Permite crescer um pouco, mas com o "empty-space" empurrando */
-    flex-grow: 1; 
+    display:flexbox;
+    /* Allows it to grow slightly, but with the "empty-space" pushing */
+    flex-grow: 10; 
     flex-shrink: 0;
-    /* Garante um espaço à esquerda também, evitando colagem com o telefone */
-    margin-left: 14.5%; 
+    /* Ensures a space on the left as well, preventing it from sticking to the phone */ 
 }
 
 .footer-empty-space {
-    /* Ocupa todo o espaço restante (à direita do copyright) */
-    flex-grow: 1; 
+    /* Occupies all the remaining space (to the right of the copyright) */
+    flex-grow: 2.5; 
 }
 
-/* --- Conteúdo Principal (Main) --- */
+/* --- Main Content (Main) --- */
 main {
     flex-grow: 1;
     display: flex;
@@ -123,7 +123,6 @@ main {
     padding: 50px 20px; 
 }
 
-/* Estilos de Formulário Genéricos */
 input:not([type="file"]) {
     padding: 12px;
     border-radius: 8px;
@@ -135,7 +134,6 @@ input:not([type="file"]) {
     margin: 8px 0; 
 }
 
-/* Estilos de Botão Genéricos */
 button {
     border: none;
     padding: 12px;
@@ -144,17 +142,16 @@ button {
     font-weight: bold;
     font-size: 15px;
     cursor: pointer;
-    transition: filter 0.3s; /* Transição apenas para o filtro */
+    transition: filter 0.3s; /* Transition only for the filter */
     background: var(--purple-button);
 }
 
-/* Efeito HOVER CLAREANDO (Aplicado aqui para ser genérico) */
+/* HOVER EFFECT LIGHTENING */
 button:hover {
     filter: brightness(1.2); 
     transform: none; 
     opacity: 1; 
 }
-
 
 /* --- Media Queries --- */
 @media (max-width: 768px) {
@@ -163,13 +160,13 @@ button:hover {
         align-items: center;
         padding: 15px 20px;
     }
-    .header-direita ul {
+    .header-right ul {
         flex-direction: column;
         gap: 10px;
         margin-top: 15px;
         text-align: center;
     }
-    .header-esquerda {
+    .header-left {
         margin-bottom: 10px;
     }
     footer {
@@ -178,13 +175,13 @@ button:hover {
         padding: 15px 20px;
         gap: 10px;
     }
-    .footer-telefone, 
+    .footer-cellphone, 
     .footer-copyright,
     .footer-empty-space { 
         text-align: center; 
         width: 100%;
         flex-grow: 0;
-        /* Remove as margens fixas no mobile para quebrar a linha corretamente */
+        /* Removes fixed margins on mobile to allow correct line breaking */
         margin-right: 0; 
         margin-left: 0;
     }

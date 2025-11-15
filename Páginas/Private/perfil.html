@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Maradindiduns - Seu Perfil</title>
+
+    <link rel="stylesheet" href="../static/base.css">
+    <link rel="stylesheet" href="../static/perfil_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script src="../static/perfil.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-left">
+            <div class="logo-img-placeholder"></div>
+            <p> Maradindinduns </p>
+        </div>
+
+        <div class="header-right">
+            <ul>
+                <li><a href="index2.html">Início</a></li>
+                <li><a href="#">Leilões</a></li>
+                <li><a class="activate" href="perfil.html">Seu Perfil</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="profile-main">
+        <aside class="profile-sidebar">
+            <div class="profile-info-card">
+                <div class="profile-photo-placeholder">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+
+                <h3 id="user_nickname">RafaMorales</h3>
+
+                <p>Membro desde Fev/2024</p>
+            </div>
+
+            <div class="balance-cards">
+                <div class="balance-card">
+                    <span>Saldo (R$)</span>
+
+                    <strong id="user_balance">R$ 850,50</strong>
+                </div>
+
+                <div class="balance-card">
+                    <span>Moedas</span>
+
+                    <strong id="user_coins">2.500 <i class="fas fa-coins" style="color: gold;"></i></strong>
+                </div>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="#" id="tab_personal" class="active-tab" data-tab="personal"><i
+                                class="fas fa-user-circle"></i> Dados Pessoais</a></li>
+                    <li><a href="#" id="tab_auction" data-tab="auction"><i class="fas fa-gavel"></i> Meus Leilões
+                            (Ativos)</a></li>
+                    <li><a href="#" id="tab_history" data-tab="history"><i class="fas fa-history"></i> Histórico de
+                            Lances</a></li>
+                    <li><a href="#" id="tab_achievements" data-tab="achievements"><i class="fas fa-trophy"></i> Minhas
+                            Conquistas</a></li>
+                    <li><a href="#" id="tab_settings" data-tab="settings"><i class="fas fa-cog"></i>
+                            Configurações</a></li>
+                </ul>
+            </nav>
+
+            <button>SAIR</button>
+        </aside>
+
+        <section class="profile-content">
+            <div id="content_personal" class="content-tab active">
+                <div class="content-header">
+                    <h2>Dados Pessoais</h2>
+
+                    <button id="edit_save_btn" style="background: linear-gradient(90deg, #8b3dff, #c55eff);">
+
+                        <i class="fas fa-edit"></i> Editar Dados
+
+                    </button>
+                </div>
+
+                <form id="profile_form" class="form-card" style="padding: 20px; background: #2b2b2b;">
+                    <h3 style="color: var(--highlight-color); margin-bottom: 15px;">Informações de Contato e Acesso</h3>
+
+                    <div class="line" style="margin-bottom: 15px;">
+                        <input type="text" placeholder="Nome Completo" name="nome" id="input_nome"
+                            value="Rafael Morales Villela" readonly required>
+
+                        <input type="text" placeholder="Nickname" name="nickname" id="input_nickname"
+                            value="RafaMorales" readonly required>
+                    </div>
+                    
+                    <div class="line" style="margin-bottom: 15px;">
+                        <input type="tel" placeholder="Telefone" name="telefone" id="input_phoneNumber" value="(11) 97321-0013"
+                            readonly required>
+                    </div>
+
+                    <input type="password" placeholder="Nova Senha (Opcional)" name="new_password"
+                        id="input_new_password" style="display: none;">
+
+                    <input type="password" placeholder="Confirmar Nova Senha" name="confirm_password"
+                        id="input_confirm_password" style="display: none;">
+
+                    <h3 style="color: var(--highlight-color); margin-bottom: 15px; margin-top: 25px;">Endereço Principal
+                    </h3>
+
+                    <div class="line" style="margin-bottom: 15px;">
+                        <input type="text" placeholder="CEP" name="cep" id="input_zipCode" value="04001-001" readonly>
+
+                        <input type="text" placeholder="País" name="pais" id="input_Country" value="Brasil" readonly
+                            required>
+                    </div>
+
+                    <input type="text" placeholder="Rua / Logradouro" name="rua" id="input_Street"
+                        value="Rua da Consolação, 1234" readonly required>
+
+                    <div class="line" style="margin-bottom: 15px;">
+                        <input type="number" placeholder="Número" name="numero" id="input_numberAdress" value="1234"
+                            readonly required>
+
+                        <input type="text" placeholder="Bairro" name="bairro" id="input_district" value="Centro"
+                            readonly required>
+                    </div>
+
+                    <div class="line">
+                        <input type="text" placeholder="Cidade" name="cidade" id="input_City" value="São Paulo" readonly
+                            required>
+
+                        <input type="text" placeholder="Estado (UF)" name="estado" id="input_State" value="SP" readonly
+                            required>
+                    </div>
+
+                    <div id="save_cancel_group" class="button-group" style="display: none;">
+                        <button type="button" id="cancel_edit_btn" style="background-color: #dc3545;">Cancelar</button>
+
+                        <button type="submit" id="save_data_btn" style="background-color: #28a745;">Salvar
+                            Alterações</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="content_auction" class="content-tab ">
+                <div class="content-header">
+                    <h2>Meus Leilões (Ativos)</h2>
+                </div>
+
+                <div class="auction-list">
+                    <div class="auction-item-profile">
+                        <div class="auction-thumb-placeholder"><i class="fas fa-gamepad"></i></div>
+                        <div class="auction-details">
+                            <h4>Super Nintendo Completo (Edição Japonesa)</h4>
+
+                            <p>Seu lance atual: <strong>R$ 1.550,00</strong></p>
+
+                            <p>Tempo restante: <strong>1h 45m 12s</strong></p>
+                        </div>
+
+                        <span class="item-status status-activate">Ativo</span>
+
+                        <button style="margin-left: 20px; background: #9c3dff;">Aumentar Lance</button>
+                    </div>
+
+                    <div class="auction-item-profile">
+                        <div class="auction-thumb-placeholder"><i class="fas fa-gem"></i></div>
+                        <div class="auction-details">
+                            <h4>Carta Holográfica Rara (Jogo XYZ)</h4>
+
+                            <p>Seu lance atual: <strong>R$ 80,00</strong></p>
+
+                            <p>Tempo restante: <strong>3d 05h 30m</strong></p>
+                        </div>
+
+                        <span class="item-status status-activate">Ativo</span>
+
+                        <button style="margin-left: 20px; background: #9c3dff;">Aumentar Lance</button>
+                    </div>
+
+                    <div class="auction-item-profile" style="opacity: 0.6;">
+                        <div class="auction-thumb-placeholder"><i class="fas fa-laptop-code"></i></div>
+                        <div class="auction-details">
+                            <h4>PC Gamer Customizado - Lote 5</h4>
+
+                            <p>Seu lance atual: <strong>R$ 6.100,00</strong></p>
+
+                            <p>Você foi superado. Último lance: R$ 6.200,00</p>
+                        </div>
+
+                        <span class="item-status status-lost">Superado</span>
+
+                        <button style="margin-left: 20px; background: #dc3545;">Dar um Lance!</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content_history" class="content-tab">
+                <div class="content-header">
+                    <h2>Histórico de Lances</h2>
+                </div>
+
+                <div class="auction-list">
+                    <div class="auction-item-profile">
+                        <div class="auction-thumb-placeholder"><i class="fas fa-trophy"></i></div>
+                        <div class="auction-details">
+                            <h4>Console PlayStation 2 Clássico</h4>
+
+                            <p>Seu lance vencedor: <strong>R$ 550,00</strong></p>
+
+                            <p>Data de conclusão: 15/05/2025</p>
+                        </div>
+
+                        <span class="item-status status-passed">Vencido</span>
+
+                        <button style="margin-left: 20px; background: #28a745;">Ver Detalhes</button>
+                    </div>
+
+                    <div class="auction-item-profile">
+                        <div class="auction-thumb-placeholder"><i class="fas fa-times-circle"></i></div>
+                        <div class="auction-details">
+                            <h4>Coleção Completa de Jogos XBox</h4>
+
+                            <p>Seu último lance: <strong>R$ 2.000,00</strong></p>
+
+                            <p>Vencedor: user123 (R$ 2.100,00)</p>
+                        </div>
+
+                        <span class="item-status status-lost">Perdido</span>
+
+                        <button style="margin-left: 20px; background: #6c757d;">Ver Detalhes</button>
+                    </div>
+
+                    <div class="auction-item-profile">
+                        <div class="auction-thumb-placeholder"><i class="fas fa-gamepad"></i></div>
+
+                        <div class="auction-details">
+                            <h4>Miniatura Rara de Personagem (Lote 1)</h4>
+
+                            <p>Seu lance final: <strong>R$ 125,00</strong></p>
+
+                            <p>Vencedor: Coleciona_Tudo (R$ 130,00)</p>
+                        </div>
+
+                        <span class="item-status status-lost">Perdido</span>
+
+                        <button style="margin-left: 20px; background: #6c757d;">Ver Detalhes</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content_settings" class="content-tab">
+                <div class="content-header">
+                    <h2>Configurações</h2>
+                </div>
+
+                <div class="form-card" style="padding: 20px; background: #2b2b2b;">
+
+                    <h3 style="color: var(--highlight-color); margin-bottom: 20px;">Preferências de Notificação</h3>
+
+                    <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 15px;">
+                        <input type="checkbox" id="notif_email" checked style="width: auto;">
+
+                        <label for="notif_email">Receber notificações por e-mail</label>
+                    </div>
+
+                    <div style="margin-bottom: 30px; display: flex; align-items: center; gap: 15px;">
+
+                        <input type="checkbox" id="notif_auction" style="width: auto;">
+
+                        <label for="notif_auction">Alertar quando meu lance for superado</label>
+                    </div>
+
+                    <h3 style="color: var(--highlight-color); margin-bottom: 20px;">Opções de Segurança</h3>
+
+                    <div style="margin-bottom: 30px; display: flex; align-items: center; gap: 15px;">
+                        <input type="checkbox" id="auth_two_factor" style="width: auto;">
+
+                        <label for="auth_two_factor">Habilitar Autenticação de Dois Fatores (2FA)</label>
+                    </div>
+
+                    <div style="text-align: right;">
+                        <button style="background-color: #28a745;">Salvar Preferências</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="content_achievements" class="content-tab">
+
+                <div class="content-header">
+                    <h2>Galeria de Conquistas</h2>
+
+                    <p style="color: #ccc; font-size: 1rem;">Total Desbloqueadas: 4/10</p>
+                </div>
+
+                <div class="achievement-grid">
+                    <div class="achievement-card unlocked">
+                        <div class="achievement-icon"><i class="fas fa-crown"></i></div>
+
+                        <h4>Ganhador</h4>
+
+                        <p>Vença 5 leilões (você venceu 5).</p>
+                    </div>
+
+                    <div class="achievement-card unlocked">
+
+                        <div class="achievement-icon"><i class="fas fa-money-bill-wave"></i></div>
+
+                        <h4>Investidor Inicial</h4>
+
+                        <p>Realize seu primeiro lance.</p>
+                    </div>
+
+                    <div class="achievement-card unlocked">
+
+                        <div class="achievement-icon"><i class="fas fa-fire"></i></div>
+
+                        <h4>Fúria dos Lances</h4>
+
+                        <p>Faça 50 lances em 24h.</p>
+                    </div>
+
+                    <div class="achievement-card unlocked">
+
+                        <div class="achievement-icon"><i class="fas fa-ghost"></i></div>
+
+                        <h4>Nintendista Clássico</h4>
+
+                        <p>Arremate um item do console Nintendo 64.</p>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon"><i class="fas fa-gem"></i></div>
+
+                        <h4>Mestre da Moeda</h4>
+
+                        <p>Troque 10.000 moedas por dinheiro (0/10.000).</p>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon"><i class="fas fa-star"></i></div>
+
+                        <h4>Colecionador Lendário</h4>
+
+                        <p>Arremate 10 itens lendários.</p>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon"><i class="fas fa-trophy"></i></div>
+
+                        <h4>O Maioral</h4>
+
+                        <p>Tenha o maior saldo de moedas do site.</p>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon"><i class="fas fa-gamepad"></i></div>
+
+                        <h4>Sega Fanático</h4>
+
+                        <p>Arremate 3 itens de consoles da Sega.</p>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon"><i class="fas fa-skull-crossbones"></i></div>
+
+                        <h4>Noite da Oferta</h4>
+
+                        <p>Faça um lance entre 00:00h e 06:00h.</p>
+                    </div>
+
+                    <div class="achievement-card">
+
+                        <div class="achievement-icon"><i class="fas fa-heart"></i></div>
+
+                        <h4>Apoiador</h4>
+
+                        <p>Dê um like em 5 leilões diferentes.</p>
+                    </div>
+                </div>
+            </div>   
+        </section>
+
+    </main>
+
+    <div id="custom_modal" class="custom-modal-backdrop">
+        <div class="custom-modal-content">
+
+            <p id="modal_message">Os dados do perfil foram alterados com sucesso.</p>
+
+            <button id="modal_ok_btn">OK</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-cellphone">
+            <p> Telefone: (11) 97321-0013 </p>
+        </div>
+
+        <div class="footer-copyright">
+            <p> @Copyright 2025 </p>
+        </div>
+        <div class="footer-empty-space"></div>
+    </footer>
+</body>
+
+</html>

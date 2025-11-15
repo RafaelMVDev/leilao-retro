@@ -1,0 +1,144 @@
+/* --- Main Card --- */
+.register-card {
+    background: linear-gradient(180deg, #6b1fd6 0%, #3d0078 100%);
+    padding: 30px;
+    width: 100%;
+    max-width: 650px;
+    border-radius: 12px;
+    box-shadow: 0 0 30px #000000e8;
+    color: var(--text-color);
+    margin: 50px auto;
+}
+
+/* Center the main content */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 70vh;
+}
+
+/* Internal form layout */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#step_user,
+#step_address {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+/* Lines with side-by-side inputs */
+.line {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.line input {
+    flex: 1;
+}
+
+/* Main button */
+#next_step {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.register-card button {
+    background: linear-gradient(90deg, #8b3dff, #c55eff);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.register-card button:hover {
+    transform: scale(1.02);
+}
+
+/* Responsive */
+@media (max-width: 550px) {
+    .line {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+/* --- Address Group --- */
+fieldset.address-group {
+    border: 1px solid var(--purple-button);
+    border-radius: 8px;
+    padding: 20px 15px 15px 15px;
+    margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+fieldset.address-group legend {
+    padding: 0 10px;
+    margin-left: 5px;
+    font-weight: bold;
+    color: var(--highlight-color);
+    font-size: 1.1em;
+}
+
+/* Correct wrapper for zipCode */
+.zipCode-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+}
+
+/* zipCode status icon */
+.zipCode-status {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    pointer-events: none;
+}
+
+/* Fields filled by the API */
+input.api-filled[readonly] {
+    background-color: #b0b0b0;
+    color: #333;
+    cursor: not-allowed;
+    opacity: 0.9;
+}
+
+/* Error fields */
+input.zipCode-error {
+    border: 2px solid #ff6b6b;
+    background-color: #ffe8e8;
+    color: #a10000;
+}
+
+/* Step 2 buttons */
+#step_address .line {
+    justify-content: center;
+}
+
+/* Smoothness between screens */
+#step_user,
+#step_address {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.hidden {
+    opacity: 0;
+    transform: translateX(-30px);
+    pointer-events: none;
+    position: absolute;
+}
+
+.size {
+    width: 100%;
+}

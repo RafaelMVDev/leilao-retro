@@ -4,8 +4,6 @@ from src.services.UserService import *
 
 bp = Blueprint('auth_pages', __name__)
 
-
-
 def init():
     session['logado'] = False
     return session['logado']

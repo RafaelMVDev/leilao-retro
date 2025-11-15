@@ -1,5 +1,5 @@
 .login-card {
-    /* Largura ajustada para 480px */
+    /* Width adjusted to 480px */
     background: var(--purple-medium);
     padding: 40px;
     border-radius: 15px;
@@ -16,7 +16,7 @@ form {
     gap: 15px;
 }
 
-/* Estilo do botão de login (cor diferente do cadastro), já herda o hover de base.css */
+/* Login button style (different color than register), already inherits hover from base.css */
 .login-card button {
     background: #9c3dff;
     margin-top: 10px;
