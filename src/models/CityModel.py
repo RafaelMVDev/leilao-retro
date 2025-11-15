@@ -7,5 +7,6 @@ from sqlalchemy import Table,Column,select
 
 class CityModel(db.Model):
     __table__ = Table("city",DB_METADATA,autoload_with=db.engine)
-    adresses = db.relationship("AdressModel", back_populates = "cities" )
+    addresses = db.relationship("AddressModel", back_populates = "cities" )
+    states = db.relationship("StateModel", back_populates = "cities")
   #

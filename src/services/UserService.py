@@ -54,21 +54,18 @@ bool: if the validation was a sucess,
 response: jsonify() with the response message
 """
 
-def validate_register_data(user_data,addr_data):
+def missing_fields(user_data,addr_data):
     #Check if the obrigatory fields are filled!
     with DB_SESSION() as Session:
         for field in _user_obrigatory_fields:
             if not user_data.get(field):
                 print(f"Campo obrigatorio faltante em user: {field}")
-                return (False,jsonify({"error": f"Campo obrigatorio faltante em user: {field}"})) # retuyrn a tup
+                return (True,jsonify({"error": f"Campo obrigatorio faltante em user: {field}"})) # retuyrn a tup
         for field in _addr_obrigatory_fields:
             if not addr_data.get(field):
                 print(f"Campo obrigatorio faltante em addr: {field}")
-                return (False,jsonify({"error": f"Campo obrigatorio faltante em addr: {field}"}))
-        existing = Session.query(UserModel).filter_by(email=user_data.get("email")).first()
-        #Checks if the user already exists in the db ( by email adress)
-        if existing:
-            return (False,jsonify({"error": "E-mail já cadastrado."}))
+                return (True,jsonify({"error": f"Campo obrigatorio faltante em addr: {field}"}))
+ 
 
 """ This function inserts the user table and related tables that need to be initiated ( like wallet and adress)"""
 def register_user(user_data: dict,addr_data:dict) -> int | dict:
@@ -101,18 +98,25 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
 
     }
     """ 
-    
+    # ==== VALIDATION OF THE DATA ====
     # verifies if there is already an ocurrency in the db ( may change to unique raise error on the db later)
     
-    existing = db.session.query(UserModel).filter_by(email=user_data.get("email")).first()
-    print(existing)
-    if existing:
+    email_exists = db.session.query(UserModel).filter_by(email=user_data.get("email")).first() # maybe turn into function later
+    if email_exists:
         return jsonify({"error": "E-mail já cadastrado."}), 400
-
+    
+    field_missing = missing_fields(user_data=user_data,addr_data=addr_data) # move to address service later? 
+    if field_missing:
+        print("MISSING FIELD!")
+        return field_missing[1]
+    
     #add hash here (CHANGE LATER)
     hashed_password = generate_password_hash(user_data.get("password"))
-    # search for address or create new one if it doesn't exist
-    address = adrres
+    
+    is_valid, data = register_adress(addr_data_unv = addr_data)
+    if not is_valid: # if it's not valid,data represents a json with the error
+        print(f"Is valid? {is_valid}: {data}")
+        return data # the
     #add verification in the fields later
     new_user = UserModel(
         nickname=user_data.get("nickname"),
@@ -124,7 +128,7 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
         phone=user_data.get("phone"),
         birthDate=user_data.get("birthDate"),
         registrationDate=datetime.utcnow(),
-        address = cur_addr #relationship magic!! finally 
+        address = data #relationship magic!! finally 
     )
 
     # 4️⃣ Salva no banco
@@ -137,4 +141,4 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
         return jsonify({"error": f"Erro when registering user (duplicate?). {e}" }), 400
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}), 500 
