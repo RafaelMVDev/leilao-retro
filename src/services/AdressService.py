@@ -68,9 +68,9 @@ def remove_addr_whitespaces(addr_data):
         for key, value in addr_data.items()}
 
 """ register adress assuming that the data sent was verified ( if the adress exists and all required fields are filled)"""
-def register_adress(addr_data_unv : dict) ->tuple[bool,AddressModel]: #unc here stands for unverified (data is gonna be verified below)
+def register_adress(session,addr_data_unv : dict) ->tuple[bool,AddressModel]: #unc here stands for unverified (data is gonna be verified below)
     """Validates address data and creates an entry in City,State and Address tables if they don't exist already stabilishing relationship between them"""
-    with DB_SESSION() as Session:
+    with session:
         addr_data = remove_addr_whitespaces(addr_data_unv)
         """addr_exists = address_exists(addr_data)
         if addr_exists: # if is invalid we just return an error # <--- FIX THIS VERIFICATION LATER
@@ -78,36 +78,50 @@ def register_adress(addr_data_unv : dict) ->tuple[bool,AddressModel]: #unc here 
         
         # Check if there are occurances of country, state and city in their respective tables ( prevent duplicate data)
         country_stm = select(CountryModel).where(CountryModel.nameCountry == addr_data.get("nameCountry"))
-        country = Session.scalar(country_stm)
+        country = session.scalar(country_stm)
+
         if not country:
             return (False,"ERROR! COUNTRY DOESN'T EXIST")
+        
         state_stm = select(StateModel).where(StateModel.stateName == addr_data.get("stateName"),StateModel.fkCountryIdCountry == country.idCountry)
-        state = Session.scalar(state_stm)
+        state = session.scalar(state_stm)
         if not state:
             # register state
             state = StateModel(
-                stateName = addr_data.get("state"),
+                stateName = addr_data.get("stateName"),
                 countries = country
             )
            
         city_stm = select(CityModel).where(CityModel.nameCity == addr_data.get("nameCity"),CityModel.fkStateIdState == state.idState)
-        city = Session.scalar(city_stm)
+        city = session.scalar(city_stm)
         if not city:
             #register city
             city = CityModel(
-                nameCity = addr_data.get("city"),
+                nameCity = addr_data.get("nameCity"),
                 states = state
             )
-           
-        new_adress = AddressModel(
-            zipCode = addr_data.get("zipCode"),
-            district= addr_data.get("district"),
-            street = addr_data.get("street"),
-            numberAddress = addr_data.get("numberAddress"),
-            complement = addr_data.get("complement") if addr_data.get("complement") else None,
-            cities = city 
+        addr_stm = (
+        select(AddressModel)
+        .where(
+        AddressModel.zipCode == addr_data.get("zipCode"),
+        AddressModel.district == addr_data.get("district"),
+        AddressModel.street == addr_data("street"),
+        AddressModel.numberAddress == addr_data("numberAddress"),
+        AddressModel.complement == addr_data.get("complement")
         )
+        )
+        address = session.scalar(address)
+        if not address:
+            address = AddressModel(
+                zipCode = addr_data.get("zipCode"),
+                district= addr_data.get("district"),
+                street = addr_data.get("street"),
+                numberAddress = addr_data.get("numberAddress"),
+                complement = addr_data.get("complement") if addr_data.get("complement") else None,
+                cities = city 
+            )
         # Adding all ocurrances to session and commiting ( add rollbacklater! -nvm it's automatic)
-        Session.add_all([country,state,city,new_adress])
-        Session.commit()
-        return (True,new_adress)
+        session.add_all([country,state,city,address])
+        session.commit()
+     
+        return (True,address)

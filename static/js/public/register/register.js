@@ -29,7 +29,7 @@ const fillAddressFields = (parentGroup, data) => {
         '.Street-input': data.logradouro,
         '.District-input': data.bairro,
         '.City-input': data.localidade,
-        '.State-input': data.uf,
+        '.State-input': data.estado,
         '.Country-input': 'Brasil' // ViaCEP is Brazil only
     };
 
@@ -120,7 +120,7 @@ function validateStep(stepElement) {
 nextBtn.addEventListener("click", () => {
     if (validateStep(stepUser)) {
         // Password confirmation validation
-        const passwordInput = stepUser.querySelector('input[name="password"]');
+        const passwordInput = stepUser.querySelector('input[name="userPassword"]');
         const confirmPasswordInput = stepUser.querySelector('input[name="confirmPassword"]');
 
         if (passwordInput.value !== confirmPasswordInput.value) {
