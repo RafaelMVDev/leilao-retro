@@ -1,3 +1,38 @@
+/* ============================================================
+   TEST DATA INSERT STATEMENTS
+   ------------------------------------------------------------
+   PURPOSE:
+     This script populates the database with sample data used
+     for development, testing, and validation of the auction
+     platform. It includes foundational geographic entities,
+     predefined users, user addresses, achievements, auctions,
+     lots, products (physical and digital), categories,
+     currencies, wallets, transactions, and sample bids.
+
+   DESCRIPTION:
+     - Inserts base geographic structure (countries, states, cities)
+       to support user addresses.
+     - Creates predefined users with associated address records.
+     - Populates achievements, conditions, and achievement-condition
+       bindings.
+     - Inserts multiple auctions from different brands (Nintendo,
+       Sony, Sega), with their respective lots and products.
+     - Assigns products to categories (Games, Consoles, Customized).
+     - Defines supported currencies and creates wallets for users
+       in both Real and Bzzcoin.
+     - Generates initial income transactions to fund internal wallets.
+     - Inserts example bids across several auctions and lots,
+       simulating a realistic bidding history.
+
+   NOTES:
+     - This dataset is intended for testing only and should not be
+       used in production environments.
+     - Foreign key dependencies must be respected; therefore, the
+       insertion order should not be altered.
+     - Digital products require activation keys and download metadata,
+       while physical products include dimensional attributes.
+   ============================================================ */
+
 -- TEST COUNTRIES
 
 INSERT INTO Country (nameCountry)
@@ -23,11 +58,20 @@ VALUES ('12345678', 'Bairro das Rosas', 'Rua das Roseiras', 123, 'Ap 123', 1),
 
 -- PREDEFINED USERS
 
-INSERT INTO user (nickname, firstName, lastName, email, userPassword, profilePhoto, phone, birthDate, fkAddressIdAddress, userCookieHash)
-VALUES ('juliacalixto', 'Júlia', 'Calixto', 'juliacalixto@marauction.com.br', SHA2('senhaJulia', 256), 'fotojulia.jpg','5511987654321', '1900-01-01', 1, 'hashcookieJulia'),
-('rafaelmoreira', 'Rafael', 'Moreira', 'rafaelmoreira@marauction.com.br', SHA2('senhaMoreira', 256), 'fotomoreira.jpg', '5511988776655', '1900-02-02', 2, 'hashcookieMoreira'),
-('rafaelmorales', 'Rafael', 'Morales', 'rafaelmorales@marauction.com.br', SHA2('senhaMorales', 256), 'fotomorales.jpg', '5511912345678', '1900-03-03', 3, 'hashcookieMorales'),
-('luishenrique', 'Luis', 'Henrique', 'luishenrique@marauction.com.br', SHA2('senhaLuis', 256), 'fotoluis.jpg', '5511911223344', '1900-04-04', 4, 'hashcookieLuis');
+INSERT INTO user (nickname, firstName, lastName, email, userPassword, profilePhoto, phone, birthDate, userCookieHash)
+VALUES ('juliacalixto', 'Júlia', 'Calixto', 'juliacalixto@marauction.com.br', SHA2('senhaJulia', 256), 'fotojulia.jpg','5511987654321', '1900-01-01', 'hashcookieJulia'),
+('rafaelmoreira', 'Rafael', 'Moreira', 'rafaelmoreira@marauction.com.br', SHA2('senhaMoreira', 256), 'fotomoreira.jpg', '5511988776655', '1900-02-02', 'hashcookieMoreira'),
+('rafaelmorales', 'Rafael', 'Morales', 'rafaelmorales@marauction.com.br', SHA2('senhaMorales', 256), 'fotomorales.jpg', '5511912345678', '1900-03-03', 'hashcookieMorales'),
+('luishenrique', 'Luis', 'Henrique', 'luishenrique@marauction.com.br', SHA2('senhaLuis', 256), 'fotoluis.jpg', '5511911223344', '1900-04-04', 'hashcookieLuis');
+
+UPDATE user SET cpf = '111.111.111-11' WHERE idUser = 1;
+UPDATE user SET cpf = '222.222.222-22' WHERE idUser = 2;
+UPDATE user SET cpf = '333.333.333-33' WHERE idUser = 3;
+UPDATE user SET cpf = '444.444.444-44' WHERE idUser = 4;
+
+INSERT INTO useraddress (fkUserIdUser, fkAddressIdAddress)
+VALUES
+(1, 1), (2, 2), (3, 3), (4, 4);
 
 -- TEST ACHIEVEMENTS AND CONDITIONS
 
