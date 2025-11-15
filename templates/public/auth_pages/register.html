@@ -42,21 +42,23 @@
                 <!-- Etapa 1 -->
                 <div id="step_user">
                     <div class="line">
-                        <input type="text" placeholder="Nome" name="firstName" required>
-                        <input type="text" placeholder="Sobrenome" name="lastName" required>
+                        <input type="text" placeholder="Nome" name="firstName" required minlength="3">
+                        <input type="text" placeholder="Sobrenome" name="lastName" required minlength="3">
+                    </div>
+                    
+                    <div class="line">
+                    <input type="email" placeholder="E-mail" name="email" required minlength="6" maxlength="100">
+                    <input type="email" placeholder="CPF" name="CPF" required minlength="" maxlength="11">
+                    </div>
+                    <div class="line">
+                        <input type="password" placeholder="Senha" name="password" required minlength="6" >
+                        <input type="password" placeholder="Confirmar senha" name="confirmPassword" required minlength="6">
                     </div>
 
-                    <input type="email" placeholder="E-mail" name="email" class="full" required>
+                    <input type="text" placeholder="Nickname" name="nickname" class="full" required minlength="3" maxlength="30">
 
                     <div class="line">
-                        <input type="password" placeholder="Senha" name="password" required>
-                        <input type="password" placeholder="Confirmar senha" name="confirmPassword" required>
-                    </div>
-
-                    <input type="text" placeholder="Nickname" name="nickname" class="full" required>
-
-                    <div class="line">
-                        <input type="tel" placeholder="Telefone" name="phone" required>
+                        <input type="tel" placeholder="Telefone" name="phone" required minlength="9" maxlength="14">
                         <input type="date" placeholder="Data de Nascimento" name="birthDate" required>
                     </div>
 
@@ -70,23 +72,23 @@
 
                         <div class="line">
                             <div class="zipCode-wrapper">
-                                <input type="text" placeholder="CEP" name="zipCode" class="zipCode-input" required>
+                                <input type="text" placeholder="CEP" name="zipCode" class="zipCode-input" required maxlength="9">
                                 <span class="zipCode-status"></span>
                             </div>
-                            <input type="text" placeholder="País" name="nameCountry" class="Country-input" required>
+                            <input type="text" placeholder="País" name="country" class="Country-input" required maxlength="90">
                         </div>
 
-                        <input type="text" placeholder="Rua / Logradouro" name="street" class="Street-input" required>
+                        <input type="text" placeholder="Rua / Logradouro" name="street" class="Street-input" required maxlength="50">
 
                         <div class="line">
-                            <input type="text" placeholder="Número" name="numberAddress" class="numberAdress-input"
-                                required>
-                            <input type="text" placeholder="Bairro" name="district" class="District-input" required>
+                            <input type="text" placeholder="Número" name="numberAddress" class="numberAdress-input" required maxlength="10">
+                            <input type="text" placeholder="Bairro" name="district" class="District-input" required maxlength="50">
                         </div>
 
                         <div class="line">
-                            <input type="text" placeholder="Cidade" name="city" class="City-input" required>
-                            <input type="text" placeholder="Estado (UF)" name="state" class="State-input" required>
+                            <input type="text" placeholder="Cidade" name="city" class="City-input" required maxlength="60">
+                            <input type="text" placeholder="Estado (UF)" name="state" class="State-input" 
+                            required minlength="2" maxlength="3">
                         </div>
 
                         <div class="line" style="margin-top: 15px;">
