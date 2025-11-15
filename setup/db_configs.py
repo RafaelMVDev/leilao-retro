@@ -18,7 +18,7 @@ TRACK_MODIFICATIONS = False
 
 USER = ""
 PASSWORD = ""
-HOST = ""
+HOST = "" #comment here
 PORT = ""
 DATABASE = "marauction"
 
