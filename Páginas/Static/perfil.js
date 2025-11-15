@@ -31,11 +31,11 @@ const inputPhone = document.getElementById('input_phoneNumber');
 
 // ADDRESS VARIABLES
 const cepInput = document.getElementById('input_zipCode');
-const StreetInput = document.getElementById('input_Street');
+const StreetInput = document.getElementById('input_street');
 const numberAdressInput = document.getElementById('input_numberAdress');
 const DistrictInput = document.getElementById('input_district');
-const CityInput = document.getElementById('input_City');
-const StateInput = document.getElementById('input_State');
+const CityInput = document.getElementById('input_city');
+const StateInput = document.getElementById('input_state');
 
 // CONVENIENCE VARIABLES (for compatibility with fetchAddressByCep)
 const ruaInput = StreetInput;

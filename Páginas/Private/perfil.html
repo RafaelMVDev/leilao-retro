@@ -91,50 +91,51 @@
 
                     <div class="line" style="margin-bottom: 15px;">
                         <input type="text" placeholder="Nome Completo" name="nome" id="input_nome"
-                            value="Rafael Morales Villela" readonly required>
+                        value="Rafael Morales Villela" readonly required minlength="3">
 
                         <input type="text" placeholder="Nickname" name="nickname" id="input_nickname"
-                            value="RafaMorales" readonly required>
+                            value="RafaMorales" readonly required minlength="3" maxlength="30">
                     </div>
                     
                     <div class="line" style="margin-bottom: 15px;">
                         <input type="tel" placeholder="Telefone" name="telefone" id="input_phoneNumber" value="(11) 97321-0013"
-                            readonly required>
+                            readonly required minlength="9" maxlength="14">
                     </div>
 
                     <input type="password" placeholder="Nova Senha (Opcional)" name="new_password"
-                        id="input_new_password" style="display: none;">
+                        id="input_new_password" style="display: none;" minlength="6">
 
                     <input type="password" placeholder="Confirmar Nova Senha" name="confirm_password"
-                        id="input_confirm_password" style="display: none;">
+                        id="input_confirm_password" style="display: none;" minlength="6">
 
                     <h3 style="color: var(--highlight-color); margin-bottom: 15px; margin-top: 25px;">Endereço Principal
                     </h3>
 
                     <div class="line" style="margin-bottom: 15px;">
-                        <input type="text" placeholder="CEP" name="cep" id="input_zipCode" value="04001-001" readonly>
+                        <input type="text" placeholder="CEP" name="zipCode" id="input_zipCode" value="04001-001" 
+                        readonly maxlength="9">
 
-                        <input type="text" placeholder="País" name="pais" id="input_Country" value="Brasil" readonly
-                            required>
+                        <input type="text" placeholder="País" name="country" id="input_Country" value="Brasil" readonly
+                            required maxlength="90">
                     </div>
 
-                    <input type="text" placeholder="Rua / Logradouro" name="rua" id="input_Street"
-                        value="Rua da Consolação, 1234" readonly required>
+                    <input type="text" placeholder="Rua / Logradouro" name="street" id="input_Street"
+                        value="Rua da Consolação" readonly required maxlength="50">
 
                     <div class="line" style="margin-bottom: 15px;">
-                        <input type="number" placeholder="Número" name="numero" id="input_numberAdress" value="1234"
-                            readonly required>
+                        <input type="number" placeholder="Número" name="numberAdress" id="input_numberAdress" value="1234"
+                            readonly required maxlength="10">
 
-                        <input type="text" placeholder="Bairro" name="bairro" id="input_district" value="Centro"
-                            readonly required>
+                        <input type="text" placeholder="Bairro" name="district" id="input_district" value="Centro"
+                            readonly required maxlength="50">
                     </div>
 
                     <div class="line">
-                        <input type="text" placeholder="Cidade" name="cidade" id="input_City" value="São Paulo" readonly
-                            required>
+                        <input type="text" placeholder="Cidade" name="city" id="input_City" value="São Paulo" readonly
+                            required maxlength="60">
 
-                        <input type="text" placeholder="Estado (UF)" name="estado" id="input_State" value="SP" readonly
-                            required>
+                        <input type="text" placeholder="Estado (UF)" name="state" id="input_State" value="SP" readonly
+                            required minlength="2" maxlength="3">
                     </div>
 
                     <div id="save_cancel_group" class="button-group" style="display: none;">
