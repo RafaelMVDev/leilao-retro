@@ -8,6 +8,7 @@ const MOCK_USER_DATA = {
     Country: "Brasil",
     Street: "Rua da Consolação, 1234",
     Number: "1234",
+    complement: "ap 204",
     District: "Centro",
     City: "São Paulo",
     State: "SP",
@@ -33,6 +34,7 @@ const inputPhone = document.getElementById('input_phoneNumber');
 const cepInput = document.getElementById('input_zipCode');
 const StreetInput = document.getElementById('input_street');
 const numberAdressInput = document.getElementById('input_numberAdress');
+const complementInput = document.getElementById("input_complement")
 const DistrictInput = document.getElementById('input_district');
 const CityInput = document.getElementById('input_city');
 const StateInput = document.getElementById('input_state');
@@ -43,6 +45,7 @@ const bairroInput = DistrictInput;
 const cidadeInput = CityInput;
 const estadoInput = StateInput;
 const numeroInput = numberAdressInput;
+const complementoInput = complementInput
 
 // Modal
 const customModal = document.getElementById('custom_modal');
@@ -152,6 +155,7 @@ function disableAddressFields(shouldDisable) {
     cidadeInput.readOnly = shouldDisable;
     estadoInput.readOnly = shouldDisable;
     numeroInput.readOnly = shouldDisable;
+    complementoInput.readOnly = shouldDisable
 }
 
 // --- CEP API Functions ---
@@ -165,21 +169,21 @@ function clearAddressFields() {
 
 function fetchAddressByCep() {
     if (!isEditing) return;
-    let cep = cepInput.value.replace(/\D/g, '');
+    let zipCode = zipCodeInput.value.replace(/\D/g, '');
 
-    if (cep.length !== 8) {
-        if (cep.length > 0) {
+    if (zipCode.length !== 8) {
+        if (zipCode.length > 0) {
             clearAddressFields();
             disableAddressFields(false);
         }
         return;
     }
 
-    const url = `https://viacep.com.br/ws/${cep}/json/`;
+    const url = `https://viacep.com.br/ws/${zipCode}/json/`;
 
     clearAddressFields();
     disableAddressFields(true);
-    cepInput.style.backgroundColor = '#4a4a4a';
+    zipCodeInput.style.backgroundColor = '#4a4a4a';
 
     fetch(url)
         .then(response => response.json())
@@ -194,6 +198,7 @@ function fetchAddressByCep() {
                 StateInput.value = data.uf || '';
 
                 numeroInput.focus();
+                complementoInput.focus();
             } else {
                 showCustomAlert('CEP não encontrado. Preencha o endereço manualmente.', () => {
                     numeroInput.focus();
@@ -207,7 +212,6 @@ function fetchAddressByCep() {
             showCustomAlert('Erro de conexão ao buscar CEP. Preencha manualmente.');
         });
 }
-
 
 // --- NAVIGATION AND EVENT FUNCTIONS ---
 
@@ -240,7 +244,6 @@ function handleTabClick(e) {
 
     currentActiveTab = targetTab; // Keeps the state synchronized
 }
-
 
 // --- MAIN LOGIC (LISTENERS AND INITIALIZATION) ---
 
@@ -314,15 +317,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // If updatedData[key] is undefined, it will fall back to `|| MOCK_USER_DATA.key`.
         MOCK_USER_DATA.name = updatedData.nome || MOCK_USER_DATA.name;
         MOCK_USER_DATA.nickname = updatedData.nickname || MOCK_USER_DATA.nickname;
-        MOCK_USER_DATA.phoneNumber = updatedData.telefone || MOCK_USER_DATA.phoneNumber; // name="telefone"
-        MOCK_USER_DATA.zipCode = updatedData.cep || MOCK_USER_DATA.zipCode;      // name="cep"
-        MOCK_USER_DATA.Country = updatedData.pais || MOCK_USER_DATA.Country;      // name="pais"
-        MOCK_USER_DATA.Street = updatedData.rua || MOCK_USER_DATA.Street;          // name="rua"
-        MOCK_USER_DATA.Number = updatedData.numero || MOCK_USER_DATA.Number;        // name="numero" -> MOCK_USER_DATA.Number
-        MOCK_USER_DATA.District = updatedData.bairro || MOCK_USER_DATA.District;      // name="bairro" -> MOCK_USER_DATA.District
-        MOCK_USER_DATA.City = updatedData.cidade || MOCK_USER_DATA.City;          // name="cidade"
-        MOCK_USER_DATA.State = updatedData.estado || MOCK_USER_DATA.State;         // name="estado"
-
+        MOCK_USER_DATA.phoneNumber = updatedData.telefone || MOCK_USER_DATA.phoneNumber;
+        MOCK_USER_DATA.zipCode = updatedData.cep || MOCK_USER_DATA.zipCode;      
+        MOCK_USER_DATA.Country = updatedData.pais || MOCK_USER_DATA.Country;      
+        MOCK_USER_DATA.Street = updatedData.rua || MOCK_USER_DATA.Street;          
+        MOCK_USER_DATA.Number = updatedData.numero || MOCK_USER_DATA.Number;       
+        MOCK_USER_DATA.District = updatedData.bairro || MOCK_USER_DATA.District;     
+        MOCK_USER_DATA.City = updatedData.cidade || MOCK_USER_DATA.City;          
+        MOCK_USER_DATA.State = updatedData.estado || MOCK_USER_DATA.State;
+        MOCK_USER_DATA.complement = updatedData.complemento || MOCK_USER_DATA.complement;        
         // After the successful POST simulation
         showCustomAlert("Perfil e dados atualizados com sucesso!", () => {
             // Returns to view mode. (loadUserData is called INSIDE toggleEditMode)
