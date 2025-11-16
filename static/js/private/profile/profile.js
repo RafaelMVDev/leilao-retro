@@ -38,7 +38,7 @@ const complementInput = document.getElementById("input_complement")
 const DistrictInput = document.getElementById('input_district');
 const CityInput = document.getElementById('input_city');
 const StateInput = document.getElementById('input_state');
-
+console.log(StreetInput)
 // CONVENIENCE VARIABLES (for compatibility with fetchAddressByCep)
 const ruaInput = StreetInput;
 const bairroInput = DistrictInput;
@@ -86,7 +86,7 @@ function loadUserData() {
     // Address Data
     cepInput.value = MOCK_USER_DATA.zipCode;
     // Note: Country is readonly, but its value is updated here.
-    document.getElementById('input_Country').value = MOCK_USER_DATA.Country; 
+    document.getElementById('input_country').value = MOCK_USER_DATA.Country; 
     StreetInput.value = MOCK_USER_DATA.Street;
     numberAdressInput.value = MOCK_USER_DATA.Number; // Using MOCK_USER_DATA.Number
     DistrictInput.value = MOCK_USER_DATA.District;  // Using MOCK_USER_DATA.District
