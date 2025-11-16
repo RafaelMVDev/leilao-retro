@@ -180,3 +180,21 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
         except Exception as e:
             print(e)
             return jsonify({"error": str(e)}), 500 
+        
+
+def get_user_data(user_id):
+    with DB_SESSION() as Session:
+        stm = select(
+            UserModel.nickname,
+            UserModel.firstName,
+            UserModel.email,
+            UserModel.phone, 
+            UserModel.lastName,
+            UserModel.profilePhoto,
+            UserModel.birthDate,
+            UserModel.registrationDate
+            ).where(idUser = user_id)
+        select(UserModel).where(idUser = user_id)
+        result = Session.query(stm).scalar
+        print(result)
+        return result
