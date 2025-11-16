@@ -3,6 +3,7 @@ const stepUser = document.getElementById("step_user");
 const stepAddr = document.getElementById("step_address");
 const nextBtn = document.getElementById("next_step");
 const backBtn = document.getElementById("back_step");
+const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 // --- ViaCEP API Functions ---
 
@@ -170,7 +171,9 @@ form.addEventListener("submit", async (e) => {
     try {
         const response = await fetch("/submit_register", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",
+                       "X-CSRFToken": csrf },
+          
             body: JSON.stringify(payload)
         });
 
