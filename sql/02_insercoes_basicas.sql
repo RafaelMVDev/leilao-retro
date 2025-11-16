@@ -1,37 +1,15 @@
 /* ============================================================
-   TEST DATA INSERT STATEMENTS
-   ------------------------------------------------------------
-   PURPOSE:
-     This script populates the database with sample data used
-     for development, testing, and validation of the auction
-     platform. It includes foundational geographic entities,
-     predefined users, user addresses, achievements, auctions,
-     lots, products (physical and digital), categories,
-     currencies, wallets, transactions, and sample bids.
+   File: 02_insercoes_basicas.sql
+   Author(s): Calixto, Júlia; Henrique, Luis; Morales, Rafael; Moreira, Rafael
+   Project: Marauction
+   Class: 213
+   DBMS: MySQL 8.0.41
+   OBJECTIVE: Insert basic/initial data required for system startup
+   EXPECTED PERFORMANCE:
+        - Insert essential records (users, categories, auctions, etc.)
+        - Populate minimum data for initial system operation
+========================================================== */
 
-   DESCRIPTION:
-     - Inserts base geographic structure (countries, states, cities)
-       to support user addresses.
-     - Creates predefined users with associated address records.
-     - Populates achievements, conditions, and achievement-condition
-       bindings.
-     - Inserts multiple auctions from different brands (Nintendo,
-       Sony, Sega), with their respective lots and products.
-     - Assigns products to categories (Games, Consoles, Customized).
-     - Defines supported currencies and creates wallets for users
-       in both Real and Bzzcoin.
-     - Generates initial income transactions to fund internal wallets.
-     - Inserts example bids across several auctions and lots,
-       simulating a realistic bidding history.
-
-   NOTES:
-     - This dataset is intended for testing only and should not be
-       used in production environments.
-     - Foreign key dependencies must be respected; therefore, the
-       insertion order should not be altered.
-     - Digital products require activation keys and download metadata,
-       while physical products include dimensional attributes.
-   ============================================================ */
 
 -- TEST COUNTRIES
 
@@ -68,6 +46,11 @@ UPDATE user SET cpf = '111.111.111-11' WHERE idUser = 1;
 UPDATE user SET cpf = '222.222.222-22' WHERE idUser = 2;
 UPDATE user SET cpf = '333.333.333-33' WHERE idUser = 3;
 UPDATE user SET cpf = '444.444.444-44' WHERE idUser = 4;
+
+UPDATE user SET admin = 1 WHERE idUser = 1;
+UPDATE user SET admin = 1 WHERE idUser = 2;
+UPDATE user SET admin = 1 WHERE idUser = 3;
+UPDATE user SET admin = 1 WHERE idUser = 4;
 
 INSERT INTO useraddress (fkUserIdUser, fkAddressIdAddress)
 VALUES
