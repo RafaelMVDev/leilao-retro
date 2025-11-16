@@ -15,10 +15,10 @@
         </div>
         <div class="header-right">
             <ul>
-                <li><a class="activate" href="#">Início</a></li>
+                <li><a href="{{url_for('public_pages.homepage')}}">Início</a></li>
                 <li><a href="#">Leilões</a></li>
-                <li><a href="login.html">Entrar</a></li>
-                <li><a href="cadastro.html">Cadastrar-se</a></li>
+                <li><a href="{{url_for('auth_pages.login_page')}}">Entrar</a></li>
+                <li><a class="activate" href="{{url_for('auth_pages.register_page')}}">Cadastrar-se</a></li>
             </ul>
         </div>
     </header>
