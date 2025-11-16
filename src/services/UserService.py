@@ -4,12 +4,17 @@ from src.models.UserAddressModel import UserAddressModel
 from src.services.AdressService import *
 
 from setup.loaders.database import DB_SESSION
+from setup.login_manager import login_manager
 from sqlalchemy import select
-from flask import jsonify
+from flask import jsonify,redirect,url_for,flash
 from sqlalchemy.exc import IntegrityError
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash,check_password_hash
 from datetime import datetime
+from flask_login import LoginManager,logout_user,login_user,current_user
+from sqlalchemy import select
 
+
+from functools import wraps
 from setup.loaders.database import db  
 #add verification of the input fields with flask wtf
 _user_obrigatory_fields =  [   # reference table to verify if there is any missing fields that are obrigatory
@@ -34,6 +39,31 @@ _addr_obrigatory_fields = [
     "numberAddress",
     
 ]
+
+@login_manager.user_loader
+def load_user(user_id):
+    return DB_SESSION().get(UserModel, int(user_id))
+
+def authenticate_user(db_session,email, password):
+    try:
+        print(email)
+        print(password)
+        user = db_session.execute(
+        select(UserModel).where(UserModel.email == email)
+        ).scalar_one_or_none()
+        print(user)
+        check = check_password_hash(user.userPassword, password)
+        print(check)
+        if user and check:
+            login_user(user)
+            return True
+    except Exception as e:
+        print(e)
+        return False
+
+def logout():
+    logout_user()
+
 
 def get_user_data(email,password, id = False):
     with DB_SESSION() as Session:

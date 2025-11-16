@@ -27,9 +27,10 @@ def login_page():
 def submit_login():
     email = request.form.get("email")
     password = request.form.get("password")
-    user = get_user_data(email = email, password= password)
     
-    return jsonify(user)
+    sucess = authenticate_user(db_session= DB_SESSION(),email = email,password=password)
+    print(f"USER AUTHENTICATED? {sucess}")
+    return jsonify(sucess)
 
 
 # Rotas da Pagina de Registro    

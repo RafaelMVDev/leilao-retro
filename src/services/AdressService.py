@@ -54,6 +54,8 @@ def address_exists(addr_data):
     
     except requests.RequestException as error:
         print(f"ERROR WHEN FETCHING ADDRESS DATA FROM GOOGLE API: {error}")
+
+
 def clean_whitespaces(text: str) -> str:
     """
     Remove tab or additional spaces!
@@ -105,12 +107,12 @@ def register_adress(session,addr_data_unv : dict) ->tuple[bool,AddressModel]: #u
         .where(
         AddressModel.zipCode == addr_data.get("zipCode"),
         AddressModel.district == addr_data.get("district"),
-        AddressModel.street == addr_data("street"),
-        AddressModel.numberAddress == addr_data("numberAddress"),
+        AddressModel.street == addr_data.get("street"),
+        AddressModel.numberAddress == addr_data.get("numberAddress"),
         AddressModel.complement == addr_data.get("complement")
         )
         )
-        address = session.scalar(address)
+        address = session.scalar(addr_stm)
         if not address:
             address = AddressModel(
                 zipCode = addr_data.get("zipCode"),

@@ -28,10 +28,9 @@
         <div class="form-card login-card">
             <h2 class="card-header-title">Entre com sua Conta</h2>
 
-            <form>
-                <input type="text" placeholder="Nickname">
-                <input type="email" placeholder="E-mail">
-                <input type="password" placeholder="Senha">
+            <form id = "login-form" action = "{{url_for('auth_pages.submit_login')}}", method = "POST">
+                <input name = "email"type="email" placeholder="E-mail">
+                <input name = "password" type="password" placeholder="Senha">
                 <button type="submit">Entrar</button>
             </form>
         </div>
