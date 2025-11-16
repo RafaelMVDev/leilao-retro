@@ -1,4 +1,4 @@
-from flask import Flask,request,redirect,url_for
+from flask import Flask,request,redirect,url_for,render_template
 import flask_login
 
 
@@ -9,9 +9,9 @@ from setup.loaders.load_controllers import load_controllers
 from setup.loaders.load_models import load_models
 from setup.loaders.load_services import load_services
 from setup.login_manager import login_manager
+from flask_wtf.csrf import CSRFProtect,CSRFError
 
-
-
+csrf = CSRFProtect()
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI 
@@ -25,15 +25,16 @@ def create_app():
         load_models("src.models")
         load_services("src.services")
         login_manager.init_app(app)
-   
+        csrf.init_app(app)
         load_controllers(app,"src.controllers")
 
     return app
 
 app = create_app()
-@app.before_request
-def verify_login():
-    pass
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    return render_template('errors/csrf_error.html', reason=e.description), 400
 if __name__ == '__main__':
     app.run(debug=True)
 

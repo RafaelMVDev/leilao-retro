@@ -29,6 +29,7 @@
             <h2 class="card-header-title">Entre com sua Conta</h2>
 
             <form id = "login-form" action = "{{url_for('auth_pages.submit_login')}}", method = "POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input name = "email"type="email" placeholder="E-mail">
                 <input name = "password" type="password" placeholder="Senha">
                 <button type="submit">Entrar</button>
