@@ -39,6 +39,7 @@
             <h2 class="card-header-title">Cadastre seus Dados</h2>
 
             <form id="register_form" novalidate>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <!-- Etapa 1 -->
                 <div id="step_user">
                     <div class="line">
