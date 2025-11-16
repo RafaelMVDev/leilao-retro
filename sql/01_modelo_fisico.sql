@@ -1,3 +1,16 @@
+/* ============================================================
+   File: 01_modelo_fisico.sql
+   Author(s): Calixto, Júlia; Henrique, Luis; Morales, Rafael; Moreira, Rafael
+   Project: Marauction
+   Class: 213
+   DBMS: MySQL 8.0.41
+   OBJECTIVE: Physical model creation (tables, constraints, relationships)
+   EXPECTED PERFORMANCE:
+		- Create all database tables
+        - Define primary keys, foreign keys, and constraints
+        - Ensure referential integrity across the model
+========================================================== */
+
 CREATE DATABASE IF NOT EXISTS Marauction
 	CHARACTER SET utf8mb4
 	COLLATE utf8mb4_unicode_ci;
@@ -284,3 +297,6 @@ ADD CONSTRAINT fk_currentWinner_user
   
 ALTER TABLE lot
 ADD COLUMN currentBidValue DECIMAL(10,2) DEFAULT 0;
+
+ALTER TABLE user
+ADD COLUMN admin BOOLEAN;
