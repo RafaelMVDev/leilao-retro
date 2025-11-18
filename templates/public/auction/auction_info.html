@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Leilão - SNES com 20 Jogos</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/auction/auction_info_style.css')}}">
+
+    <script src="{{url_for('static',filename = 'js/public/auction/auction_info.js')}}" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
-    
-    <!-- HTML Content -->
     <header>
         <div class="header-left">
             <div class="logo-placeholder"></div>
@@ -29,9 +29,8 @@
     </header>
 
     <main class="auction-details-main">
-        <div class="details-container">
 
-            <!-- LEFT SECTION: IMAGE AND GALLERY -->
+        <div class="details-container">
             <section class="image-section">
                 <div class="main-image-placeholder">
                     [Imagem do Console Super Nintendo com Jogos]
@@ -47,7 +46,6 @@
                 </div>
             </section>
 
-            <!-- RIGHT SECTION: INFO AND BIDDING -->
             <section class="info-section">
                 <div class="info-card">
 
@@ -57,7 +55,6 @@
                         Vendido por: <strong>RafaMorales</strong> (98% Positivo)
                     </p>
 
-                    <!-- Main Metrics -->
                     <div class="metrics-grid">
                         <div class="metric-item">
                             <span>Lance Atual</span>
@@ -73,7 +70,6 @@
                         </div>
                     </div>
 
-                    <!-- Bidding Area -->
                     <div class="bid-section">
                         <h3>Dê seu Lance Agora</h3>
 
@@ -88,7 +84,6 @@
                 </div>
             </section>
 
-            <!-- SECONDARY SECTION: DETAILS AND HISTORY (Full width) -->
             <section class="secondary-section">
                 <div class="info-card">
                     <div class="tabs">
@@ -99,7 +94,6 @@
                             (15)</div>
                     </div>
 
-                    <!-- Content: Product Details -->
                     <div id="tab-details" class="tab-content">
                         <h4>Descrição Completa</h4>
                         <p>
@@ -114,7 +108,6 @@
                         </p>
                     </div>
 
-                    <!-- Content: Specifications (Hidden by default) -->
                     <div id="tab-specs" class="tab-content" style="display: none;">
                         <h4>Detalhes Técnicos e Inclusos</h4>
                         <ul>
@@ -127,7 +120,6 @@
                         </ul>
                     </div>
 
-                    <!-- Content: Bid History (Hidden by default) -->
                     <div id="tab-history" class="tab-content" style="display: none;">
                         <h4>Últimos Lances Registrados</h4>
 
@@ -151,7 +143,6 @@
                             <span class="bid-value-history">Valor: <strong>R$ 420,00</strong></span>
                             <span class="bid-time-history">Há 10 minutos</span>
                         </div>
-                        <!-- More items... -->
                     </div>
                 </div>
             </section>

@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maradindiduns - Leilões</title>
 
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/auction/auctions_main_Page_style.css')}}">
+
+    <script src="{{url_for('static',filename = 'js/public/auction/auctions_main_page.js')}}" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
-    <!-- HTML Content -->
     <header>
         <div class="header-esquerda">
             <div class="logo-img-placeholder"></div>
@@ -29,11 +31,9 @@
     <main class="main-leiloes-page">
         <div class="leiloes-layout-container">
 
-            <!-- SIDEBAR DE FILTROS (Altura total) -->
             <aside class="filtros-sidebar">
                 <h4>Filtros Ativos</h4>
 
-                <!-- GRUPO DE FILTRO: CATEGORIAS -->
                 <div class="filtro-grupo">
                     <h5 class="filtro-titulo">Categorias</h5>
                     <div class="filtro-grupo-conteudo">
@@ -44,7 +44,6 @@
                     </div>
                 </div>
 
-                <!-- GRUPO DE FILTRO: FAIXA DE PREÇO -->
                 <div class="filtro-grupo">
                     <h5 class="filtro-titulo">Faixa de Preço</h5>
                     <div class="filtro-grupo-conteudo">
@@ -69,9 +68,7 @@
                 <button class="aplicar-filtros-btn">Aplicar Filtros</button>
             </aside>
 
-            <!-- CONTEÚDO PRINCIPAL DE LEILÕES -->
             <section class="leiloes-content">
-
                 <div class="leilao-search-bar">
                     <input type="text" placeholder="O que você está procurando?">
                     <select name="ordenar">
@@ -83,8 +80,6 @@
                 </div>
 
                 <div class="leilao-grid">
-
-                    <!-- CARD 1: EM ANDAMENTO -->
                     <div class="leilao-card">
                         <div class="leilao-imagem-placeholder">
                             <span class="tag-desconto">Raro</span>
@@ -93,8 +88,8 @@
                         </div>
                         <div class="leilao-conteudo">
                             <div class="leilao-visitas">
-                                <!-- Ícone de Olho --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                    fill="currentColor" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    viewBox="0 0 16 16">
                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                     <path
                                         d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
@@ -127,8 +122,7 @@
                             <button class="lance-btn">Dar Lance</button>
                         </div>
                     </div>
-
-                    <!-- CARD 2: ENCERRADO -->
+      
                     <div class="leilao-card">
                         <div class="leilao-imagem-placeholder">
                             <span class="tag-local">MG</span>
@@ -167,7 +161,6 @@
                         </div>
                     </div>
 
-                    <!-- CARD 3: EM BREVE -->
                     <div class="leilao-card">
                         <div class="leilao-imagem-placeholder">
                             <span class="tag-local">RJ</span>
@@ -206,7 +199,6 @@
                         </div>
                     </div>
 
-                    <!-- CARD 4: EM ANDAMENTO -->
                     <div class="leilao-card">
                         <div class="leilao-imagem-placeholder">
                             <span class="tag-desconto">Novo</span>
@@ -250,7 +242,6 @@
                         </div>
                     </div>
 
-                    <!-- Mais Cards para preencher o Grid -->
                     <div class="leilao-card">
                         <div class="leilao-imagem-placeholder">
                             <span class="tag-local">SP</span>
@@ -328,7 +319,6 @@
                         </div>
                     </div>
 
-                    <!-- Adicionando mais um card para testar o novo layout de 1600px -->
                     <div class="leilao-card">
                         <div class="leilao-imagem-placeholder">
                             <span class="tag-desconto">Raro</span>
@@ -373,7 +363,6 @@
             </section>
         </div>
 
-        <!-- Paginação -->
         <nav class="pagination">
             <a href="#" class="disabled">&lt;&lt;</a>
             <a href="#" class="disabled">&lt;</a>
