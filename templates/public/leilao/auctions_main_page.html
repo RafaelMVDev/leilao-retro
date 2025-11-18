@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maradindiduns - Leilões</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* --- Variáveis de Tema (Cores da Marca Original: Roxo e Amarelo) --- */
+        :root {
+            --purple-dark: #1e1b30; /* Fundo escuro principal (Roxo escuro) */
+            --purple-medium: #2c2941; /* Cor dos cards e sidebar (Roxo médio) */
+            --highlight-color: #ffc93c; /* Destaque amarelo */
+            --text-color: #f0f0f0;
+            --input-background: #ffffff;
+            --simple-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Sombra suave */
+            /* Ajuste para uma cor de brilho mais sutil e com opacidade */
+            --neon-glow-color-subtle: rgba(255, 201, 60, 0.3); /* Amarelo com opacidade reduzida */
+            --neon-glow-color-hover: rgba(255, 201, 60, 0.5); /* Amarelo com opacidade média no hover */
+        }
+
+        /* --- Estilos Base --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--purple-dark);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            color: var(--highlight-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #ffe08a; /* Amarelo um pouco mais claro no hover */
+        }
+
+        button, .aplicar-filtros-btn, .lance-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px; 
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, box-shadow 0.2s;
+            color: #111; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background-color: var(--highlight-color); 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
+        }
+        
+        button:hover:not(:disabled) {
+            transform: none;
+            background-color: #ffe08a; 
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5); 
+        }
+
+        input[type="text"], input[type="range"], select {
+            padding: 12px;
+            border-radius: 6px; 
+            border: 1px solid #4a456e; 
+            background: var(--input-background);
+            color: #111;
+            font-size: 14px;
+        }
+        
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #211e3b; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .header-esquerda, .header-direita ul {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header-esquerda p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--highlight-color);
+        }
+        .header-direita a {
+            padding: 8px 15px;
+            border-radius: 6px;
+            color: var(--text-color);
+        }
+        .header-direita a:hover, .header-direita a.ativo {
+            background-color: var(--purple-medium);
+            color: var(--highlight-color);
+        }
+        .logo-img-placeholder {
+            width: 40px;
+            height: 40px;
+            background-color: var(--highlight-color);
+            border-radius: 50%;
+        }
+        
+        /* FOOTER */
+        footer {
+            margin-top: auto; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #211e3b; 
+            color: var(--text-color);
+            font-size: 0.9rem;
+            border-top: 1px solid #ffffff1a;
+        }
+        
+        /* --- ESTILOS DE LEILÕES --- */
+
+        .main-leiloes-page {
+            flex-grow: 1;
+        }
+        
+        .leiloes-layout-container {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            width: 100%;
+            max-width: 1600px; 
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Sidebar de Filtros */
+        .filtros-sidebar {
+            flex: 0 0 280px; 
+            background: var(--purple-medium); 
+            padding: 25px;
+            border-radius: 6px; 
+            box-shadow: var(--simple-shadow); 
+            height: fit-content;
+        }
+        
+        .filtros-sidebar h4 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--highlight-color); 
+        }
+        
+        .filtro-titulo {
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .filtro-grupo-conteudo label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        
+        .aplicar-filtros-btn {
+            width: 100%;
+            margin-top: 30px;
+            background: linear-gradient(90deg, #8b3dff, #c55eff);
+            color: white;
+        }
+        .aplicar-filtros-btn:hover {
+            background: linear-gradient(90deg, #9c52ff, #d277ff);
+        }
+        
+        .leiloes-content {
+            flex-grow: 1; 
+        }
+        
+        .leilao-search-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .leilao-search-bar input[type="text"] { flex: 1; margin: 0; }
+        .leilao-search-bar select { min-width: 180px; }
+        .leilao-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+            gap: 25px;
+        }
+        
+        /* CARD DE LEILÃO: Ajustado o brilho neon para ser mais sutil */
+        .leilao-card {
+            background: var(--purple-medium); 
+            border-radius: 6px; 
+            box-shadow: 
+                0 0 8px var(--neon-glow-color-subtle), /* Brilho mais suave */
+                0 0 15px var(--neon-glow-color-subtle), /* Brilho externo sutil */
+                0 2px 4px rgba(0, 0, 0, 0.3); /* Sombra padrão */
+            border: 1px solid #4a456e; 
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s, box-shadow 0.3s; 
+        }
+        .leilao-card:hover {
+            transform: translateY(-5px);
+            /* Aumenta o brilho e a sombra no hover, mas ainda de forma controlada */
+            box-shadow: 
+                0 0 10px var(--neon-glow-color-hover),
+                0 0 20px var(--neon-glow-color-hover),
+                0 8px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .leilao-imagem-placeholder {
+            height: 180px;
+            background: #111111ef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ccc;
+            position: relative;
+            font-size: 1.5rem;
+        }
+        
+        .leilao-status {
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 4px; 
+            text-align: center;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            align-self: flex-start;
+        }
+        
+        .leilao-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-top: 1px solid #ffffff22;
+            padding-top: 15px;
+        }
+        
+        .leilao-conteudo {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .lance-btn {
+            background: linear-gradient(90deg, #8b3dff, #c55eff);
+            color: white;
+            margin-top: auto;
+        }
+        .lance-btn:hover {
+            background: linear-gradient(90deg, #9c52ff, #d277ff);
+        }
+
+        /* Status colors */
+        .status-andamento { background-color: #28a745; color: white; } 
+        .status-encerrado { background-color: #6c757d; color: white; } 
+        .status-em-breve { background-color: #ffaa00; color: #333; } 
+        
+        /* Paginação */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            gap: 5px;
+            padding: 10px;
+        }
+
+        .pagination a, .pagination span {
+            padding: 8px 12px;
+            border-radius: 4px;
+            background-color: var(--purple-medium); 
+            color: var(--text-color);
+            border: 1px solid #4a456e;
+        }
+        
+        .pagination a:hover:not(.ativo, .disabled) {
+            background-color: #4a456e; 
+        }
+        
+        .pagination a.ativo { 
+            background-color: var(--highlight-color); 
+            color: #111; 
+            font-weight: bold;
+            border-color: var(--highlight-color);
+        }
+        
+        .pagination a.disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .preco-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+        
+        /* Tags no Placeholder de Imagem */
+        .leilao-imagem-placeholder {
+            position: relative;
+        }
+        .tag-desconto, .tag-local {
+            position: absolute;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        .tag-desconto {
+            top: 10px;
+            left: 10px;
+            background-color: var(--highlight-color); 
+            color: #111;
+        }
+        .tag-local {
+            top: 10px;
+            right: 10px;
+            background-color: #ffffff; 
+            color: var(--purple-medium); 
+        }
+
+        .leilao-vendedor {
+            font-size: 0.85rem;
+            color: var(--highlight-color); 
+            margin-bottom: 15px;
+        }
+        .leilao-vendedor span {
+            font-weight: bold;
+        }
+
+        .leilao-valor strong {
+            color: var(--highlight-color); 
+        }
+        .leilao-tempo strong {
+            color: #ff8f8f; 
+        }
+        
+        /* --- Responsividade --- */
+        @media (max-width: 900px) {
+            .leiloes-layout-container {
+                flex-direction: column;
+            }
+            .filtros-sidebar {
+                flex-basis: auto;
+                width: 100%;
+            }
+            .leilao-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+        
+        @media (max-width: 550px) {
+            .leilao-search-bar {
+                flex-direction: column;
+            }
+            .leilao-info {
+                grid-template-columns: 1fr 1fr;
+            }
+            .leilao-tempo {
+                grid-column: 1 / -1; 
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Função para atualizar o valor do slider de preço na UI
+        function setupSlider() {
+            const slider = document.getElementById('price-slider');
+            const priceLabelMax = document.getElementById('current-max-price');
+            
+            if (slider && priceLabelMax) {
+                const maxVal = parseFloat(slider.max);
+
+                const updateSliderValue = () => {
+                    const value = parseFloat(slider.value);
+                    const formattedValue = value.toFixed(2).replace('.', ',');
+                    
+                    if (value === maxVal) {
+                        priceLabelMax.textContent = `R$ ${formattedValue}+`;
+                    } else {
+                        priceLabelMax.textContent = `R$ ${formattedValue}`;
+                    }
+                };
+
+                updateSliderValue();
+                slider.addEventListener('input', updateSliderValue);
+            }
+        }
+        
+        window.onload = function() {
+            setupSlider();
+            console.log('Página de Leilões - Brilho Sutil carregada.');
+        };
+    </script>
+
+    <!-- HTML Content --><header>
+        <div class="header-esquerda">
+            <div class="logo-img-placeholder"></div>
+            <p> Maradindiduns </p>
+        </div>
+        <div class="header-direita">
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a class="ativo" href="#">Leilões</a></li>
+                <li><a href="#">Entrar</a></li>
+                <li><a href="#">Cadastrar-se</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="main-leiloes-page">
+        <div class="leiloes-layout-container">
+
+            <!-- SIDEBAR DE FILTROS (Altura total) --><aside class="filtros-sidebar">
+                <h4>Filtros Ativos</h4>
+
+                <!-- GRUPO DE FILTRO: CATEGORIAS --><div class="filtro-grupo">
+                    <h5 class="filtro-titulo">Categorias</h5>
+                    <div class="filtro-grupo-conteudo">
+                        <label> Consoles <input type="checkbox" checked></label>
+                        <label> Jogos <input type="checkbox"></label>
+                        <label> Acessórios <input type="checkbox"></label>
+                        <label> Memorabilia <input type="checkbox"></label>
+                    </div>
+                </div>
+
+                <!-- GRUPO DE FILTRO: FAIXA DE PREÇO --><div class="filtro-grupo">
+                    <h5 class="filtro-titulo">Faixa de Preço</h5>
+                    <div class="filtro-grupo-conteudo">
+                        <input type="range" min="0" max="5000" step="50" value="2500" class="slider" id="price-slider">
+                        <div class="preco-label">
+                            <span>R$ 0,00</span>
+                            <span id="current-max-price">R$ 5000,00+</span> 
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filtro-grupo">
+                    <h5 class="filtro-titulo">Localização</h5>
+                    <div class="filtro-grupo-conteudo">
+                        <label> São Paulo <input type="checkbox"></label>
+                        <label> Rio de Janeiro <input type="checkbox"></label>
+                        <label> Minas Gerais <input type="checkbox"></label>
+                        <label> Outros Estados <input type="checkbox"></label>
+                    </div>
+                </div>
+
+                <button class="aplicar-filtros-btn">Aplicar Filtros</button>
+            </aside>
+
+            <!-- CONTEÚDO PRINCIPAL DE LEILÕES --><section class="leiloes-content">
+
+                <div class="leilao-search-bar">
+                    <input type="text" placeholder="O que você está procurando?">
+                    <select name="ordenar">
+                        <option value="recente">Mais Recentes</option>
+                        <option value="terminando">Terminando em Breve</option>
+                        <option value="maior-lance">Maior Lance</option>
+                        <option value="menor-lance">Menor Lance</option>
+                    </select>
+                </div>
+
+                <div class="leilao-grid">
+
+                    <!-- CARD 1: EM ANDAMENTO --><div class="leilao-card">
+                        <div class="leilao-imagem-placeholder">
+                            <span class="tag-desconto">Raro</span>
+                            <span class="tag-local">SP</span>
+                            <p class="text-xs">Console Retrô</p>
+                        </div>
+                        <div class="leilao-conteudo">
+                            <div class="leilao-visitas">
+                                <!-- Ícone de Olho --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" /><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" /></svg>
+                                82 visitas
+                            </div>
+
+                            <h3 class="leilao-titulo">Super Nintendo (SNES) com 20 Jogos</h3>
+                            <span class="leilao-status status-andamento">EM ANDAMENTO</span>
+
+                            <div class="leilao-info">
+                                <div class="leilao-valor">
+                                    <span>Valor Atual</span>
+                                    <strong>R$ 450,00</strong>
+                                </div>
+                                <div class="leilao-lances">
+                                    <span>Lances</span>
+                                    <strong>15</strong>
+                                </div>
+                                <div class="leilao-tempo">
+                                    <span>Termina em</span>
+                                    <strong>00:15:32</strong>
+                                </div>
+                            </div>
+
+                            <div class="leilao-vendedor">
+                                Vendedor: <span>RafaMorales</span>
+                            </div>
+
+                            <button class="lance-btn">Dar Lance</button>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2: ENCERRADO --><div class="leilao-card">
+                        <div class="leilao-imagem-placeholder">
+                            <span class="tag-local">MG</span>
+                            <p class="text-xs">Item de Colecionador</p>
+                        </div>
+                        <div class="leilao-conteudo">
+                            <div class="leilao-visitas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" /><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" /></svg>
+                                244 visitas
+                            </div>
+                            <h3 class="leilao-titulo">Telescópio antigo (item de colecionador)</h3>
+                            <span class="leilao-status status-encerrado">ENCERRADO</span>
+                            <div class="leilao-info">
+                                <div class="leilao-valor">
+                                    <span>Vendido por</span>
+                                    <strong>R$ 1.800,00</strong>
+                                </div>
+                                <div class="leilao-lances">
+                                    <span>Lances</span>
+                                    <strong>42</strong>
+                                </div>
+                                <div class="leilao-tempo">
+                                    <span>Vencedor</span>
+                                    <strong>JúliaCalixto</strong>
+                                </div>
+                            </div>
+                            <div class="leilao-vendedor">
+                                Vendedor: <span>LuisHenrique</span>
+                            </div>
+                            <button class="lance-btn" disabled>Ver Detalhes</button>
+                        </div>
+                    </div>
+
+                    <!-- CARD 3: EM BREVE --><div class="leilao-card">
+                        <div class="leilao-imagem-placeholder">
+                            <span class="tag-local">RJ</span>
+                            <p class="text-xs">Console Raro</p>
+                        </div>
+                        <div class="leilao-conteudo">
+                            <div class="leilao-visitas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" /><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" /></svg>
+                                12 visitas
+                            </div>
+                            <h3 class="leilao-titulo">Sega Dreamcast Edição Especial</h3>
+                            <span class="leilao-status status-em-breve">EM BREVE</span>
+                            <div class="leilao-info">
+                                <div class="leilao-valor">
+                                    <span>Lance Inicial</span>
+                                    <strong>R$ 700,00</strong>
+                                </div>
+                                <div class="leilao-lances">
+                                    <span>Lances</span>
+                                    <strong>0</strong>
+                                </div>
+                                <div class="leilao-tempo">
+                                    <span>Inicia em</span>
+                                    <strong>2d 10h 05m</strong>
+                                </div>
+                            </div>
+                            <div class="leilao-vendedor">
+                                Vendedor: <span>GamerBR</span>
+                            </div>
+                            <button class="lance-btn" disabled>Aguarde</button>
+                        </div>
+                    </div>
+                    
+                    <!-- CARD 4: EM ANDAMENTO --><div class="leilao-card">
+                        <div class="leilao-imagem-placeholder">
+                            <span class="tag-desconto">Novo</span>
+                            <span class="tag-local">PR</span>
+                            <p class="text-xs">Jogo Raro</p>
+                        </div>
+                        <div class="leilao-conteudo">
+                            <div class="leilao-visitas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" /><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" /></svg>
+                                147 visitas
+                            </div>
+
+                            <h3 class="leilao-titulo">The Legend of Zelda Ocarina of Time (N64)</h3>
+                            <span class="leilao-status status-andamento">EM ANDAMENTO</span>
+
+                            <div class="leilao-info">
+                                <div class="leilao-valor">
+                                    <span>Valor Atual</span>
+                                    <strong>R$ 850,00</strong>
+                                </div>
+                                <div class="leilao-lances">
+                                    <span>Lances</span>
+                                    <strong>23</strong>
+                                </div>
+                                <div class="leilao-tempo">
+                                    <span>Termina em</span>
+                                    <strong>01:45:00</strong>
+                                </div>
+                            </div>
+
+                            <div class="leilao-vendedor">
+                                Vendedor: <span>OldSchoolGames</span>
+                            </div>
+
+                            <button class="lance-btn">Dar Lance</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Mais Cards para preencher o Grid --><div class="leilao-card">
+                        <div class="leilao-imagem-placeholder">
+                            <span class="tag-local">SP</span>
+                            <p class="text-xs">Memorabilia</p>
+                        </div>
+                        <div class="leilao-conteudo">
+                            <div class="leilao-visitas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" /><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" /></svg>
+                                65 visitas
+                            </div>
+                            <h3 class="leilao-titulo">Boneco Mário 12 polegadas (1990)</h3>
+                            <span class="leilao-status status-andamento">EM ANDAMENTO</span>
+                            <div class="leilao-info">
+                                <div class="leilao-valor">
+                                    <span>Valor Atual</span>
+                                    <strong>R$ 320,00</strong>
+                                </div>
+                                <div class="leilao-lances">
+                                    <span>Lances</span>
+                                    <strong>7</strong>
+                                </div>
+                                <div class="leilao-tempo">
+                                    <span>Termina em</span>
+                                    <strong>05:22:10</strong>
+                                </div>
+                            </div>
+                            <div class="leilao-vendedor">
+                                Vendedor: <span>ColecionadorZ</span>
+                            </div>
+                            <button class="lance-btn">Dar Lance</button>
+                        </div>
+                    </div>
+
+                    <div class="leilao-card">
+                        <div class="leilao-imagem-placeholder">
+                            <span class="tag-desconto">Oferta</span>
+                            <span class="tag-local">SC</span>
+                            <p class="text-xs">Jogo Clássico</p>
+                        </div>
+                        <div class="leilao-conteudo">
+                            <div class="leilao-visitas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" /><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" /></svg>
+                                98 visitas
+                            </div>
+                            <h3 class="leilao-titulo">The Last of Us Part I (PS3) - Novo</h3>
+                            <span class="leilao-status status-encerrado">ENCERRADO</span>
+                            <div class="leilao-info">
+                                <div class="leilao-valor">
+                                    <span>Vendido por</span>
+                                    <strong>R$ 150,00</strong>
+                                </div>
+                                <div class="leilao-lances">
+                                    <span>Lances</span>
+                                    <strong>28</strong>
+                                </div>
+                                <div class="leilao-tempo">
+                                    <span>Vencedor</span>
+                                    <strong>PedroG</strong>
+                                </div>
+                            </div>
+                            <div class="leilao-vendedor">
+                                Vendedor: <span>LojaSC</span>
+                            </div>
+                            <button class="lance-btn" disabled>Ver Detalhes</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Adicionando mais um card para testar o novo layout de 1600px --><div class="leilao-card">
+                        <div class="leilao-imagem-placeholder">
+                            <span class="tag-desconto">Raro</span>
+                            <span class="tag-local">BA</span>
+                            <p class="text-xs">Controle</p>
+                        </div>
+                        <div class="leilao-conteudo">
+                            <div class="leilao-visitas">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" /><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" /></svg>
+                                19 visitas
+                            </div>
+                            <h3 class="leilao-titulo">Controle Original do Atari 2600</h3>
+                            <span class="leilao-status status-em-breve">EM BREVE</span>
+                            <div class="leilao-info">
+                                <div class="leilao-valor">
+                                    <span>Lance Inicial</span>
+                                    <strong>R$ 90,00</strong>
+                                </div>
+                                <div class="leilao-lances">
+                                    <span>Lances</span>
+                                    <strong>0</strong>
+                                </div>
+                                <div class="leilao-tempo">
+                                    <span>Inicia em</span>
+                                    <strong>4h 30m</strong>
+                                </div>
+                            </div>
+                            <div class="leilao-vendedor">
+                                Vendedor: <span>NostalgiaBA</span>
+                            </div>
+                            <button class="lance-btn" disabled>Aguarde</button>
+                        </div>
+                    </div>
+
+                </div> 
+
+            </section>
+        </div>
+        
+        <!-- Paginação --><nav class="pagination">
+            <a href="#" class="disabled">&lt;&lt;</a>
+            <a href="#" class="disabled">&lt;</a>
+            <a href="#" class="ativo">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <span class="ellipsis">...</span>
+            <a href="#">26</a>
+            <a href="#">&gt;</a>
+            <a href="#">&gt;&gt;</a>
+        </nav>
+    </main>
+
+    <footer>
+        <div class="footer-cellphone">
+            <p> Telefone: (11) 97321-0013 </p>
+        </div>
+        <div class="footer-copyright">
+            <p> @Copyright 2025 </p>
+        </div>
+        <div class="footer-empty-space"></div>
+    </footer>
+</body>
+</html>
