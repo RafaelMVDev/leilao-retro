@@ -1,6 +1,8 @@
 from flask import render_template, request, redirect, url_for, session, Blueprint,jsonify
 from src.models.UserModel import UserModel
 from src.services.UserService import *
+from src.services.EmailService import generate_token, send_email,confirm_token
+
 
 bp = Blueprint('auth_pages', __name__)
 
@@ -30,7 +32,7 @@ def submit_login():
     
     sucess = authenticate_user(db_session= DB_SESSION(),email = email,password=password)
     print(f"USER AUTHENTICATED? {sucess}")
-    return jsonify(sucess)
+    return redirect(url_for("profile_pages.get_profile_page"))
 
 
 # Rotas da Pagina de Registro    

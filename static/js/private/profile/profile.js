@@ -1,19 +1,7 @@
 // --- MOCKED DATA (Database/API Simulation) - Removed after database integration ---
 
-const MOCK_USER_DATA = {
-    name: "Rafael Morales Villela",
-    nickname: "RafaMorales",
-    phoneNumber: "(11) 97321-0013",
-    zipCode: "04001-001",
-    Country: "Brasil",
-    Street: "Rua da Consolação, 1234",
-    Number: "1234",
-    complement: "ap 204",
-    District: "Centro",
-    City: "São Paulo",
-    State: "SP",
-    balance: "R$ 850,50",
-    coins: "2.500",
+CURRENT_DATA = {
+   
 };
 
 // --- DOM VARIABLES ---
@@ -76,27 +64,29 @@ function hideCustomAlert() {
 
 // --- PROFILE LOGIC FUNCTIONS ---
 
-// Loads the mocked data into the fields and the sidebar card.
+// Loads THE DATA FROM THE INPUT FIELDS ( FLASK'S JINJA LOADS THE DATA ON HTML)
 function loadUserData() {
+    CURRENT_DATA.name = inputName.value
+    CURRENT_DATA.nickname = inputNickname.value
+    CURRENT_DATA.phoneNumber = inputPhone.value
     // Loads user data (mocked) into inputs and cards
-    inputName.value = MOCK_USER_DATA.name;
-    inputNickname.value = MOCK_USER_DATA.nickname;
-    inputPhone.value = MOCK_USER_DATA.phoneNumber;
+    //inputName.value = MOCK_USER_DATA.name;
+    //inputNickname.value = MOCK_USER_DATA.nickname;
+    //inputPhone.value = MOCK_USER_DATA.phoneNumber;
 
     // Address Data
-    cepInput.value = MOCK_USER_DATA.zipCode;
-    // Note: Country is readonly, but its value is updated here.
-    document.getElementById('input_country').value = MOCK_USER_DATA.Country; 
-    StreetInput.value = MOCK_USER_DATA.Street;
-    numberAdressInput.value = MOCK_USER_DATA.Number; // Using MOCK_USER_DATA.Number
-    DistrictInput.value = MOCK_USER_DATA.District;  // Using MOCK_USER_DATA.District
-    CityInput.value = MOCK_USER_DATA.City;
-    StateInput.value = MOCK_USER_DATA.State;
+    CURRENT_DATA.zipCode   = cepInput.value;
+    CURRENT_DATA.Country   = document.getElementById('input_country').value;
+    CURRENT_DATA.Street    = StreetInput.value;
+    CURRENT_DATA.Number    = numberAdressInput.value;
+    CURRENT_DATA.District  = DistrictInput.value;
+    CURRENT_DATA.City      = CityInput.value;
+    CURRENT_DATA.State     = StateInput.value;
 
     // Updates Sidebar Card
-    document.getElementById('user_nickname').textContent = MOCK_USER_DATA.nickname;
-    document.getElementById('user_balance').textContent = MOCK_USER_DATA.balance;
-    document.getElementById('user_coins').innerHTML = `${MOCK_USER_DATA.coins} <i class="fas fa-coins" style="color: gold;"></i>`;
+    document.getElementById('user_nickname').textContent = CURRENT_DATA.nickname;
+    document.getElementById('user_balance').textContent = CURRENT_DATA.balance;
+    document.getElementById('user_coins').innerHTML = `${CURRENT_DATA.coins} <i class="fas fa-coins" style="color: gold;"></i>`;
 }
 
 /**
@@ -123,14 +113,14 @@ function toggleEditMode(editing) {
     if (editing) {
         // Entering Edit Mode
         // Saves current MOCK data for restoration in case of cancellation
-        originalFormData = { ...MOCK_USER_DATA }; 
+        originalFormData = { ...CURRENT_DATA }; 
         
         // When edit mode is active, the main button becomes View
         editSaveBtn.innerHTML = '<i class="fas fa-eye"></i> Visualizar Dados';
         disableAddressFields(false); // Enables address fields
     } else {
         // Exiting Edit Mode (after Cancel or Save)
-        loadUserData(); // Ensures that values (updated or original) are shown in the inputs
+        //loadUserData(); // Ensures that values (updated or original) are shown in the inputs
         
         // Resets the button text to "Edit Data"
         editSaveBtn.innerHTML = '<i class="fas fa-edit"></i> Editar Dados';
@@ -315,17 +305,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Updates MOCK_USER_DATA with the correct keys (based on MOCK)
         // If updatedData[key] is undefined, it will fall back to `|| MOCK_USER_DATA.key`.
-        MOCK_USER_DATA.name = updatedData.nome || MOCK_USER_DATA.name;
-        MOCK_USER_DATA.nickname = updatedData.nickname || MOCK_USER_DATA.nickname;
-        MOCK_USER_DATA.phoneNumber = updatedData.telefone || MOCK_USER_DATA.phoneNumber;
-        MOCK_USER_DATA.zipCode = updatedData.cep || MOCK_USER_DATA.zipCode;      
-        MOCK_USER_DATA.Country = updatedData.pais || MOCK_USER_DATA.Country;      
-        MOCK_USER_DATA.Street = updatedData.rua || MOCK_USER_DATA.Street;          
-        MOCK_USER_DATA.Number = updatedData.numero || MOCK_USER_DATA.Number;       
-        MOCK_USER_DATA.District = updatedData.bairro || MOCK_USER_DATA.District;     
-        MOCK_USER_DATA.City = updatedData.cidade || MOCK_USER_DATA.City;          
-        MOCK_USER_DATA.State = updatedData.estado || MOCK_USER_DATA.State;
-        MOCK_USER_DATA.complement = updatedData.complemento || MOCK_USER_DATA.complement;        
+        CURRENT_DATA.name = updatedData.nome || CURRENT_DATA.name;
+        CURRENT_DATA.nickname = updatedData.nickname || CURRENT_DATA.nickname;
+        CURRENT_DATA.phoneNumber = updatedData.telefone || CURRENT_DATA.phoneNumber;
+        CURRENT_DATA.zipCode = updatedData.cep || CURRENT_DATA.zipCode;      
+        CURRENT_DATA.Country = updatedData.pais || CURRENT_DATA.Country;      
+        CURRENT_DATA.Street = updatedData.rua || CURRENT_DATA.Street;          
+        CURRENT_DATA.Number = updatedData.numero || CURRENT_DATA.Number;       
+        CURRENT_DATA.District = updatedData.bairro || CURRENT_DATA.District;     
+        CURRENT_DATA.City = updatedData.cidade || CURRENT_DATA.City;          
+        CURRENT_DATA.State = updatedData.estado || CURRENT_DATA.State;
+        CURRENT_DATA.complement = updatedData.complemento || CURRENT_DATA.complement;        
         // After the successful POST simulation
         showCustomAlert("Perfil e dados atualizados com sucesso!", () => {
             // Returns to view mode. (loadUserData is called INSIDE toggleEditMode)

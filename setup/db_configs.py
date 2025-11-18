@@ -22,4 +22,4 @@ HOST = "" #comment here
 PORT = ""
 DATABASE = "marauction"
 
-DATABASE_URI = "mysql+pymysql://root:teste123@127.0.0.1:3306/marauction"
+DATABASE_URI = "mysql+pymysql://root:simba123@127.0.0.1:3306/marauction"
