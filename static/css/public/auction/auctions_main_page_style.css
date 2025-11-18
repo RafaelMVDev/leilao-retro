@@ -1,0 +1,424 @@
+/* --- Variáveis de Tema (Cores da Marca Original: Roxo e Amarelo) --- */
+:root {
+    --purple-dark: #1e1b30;
+    /* Fundo escuro principal (Roxo escuro) */
+    --purple-medium: #2c2941;
+    /* Cor dos cards e sidebar (Roxo médio) */
+    --highlight-color: #ffc93c;
+    /* Destaque amarelo */
+    --text-color: #f0f0f0;
+    --input-background: #ffffff;
+    --simple-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    /* Sombra suave */
+    /* Ajuste para uma cor de brilho mais sutil e com opacidade */
+    --neon-glow-color-subtle: rgba(255, 201, 60, 0.3);
+    /* Amarelo com opacidade reduzida */
+    --neon-glow-color-hover: rgba(255, 201, 60, 0.5);
+    /* Amarelo com opacidade média no hover */
+}
+
+/* --- Estilos Base --- */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--purple-dark);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--highlight-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #ffe08a;
+    /* Amarelo um pouco mais claro no hover */
+}
+
+button,
+.aplicar-filtros-btn,
+.lance-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: var(--highlight-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+button:hover:not(:disabled) {
+    transform: none;
+    background-color: #ffe08a;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+input[type="text"],
+input[type="range"],
+select {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #4a456e;
+    background: var(--input-background);
+    color: #111;
+    font-size: 14px;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #211e3b;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header-esquerda,
+.header-direita ul {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-esquerda p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--highlight-color);
+}
+
+.header-direita a {
+    padding: 8px 15px;
+    border-radius: 6px;
+    color: var(--text-color);
+}
+
+.header-direita a:hover,
+.header-direita a.ativo {
+    background-color: var(--purple-medium);
+    color: var(--highlight-color);
+}
+
+.logo-img-placeholder {
+    width: 40px;
+    height: 40px;
+    background-color: var(--highlight-color);
+    border-radius: 50%;
+}
+
+/* FOOTER */
+footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #211e3b;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    border-top: 1px solid #ffffff1a;
+}
+
+/* --- ESTILOS DE LEILÕES --- */
+
+.main-leiloes-page {
+    flex-grow: 1;
+}
+
+.leiloes-layout-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Sidebar de Filtros */
+.filtros-sidebar {
+    flex: 0 0 280px;
+    background: var(--purple-medium);
+    padding: 25px;
+    border-radius: 6px;
+    box-shadow: var(--simple-shadow);
+    height: fit-content;
+}
+
+.filtros-sidebar h4 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--highlight-color);
+}
+
+.filtro-titulo {
+    font-size: 1.15rem;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.filtro-grupo-conteudo label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.aplicar-filtros-btn {
+    width: 100%;
+    margin-top: 30px;
+    background: linear-gradient(90deg, #8b3dff, #c55eff);
+    color: white;
+}
+
+.aplicar-filtros-btn:hover {
+    background: linear-gradient(90deg, #9c52ff, #d277ff);
+}
+
+.leiloes-content {
+    flex-grow: 1;
+}
+
+.leilao-search-bar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.leilao-search-bar input[type="text"] {
+    flex: 1;
+    margin: 0;
+}
+
+.leilao-search-bar select {
+    min-width: 180px;
+}
+
+.leilao-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+/* CARD DE LEILÃO: Ajustado o brilho neon para ser mais sutil */
+.leilao-card {
+    background: var(--purple-medium);
+    border-radius: 6px;
+    box-shadow:
+        0 0 8px var(--neon-glow-color-subtle),
+        /* Brilho mais suave */
+        0 0 15px var(--neon-glow-color-subtle),
+        /* Brilho externo sutil */
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    /* Sombra padrão */
+    border: 1px solid #4a456e;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.leilao-card:hover {
+    transform: translateY(-5px);
+    /* Aumenta o brilho e a sombra no hover, mas ainda de forma controlada */
+    box-shadow:
+        0 0 10px var(--neon-glow-color-hover),
+        0 0 20px var(--neon-glow-color-hover),
+        0 8px 15px rgba(0, 0, 0, 0.5);
+}
+
+.leilao-imagem-placeholder {
+    height: 180px;
+    background: #111111ef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ccc;
+    position: relative;
+    font-size: 1.5rem;
+}
+
+.leilao-status {
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    align-self: flex-start;
+}
+
+.leilao-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+    border-top: 1px solid #ffffff22;
+    padding-top: 15px;
+}
+
+.leilao-conteudo {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.lance-btn {
+    background: linear-gradient(90deg, #8b3dff, #c55eff);
+    color: white;
+    margin-top: auto;
+}
+
+.lance-btn:hover {
+    background: linear-gradient(90deg, #9c52ff, #d277ff);
+}
+
+/* Status colors */
+.status-andamento {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-encerrado {
+    background-color: #6c757d;
+    color: white;
+}
+
+.status-em-breve {
+    background-color: #ffaa00;
+    color: #333;
+}
+
+/* Paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+    gap: 5px;
+    padding: 10px;
+}
+
+.pagination a,
+.pagination span {
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: var(--purple-medium);
+    color: var(--text-color);
+    border: 1px solid #4a456e;
+}
+
+.pagination a:hover:not(.ativo, .disabled) {
+    background-color: #4a456e;
+}
+
+.pagination a.ativo {
+    background-color: var(--highlight-color);
+    color: #111;
+    font-weight: bold;
+    border-color: var(--highlight-color);
+}
+
+.pagination a.disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.preco-label {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+/* Tags no Placeholder de Imagem */
+.leilao-imagem-placeholder {
+    position: relative;
+}
+
+.tag-desconto,
+.tag-local {
+    position: absolute;
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.tag-desconto {
+    top: 10px;
+    left: 10px;
+    background-color: var(--highlight-color);
+    color: #111;
+}
+
+.tag-local {
+    top: 10px;
+    right: 10px;
+    background-color: #ffffff;
+    color: var(--purple-medium);
+}
+
+.leilao-vendedor {
+    font-size: 0.85rem;
+    color: var(--highlight-color);
+    margin-bottom: 15px;
+}
+
+.leilao-vendedor span {
+    font-weight: bold;
+}
+
+.leilao-valor strong {
+    color: var(--highlight-color);
+}
+
+.leilao-tempo strong {
+    color: #ff8f8f;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 900px) {
+    .leiloes-layout-container {
+        flex-direction: column;
+    }
+
+    .filtros-sidebar {
+        flex-basis: auto;
+        width: 100%;
+    }
+
+    .leilao-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+@media (max-width: 550px) {
+    .leilao-search-bar {
+        flex-direction: column;
+    }
+
+    .leilao-info {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .leilao-tempo {
+        grid-column: 1 / -1;
+        text-align: center;
+    }
+}

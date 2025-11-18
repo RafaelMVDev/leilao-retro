@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Leilão - SNES com 20 Jogos</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/auction/auction_info_style.css')}}">
+</head>
+
+<body>
+    
+    <!-- HTML Content -->
+    <header>
+        <div class="header-left">
+            <div class="logo-placeholder"></div>
+            <p> Maradindiduns </p>
+        </div>
+        <div class="header-right">
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a class="active" href="#">Leilões</a></li>
+                <li><a href="#">Entrar</a></li>
+                <li><a href="#">Cadastrar-se</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="auction-details-main">
+        <div class="details-container">
+
+            <!-- LEFT SECTION: IMAGE AND GALLERY -->
+            <section class="image-section">
+                <div class="main-image-placeholder">
+                    [Imagem do Console Super Nintendo com Jogos]
+                </div>
+
+                <div class="thumbnail-gallery">
+                    <div class="thumbnail-item active"></div>
+                    <div class="thumbnail-item"></div>
+                    <div class="thumbnail-item"></div>
+                    <div class="thumbnail-item"></div>
+                    <div class="thumbnail-item"></div>
+                    <div class="thumbnail-item"></div>
+                </div>
+            </section>
+
+            <!-- RIGHT SECTION: INFO AND BIDDING -->
+            <section class="info-section">
+                <div class="info-card">
+
+                    <h1 class="auction-title">Super Nintendo (SNES) - Edição Limitada</h1>
+
+                    <p class="auction-seller">
+                        Vendido por: <strong>RafaMorales</strong> (98% Positivo)
+                    </p>
+
+                    <!-- Main Metrics -->
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <span>Lance Atual</span>
+                            <strong>R$ 450,00</strong>
+                        </div>
+                        <div class="metric-item">
+                            <span>Lances Totais</span>
+                            <strong>15</strong>
+                        </div>
+                        <div class="metric-item time-metric">
+                            <span>Tempo Restante</span>
+                            <strong>00:15:32</strong>
+                        </div>
+                    </div>
+
+                    <!-- Bidding Area -->
+                    <div class="bid-section">
+                        <h3>Dê seu Lance Agora</h3>
+
+                        <div class="bid-input-group">
+                            <input type="number" placeholder="Mínimo: R$ 460,00" value="460.00" step="10.00"
+                                min="460.00">
+                            <button class="bid-button">Dar Lance!</button>
+                        </div>
+                        <p>Seu lance deve ser no mínimo R$ 460,00. Adicione um valor acima disso para ter chances de
+                            ganhar.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECONDARY SECTION: DETAILS AND HISTORY (Full width) -->
+            <section class="secondary-section">
+                <div class="info-card">
+                    <div class="tabs">
+                        <div class="tab-button active" data-tab="details" onclick="switchTab('details')">Detalhes do
+                            Produto</div>
+                        <div class="tab-button" data-tab="specs" onclick="switchTab('specs')">Especificações</div>
+                        <div class="tab-button" data-tab="history" onclick="switchTab('history')">Histórico de Lances
+                            (15)</div>
+                    </div>
+
+                    <!-- Content: Product Details -->
+                    <div id="tab-details" class="tab-content">
+                        <h4>Descrição Completa</h4>
+                        <p>
+                            Console Super Nintendo Entertainment System (SNES) em condição excelente, totalmente
+                            funcional. Acompanha dois controles originais e um lote de 20 jogos clássicos, incluindo The
+                            Legend of Zelda: A Link to the Past, Super Mario World e Donkey Kong Country. Um item
+                            essencial para colecionadores e entusiastas de jogos retrô.
+                        </p>
+                        <p>
+                            A carcaça está bem conservada, com leves marcas de uso natural. Todos os itens foram
+                            testados recentemente.
+                        </p>
+                    </div>
+
+                    <!-- Content: Specifications (Hidden by default) -->
+                    <div id="tab-specs" class="tab-content" style="display: none;">
+                        <h4>Detalhes Técnicos e Inclusos</h4>
+                        <ul>
+                            <li><strong>Modelo:</strong> Super Nintendo Entertainment System (Versão Americana)</li>
+                            <li><strong>Itens Inclusos:</strong> Console SNES, Fonte de Alimentação, Cabo AV, 2
+                                Controles Originais, 20 Cartuchos de Jogos.</li>
+                            <li><strong>Condição:</strong> Usado, totalmente funcional. Limpeza interna e externa
+                                realizada.</li>
+                            <li><strong>Localização:</strong> São Paulo, SP, Brasil.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Content: Bid History (Hidden by default) -->
+                    <div id="tab-history" class="tab-content" style="display: none;">
+                        <h4>Últimos Lances Registrados</h4>
+
+                        <div class="bid-history-item">
+                            <span class="bid-user">Usuário: **AnaC**</span>
+                            <span class="bid-value-history">Valor: <strong>R$ 450,00</strong></span>
+                            <span class="bid-time-history">Há 1 minuto</span>
+                        </div>
+                        <div class="bid-history-item">
+                            <span class="bid-user">Usuário: **PedroG**</span>
+                            <span class="bid-value-history">Valor: <strong>R$ 440,00</strong></span>
+                            <span class="bid-time-history">Há 3 minutos</span>
+                        </div>
+                        <div class="bid-history-item">
+                            <span class="bid-user">Usuário: **RafaMorales**</span>
+                            <span class="bid-value-history">Valor: <strong>R$ 430,00</strong></span>
+                            <span class="bid-time-history">Há 5 minutos</span>
+                        </div>
+                        <div class="bid-history-item">
+                            <span class="bid-user">Usuário: **GamerBR**</span>
+                            <span class="bid-value-history">Valor: <strong>R$ 420,00</strong></span>
+                            <span class="bid-time-history">Há 10 minutos</span>
+                        </div>
+                        <!-- More items... -->
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-cellphone">
+            <p> Telefone: (11) 97321-0013 </p>
+        </div>
+        <div class="footer-copyright">
+            <p> @Copyright 2025 </p>
+        </div>
+        <div class="footer-empty-space"></div>
+    </footer>
+</body>
+
+</html>
