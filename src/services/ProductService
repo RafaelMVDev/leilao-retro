@@ -1,0 +1,29 @@
+from src.models import db, ProductModel, CategoryModel, CategoryProductModel
+from setup.loaders.database import DB_SESSION
+
+def create_product(data: dict, categories: list[int] = None):
+    with DB_SESSION() as Session:
+        """
+        data = { name, description, price }
+        categories = [1,2,3]
+        """
+        product = ProductModel(
+            name=data["name"],
+            description=data.get("description"),
+            price=data.get("price", 0)
+        )
+        Session.add(product)
+        Session.commit()
+
+        if categories:
+            for cid in categories:
+                link = CategoryProductModel(category_id=cid, product_id=product.id)
+                Session.add(link)
+
+            Session.commit()
+
+        return product
+
+
+def get_product(product_id: int):
+    return ProductModel.query.get(product_id)
