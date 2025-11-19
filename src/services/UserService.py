@@ -49,20 +49,16 @@ def load_user(user_id):
 
 def authenticate_user(db_session,email, password):
     try:
-        print(email)
-        print(password)
         user = db_session.execute(
         select(UserModel).where(UserModel.email == email)
         ).scalar_one_or_none()
-        print(user)
+
         check = check_password_hash(user.userPassword, password)
       
-        
         if user and check:
             if user.isAuthenticated:
                 print(f"Logging user: {user}")
                 login_user(user)
-                print("LOGGED")
                 if session.get("user_data"):
                     session["user_data"]["profile_settings"] = get_user_settings(user.idUser)
                     session["user_data"]["address_data"]  =get_full_address_data(user.idUser)
