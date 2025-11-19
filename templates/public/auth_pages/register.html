@@ -10,12 +10,6 @@
     <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/register/register_style.css')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <style>
-        .hidden {
-            display: none !important;
-        }
-    </style>
-
     <script src="{{url_for('static',filename = 'js/public/register/register.js')}}" defer></script>
 </head>
 
@@ -39,9 +33,9 @@
         <div class="form-card register-card">
             <h2 class="card-header-title">Cadastre seus Dados</h2>
 
-            <form id="register_form" novalidate>
+            <form id="register_form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <!-- Etapa 1 -->
+                <!-- step 1 -->
                 <div id="step_user">
                     <div class="line">
                         <input type="text" placeholder="Nome" name="firstName" required minlength="3">
@@ -49,7 +43,7 @@
                     </div>
                     
                     <div class="line">
-                    <input type="email" placeholder="E-mail" name="email" required minlength="6" maxlength="100">
+                    <input type="email" placeholder="E-mail" name="email" minlength="6" maxlength="100" required>
                     <!--<input type="email" placeholder="CPF" name="CPF" required minlength="" maxlength="11">-->
                     </div>
                     <div class="line">
@@ -67,7 +61,7 @@
                     <button type="button" id="next_step">Avançar</button>
                 </div>
 
-                <!-- Etapa 2 -->
+                <!-- step 2 -->
                 <div id="step_address" class="hidden">
                     <fieldset class="address-group">
                         <legend>Endereço</legend>

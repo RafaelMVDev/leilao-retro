@@ -1,32 +1,25 @@
 /* --- Main Card --- */
 .register-card {
-    background: linear-gradient(180deg, #6b1fd6 0%, #3d0078 100%);
+    /* Using colors coherent with the new palette: --medium-purple and a darker purple */
+    background: linear-gradient(180deg, var(--medium-purple) 0%, #1e1b30 100%);
     padding: 30px;
     width: 100%;
     max-width: 650px;
     border-radius: 12px;
-    box-shadow: 0 0 30px #000000e8;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
     color: var(--text-color);
     margin: 50px auto;
 }
 
-/* Center the main content */
-main {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 70vh;
+.hidden {
+    display: none !important;
 }
 
-/* Internal form layout */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+/* The main layout (display: flex, flex-direction: column, gap) is already in base.css */
 
 #step_user,
 #step_address {
+    /* Keeps the internal layout and width */
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -44,38 +37,35 @@ form {
     flex: 1;
 }
 
-/* Main button */
-#next_step {
-    margin-top: 15px;
-    width: 100%;
-}
-
+/* Main button style (specific to the register card) */
 .register-card button {
-    background: linear-gradient(90deg, #8b3dff, #c55eff);
+    /* Keeping the purple gradient, which is exclusive to action buttons */
+    background: linear-gradient(90deg, #fa8806, #f8a201);
     color: white;
     font-weight: bold;
     border: none;
     border-radius: 8px;
-    padding: 10px;
+    padding: 12px 20px;
+    /* Aligning with padding from base.css */
     cursor: pointer;
     transition: transform 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .register-card button:hover {
     transform: scale(1.02);
 }
 
-/* Responsive */
-@media (max-width: 550px) {
-    .line {
-        flex-direction: column;
-        gap: 5px;
-    }
+#next_step {
+    margin-top: 15px;
+    width: 100%;
 }
 
 /* --- Address Group --- */
 fieldset.address-group {
-    border: 1px solid var(--purple-button);
+    /* Using color variable for consistency (Medium Purple) */
+    border: 1px solid var(--medium-purple);
     border-radius: 8px;
     padding: 20px 15px 15px 15px;
     margin-bottom: 10px;
@@ -87,6 +77,7 @@ fieldset.address-group legend {
     margin-left: 5px;
     font-weight: bold;
     color: var(--highlight-color);
+    /* Highlight Yellow */
     font-size: 1.1em;
 }
 
@@ -132,6 +123,7 @@ input.zipCode-error {
 #step_address {
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
 .hidden {
     opacity: 0;
     transform: translateX(-30px);
@@ -141,4 +133,12 @@ input.zipCode-error {
 
 .size {
     width: 100%;
+}
+
+/* Responsive (Specific to this page) */
+@media (max-width: 550px) {
+    .line {
+        flex-direction: column;
+        gap: 5px;
+    }
 }

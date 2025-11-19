@@ -1,34 +1,27 @@
-/* --- Variáveis de Tema (Cores da Marca Original: Roxo e Amarelo) --- */
-:root {
-    --purple-dark: #1e1b30;
-    /* Fundo escuro principal (Roxo escuro) */
-    --purple-medium: #2c2941;
-    /* Cor dos cards e sidebar (Roxo médio) */
-    --highlight-color: #ffc93c;
-    /* Destaque amarelo */
-    --text-color: #f0f0f0;
-    --input-background: #ffffff;
-    --simple-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-    /* Sombra suave */
-    /* Ajuste para uma cor de brilho mais sutil e com opacidade */
-    --neon-glow-color-subtle: rgba(255, 201, 60, 0.3);
-    /* Amarelo com opacidade reduzida */
-    --neon-glow-color-hover: rgba(255, 201, 60, 0.5);
-    /* Amarelo com opacidade média no hover */
-}
-
-/* --- Estilos Base --- */
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--purple-dark);
-    color: var(--text-color);
+/* --- Reset and Height Configuration --- */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    /* Ensures font-family inheritance for all elements */
+}
+
+html,
+body {
+    height: 100%;
+}
+
+/* --- Base Styles --- */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--dark-purple);
+    color: var(--text-color);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
+/* --- Links --- */
 a {
     color: var(--highlight-color);
     text-decoration: none;
@@ -37,9 +30,12 @@ a {
 
 a:hover {
     color: #ffe08a;
-    /* Amarelo um pouco mais claro no hover */
+    /* Slightly lighter yellow on hover */
 }
 
+/* --- Standard Buttons (Yellow) and Inputs --- */
+
+/* Standard site buttons (generally yellow, unless overridden) */
 button,
 .aplicar-filtros-btn,
 .lance-btn {
@@ -48,7 +44,7 @@ button,
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
     color: #111;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -58,28 +54,40 @@ button,
 
 button:hover:not(:disabled) {
     transform: none;
+    /* Resetting transform if standard */
     background-color: #ffe08a;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
 }
 
-input[type="text"],
-input[type="range"],
+/* Style for text and select inputs */
+input:not([type="checkbox"], [type="radio"]),
 select {
     padding: 12px;
     border-radius: 6px;
     border: 1px solid #4a456e;
     background: var(--input-background);
     color: #111;
-    font-size: 14px;
+    font-size: 16px;
+    width: 100%;
+    /* Default: occupies the full width of the container */
+    margin: 0;
+    /* Removing default margin */
 }
 
-/* HEADER */
+/* Specific style for range inputs, if necessary */
+input[type="range"] {
+    /* Range input styling often needs custom overrides */
+}
+
+
+/* --- HEADER --- */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background-color: #211e3b;
+    background-color: var(--dark-purple);
+    /* Using variable */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -104,7 +112,7 @@ header {
 
 .header-direita a:hover,
 .header-direita a.ativo {
-    background-color: var(--purple-medium);
+    background-color: var(--medium-purple);
     color: var(--highlight-color);
 }
 
@@ -115,23 +123,72 @@ header {
     border-radius: 50%;
 }
 
-/* FOOTER */
+
+/* --- FOOTER --- */
 footer {
     margin-top: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background-color: #211e3b;
+    background-color: var(--dark-purple);
+    /* Using variable */
     color: var(--text-color);
     font-size: 0.9rem;
     border-top: 1px solid #ffffff1a;
 }
 
-/* --- ESTILOS DE LEILÕES --- */
+/* --- Main Content (Default for centering, to be overridden if necessary) --- */
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+
+/* --- Global Responsiveness (Header/Footer) --- */
+@media (max-width: 768px) {
+
+    header,
+    footer {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 20px;
+        text-align: center;
+    }
+
+    .header-direita ul {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .header-esquerda {
+        margin-bottom: 10px;
+    }
+
+    footer {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 20px;
+        gap: 10px;
+    }
+}
+
+
+/* --- Gallery and Filters Specific Styles --- */
+
+/* --- Main Auction Page Layout --- */
 
 .main-leiloes-page {
-    flex-grow: 1;
+    /* Overrides the 'align-items: center' rule from base.css to allow content to start at the top */
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 0;
+    /* Internal margin will be given by leiloes-layout-container */
+    width: 100%;
 }
 
 .leiloes-layout-container {
@@ -140,18 +197,22 @@ footer {
     gap: 30px;
     width: 100%;
     max-width: 1600px;
-    margin: 0 auto;
-    padding: 20px;
+    margin: 40px auto;
+    /* Adding top and bottom margin */
+    padding: 0 20px;
 }
 
-/* Sidebar de Filtros */
+/* --- Filters Sidebar --- */
 .filtros-sidebar {
     flex: 0 0 280px;
-    background: var(--purple-medium);
+    background: var(--medium-purple);
     padding: 25px;
     border-radius: 6px;
     box-shadow: var(--simple-shadow);
     height: fit-content;
+    position: sticky;
+    /* Keeps the sidebar visible when scrolling */
+    top: 20px;
 }
 
 .filtros-sidebar h4 {
@@ -179,7 +240,8 @@ footer {
 .aplicar-filtros-btn {
     width: 100%;
     margin-top: 30px;
-    background: linear-gradient(90deg, #8b3dff, #c55eff);
+    /* Uses the purple gradient, specific for highlight/action buttons */
+    background: var(--purple-gradient);
     color: white;
 }
 
@@ -187,6 +249,7 @@ footer {
     background: linear-gradient(90deg, #9c52ff, #d277ff);
 }
 
+/* --- Gallery Content Area --- */
 .leiloes-content {
     flex-grow: 1;
 }
@@ -212,27 +275,25 @@ footer {
     gap: 25px;
 }
 
-/* CARD DE LEILÃO: Ajustado o brilho neon para ser mais sutil */
+/* --- AUCTION CARD --- */
 .leilao-card {
-    background: var(--purple-medium);
+    background: var(--medium-purple);
     border-radius: 6px;
-    box-shadow:
-        0 0 8px var(--neon-glow-color-subtle),
-        /* Brilho mais suave */
-        0 0 15px var(--neon-glow-color-subtle),
-        /* Brilho externo sutil */
-        0 2px 4px rgba(0, 0, 0, 0.3);
-    /* Sombra padrão */
     border: 1px solid #4a456e;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s, box-shadow 0.3s;
+    /* Subtle neon glow, using variables */
+    box-shadow:
+        0 0 8px var(--neon-glow-color-subtle),
+        0 0 15px var(--neon-glow-color-subtle),
+        0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .leilao-card:hover {
     transform: translateY(-5px);
-    /* Aumenta o brilho e a sombra no hover, mas ainda de forma controlada */
+    /* Increases glow and shadow on hover */
     box-shadow:
         0 0 10px var(--neon-glow-color-hover),
         0 0 20px var(--neon-glow-color-hover),
@@ -250,6 +311,28 @@ footer {
     font-size: 1.5rem;
 }
 
+.leilao-conteudo {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.leilao-titulo {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.leilao-vendedor {
+    font-size: 0.85rem;
+    color: var(--highlight-color);
+    margin-bottom: 15px;
+}
+
+.leilao-vendedor span {
+    font-weight: bold;
+}
+
 .leilao-status {
     font-size: 0.8rem;
     font-weight: bold;
@@ -261,6 +344,7 @@ footer {
     align-self: flex-start;
 }
 
+/* Value and Time Information */
 .leilao-info {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -268,73 +352,26 @@ footer {
     margin-bottom: 15px;
     border-top: 1px solid #ffffff22;
     padding-top: 15px;
+    text-align: center;
 }
 
-.leilao-conteudo {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+.leilao-info div strong {
+    display: block;
+    font-size: 1.1em;
 }
 
-.lance-btn {
-    background: linear-gradient(90deg, #8b3dff, #c55eff);
-    color: white;
-    margin-top: auto;
+.leilao-valor strong {
+    color: var(--highlight-color);
 }
 
-.lance-btn:hover {
-    background: linear-gradient(90deg, #9c52ff, #d277ff);
+.leilao-tempo strong {
+    color: #ff8f8f;
+    /* Soft red/pink color for time */
 }
 
-/* Status colors */
-.status-andamento {
-    background-color: #28a745;
-    color: white;
-}
-
-.status-encerrado {
-    background-color: #6c757d;
-    color: white;
-}
-
-.status-em-breve {
-    background-color: #ffaa00;
-    color: #333;
-}
-
-/* Paginação */
-.pagination {
-    display: flex;
-    justify-content: center;
-    margin: 40px 0;
-    gap: 5px;
-    padding: 10px;
-}
-
-.pagination a,
-.pagination span {
-    padding: 8px 12px;
-    border-radius: 4px;
-    background-color: var(--purple-medium);
-    color: var(--text-color);
-    border: 1px solid #4a456e;
-}
-
-.pagination a:hover:not(.ativo, .disabled) {
-    background-color: #4a456e;
-}
-
-.pagination a.ativo {
-    background-color: var(--highlight-color);
-    color: #111;
-    font-weight: bold;
-    border-color: var(--highlight-color);
-}
-
-.pagination a.disabled {
-    opacity: 0.5;
-    cursor: default;
+.leilao-info span {
+    font-size: 0.85rem;
+    color: #e0e0e0;
 }
 
 .preco-label {
@@ -344,11 +381,38 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Tags no Placeholder de Imagem */
-.leilao-imagem-placeholder {
-    position: relative;
+/* --- Bid Button (Purple Gradient) --- */
+.lance-btn {
+    background: var(--purple-gradient);
+    color: white;
+    margin-top: auto;
+    width: 100%;
 }
 
+.lance-btn:hover {
+    background: linear-gradient(90deg, #9c52ff, #d277ff);
+}
+
+/* --- Status Colors --- */
+.status-andamento {
+    background-color: #28a745;
+    /* Green */
+    color: white;
+}
+
+.status-encerrado {
+    background-color: #6c757d;
+    /* Gray */
+    color: white;
+}
+
+.status-em-breve {
+    background-color: #ffaa00;
+    /* Orange/Yellow */
+    color: #333;
+}
+
+/* --- Image Tags (Tags in the Image Placeholder) --- */
 .tag-desconto,
 .tag-local {
     position: absolute;
@@ -371,36 +435,58 @@ footer {
     top: 10px;
     right: 10px;
     background-color: #ffffff;
-    color: var(--purple-medium);
+    color: var(--medium-purple);
 }
 
-.leilao-vendedor {
-    font-size: 0.85rem;
-    color: var(--highlight-color);
-    margin-bottom: 15px;
+/* --- Pagination --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+    gap: 5px;
+    padding: 10px;
 }
 
-.leilao-vendedor span {
+.pagination a,
+.pagination span {
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: var(--medium-purple);
+    color: var(--text-color);
+    border: 1px solid #4a456e;
+    transition: background-color 0.2s;
+}
+
+.pagination a:hover:not(.ativo, .disabled) {
+    background-color: #4a456e;
+}
+
+.pagination a.ativo {
+    background-color: var(--highlight-color);
+    color: #111;
     font-weight: bold;
+    border-color: var(--highlight-color);
 }
 
-.leilao-valor strong {
-    color: var(--highlight-color);
+.pagination a.disabled {
+    opacity: 0.5;
+    cursor: default;
 }
 
-.leilao-tempo strong {
-    color: #ff8f8f;
-}
 
-/* --- Responsividade --- */
+/* --- Gallery Specific Responsiveness --- */
 @media (max-width: 900px) {
     .leiloes-layout-container {
         flex-direction: column;
+        margin: 20px auto;
     }
 
     .filtros-sidebar {
         flex-basis: auto;
         width: 100%;
+        position: static;
+        /* Disables sticky on mobile */
+        top: auto;
     }
 
     .leilao-grid {

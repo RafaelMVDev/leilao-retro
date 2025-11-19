@@ -1,21 +1,18 @@
-/* * Specific styles for Profile and Achievements pages */
-
 /* --- Main Profile Page Layout --- */
 
 main.profile-main {
-    /* Occupies the maximum width of the container, aligned to the top */
+    /* Overrides the 'center' alignment from base.css */
+    align-items: flex-start !important;
+    justify-content: center !important;
+
     width: 100%;
     max-width: 1200px;
     margin: 30px auto;
-    /* Centers horizontally and provides vertical space */
     padding: 0 20px;
-    /* Side spacing */
+
     display: flex;
     gap: 30px;
-    /* Space between the sidebar and the content */
-    /* Ensures the main content expands on mobile, but uses flex on desktop */
     flex-direction: row;
-    align-items: flex-start;
 }
 
 /* --- Side Navigation Column (Left) --- */
@@ -23,8 +20,7 @@ main.profile-main {
 .profile-sidebar {
     width: 300px;
     min-width: 250px;
-    background: var(--purple-medium);
-    /* Purple from base.css */
+    background: var(--medium-purple);
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
@@ -32,7 +28,6 @@ main.profile-main {
     flex-direction: column;
     gap: 15px;
     position: sticky;
-    /* Stays fixed when scrolling (desktop) */
     top: 30px;
 }
 
@@ -57,15 +52,14 @@ main.profile-main {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Dynamic class added by JS */
 .profile-sidebar nav ul li a.active-tab {
-    background-color: var(--purple-button);
-    /* Darker purple from base.css */
+    /* Using base colors. If there is a variable for the button purple, use it. Using dark purple as fallback here. */
+    background-color: #3d0078;
     color: var(--highlight-color);
     font-weight: bold;
 }
 
-/* --- Basic Information Card --- */
+/* --- Basic Information Card (Within Sidebar) --- */
 
 .profile-info-card {
     display: flex;
@@ -103,7 +97,7 @@ main.profile-main {
     margin-bottom: 10px;
 }
 
-/* --- Balance Cards --- */
+/* --- Balance Cards (Within Sidebar) --- */
 
 .balance-cards {
     display: flex;
@@ -115,6 +109,7 @@ main.profile-main {
 .balance-card {
     flex: 1;
     background: #2b2b2b;
+    /* Internal card color, if no specific variable exists */
     padding: 15px;
     border-radius: 10px;
     text-align: center;
@@ -134,12 +129,11 @@ main.profile-main {
     color: var(--text-color);
 }
 
-/* --- Main Content (Right) --- */
+/* --- Main Content (Right Column) --- */
 
 .profile-content {
     flex: 1;
     width: 100%;
-    /* Ensures it occupies the remaining space */
 }
 
 .content-header {
@@ -147,7 +141,8 @@ main.profile-main {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
-    border-bottom: 2px solid var(--purple-button);
+    /* Assuming '--medium-purple' is the dark or medium purple color for the line */
+    border-bottom: 2px solid var(--medium-purple);
     padding-bottom: 10px;
 }
 
@@ -162,23 +157,23 @@ main.profile-main {
 }
 
 .content-tab.active {
-    display: block; /* Uses 'block' for the general container content */
+    display: block;
 }
 
-/* Profile Edit/View Styles */
+/* --- Profile Edit/View Styles --- */
 
 .profile-content form input:read-only {
     /* Highlights fields that cannot be edited (or are in view mode) */
     background-color: #1a1a1a !important;
     color: #ccc !important;
     cursor: default;
-    /* Ensures the text has full opacity */
     opacity: 1 !important;
 }
 
 .profile-content form input:not([readonly]) {
     /* Highlights editable fields */
-    background-color: #cfcfcf;
+    background-color: var(--input-background);
+    /* White from base.css */
     color: #111;
 }
 
@@ -193,9 +188,12 @@ main.profile-main {
 
 .button-group button {
     min-width: 120px;
+    /* Default button styles (yellow) come from base.css. For specific action buttons, override is necessary: */
+    /* Example: If it's a 'Save' button (purple) */
+    /* background: var(--purple-gradient); color: white; */
 }
 
-/* --- Auction Cards --- */
+/* --- Auction Cards (Bids/History) --- */
 
 .auction-list {
     display: flex;
@@ -206,7 +204,6 @@ main.profile-main {
 .auction-item-profile {
     display: flex;
     align-items: center;
-    /* Ensures there is space between element groups (Details, Status, Button) */
     justify-content: space-between;
     background: #2b2b2b;
     padding: 15px;
@@ -219,7 +216,7 @@ main.profile-main {
     background-color: #383838;
 }
 
-/* 1. Icon/Placeholder: Order 1 */
+/* 1. Icon/Placeholder */
 .auction-thumb-placeholder {
     order: 1;
     width: 80px;
@@ -227,7 +224,6 @@ main.profile-main {
     background-color: #111;
     border-radius: 6px;
     margin-right: 15px;
-    /* Maintains right spacing */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -235,11 +231,10 @@ main.profile-main {
     color: var(--highlight-color);
 }
 
-/* 2. Details: Order 2 (Occupies the center) */
+/* 2. Details */
 .auction-details {
     order: 2;
     flex-grow: 1;
-    /* Removes the previous flex: 1 and uses flex-grow: 1 to expand in the center */
 }
 
 .auction-details h4 {
@@ -259,7 +254,7 @@ main.profile-main {
     color: var(--text-color);
 }
 
-/* 3. Status (item-status): Order 3 */
+/* 3. Status */
 .item-status {
     order: 3;
     padding: 5px 10px;
@@ -268,42 +263,36 @@ main.profile-main {
     font-weight: bold;
     text-transform: uppercase;
     margin-left: auto;
-    /* Pushes to the right, next to the button */
     margin-right: 15px;
-    /* Space between Status and Button */
 }
 
-/* 4. Button (Bid Button): Order 4 */
-/* Add a selector for bid buttons, e.g., .auction-item-profile button */
+/* 4. Button */
 .auction-item-profile button {
     order: 4;
     min-width: 120px;
+    /* Button style (default yellow) comes from base.css */
 }
 
-
+/* Status colors */
 .status-activate {
     background-color: #28a745;
-    /* Green */
+    color: white;
 }
 
 .status-passed {
     background-color: #ffc107;
-    /* Yellow */
     color: #111;
 }
 
 .status-lost {
     background-color: #dc3545;
-    /* Red */
 }
-
 
 /* --- Achievement Cards (Achievement Grid) --- */
 
 .achievement-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    /* Default 3 columns */
     gap: 20px;
 }
 
@@ -322,7 +311,6 @@ main.profile-main {
 
 .achievement-card.unlocked {
     border-color: var(--highlight-color);
-    /* Highlight for unlocked achievements */
     background: #333333;
 }
 
@@ -335,12 +323,10 @@ main.profile-main {
     font-size: 3rem;
     margin-bottom: 10px;
     color: #6c757d;
-    /* Gray for locked */
 }
 
 .achievement-card.unlocked .achievement-icon {
     color: var(--highlight-color);
-    /* Yellow for unlocked */
     text-shadow: 0 0 10px rgba(255, 206, 102, 0.7);
 }
 
@@ -371,7 +357,7 @@ main.profile-main {
 }
 
 .custom-modal-content {
-    background-color: var(--purple-medium);
+    background-color: var(--medium-purple);
     color: var(--text-color);
     padding: 30px;
     border-radius: 12px;
@@ -388,8 +374,11 @@ main.profile-main {
 
 .custom-modal-content button {
     margin-top: 20px;
+    /* Using action purple for the modal button */
     background: #8b3dff;
     width: 100%;
+    color: white;
+    /* Overrides default text color if necessary */
 }
 
 
@@ -397,7 +386,6 @@ main.profile-main {
 
 @media (max-width: 900px) {
 
-    /* On smaller screens, the sidebar becomes a top row */
     main.profile-main {
         flex-direction: column;
         gap: 20px;
@@ -406,9 +394,7 @@ main.profile-main {
     .profile-sidebar {
         width: 100%;
         position: static;
-        /* Removes sticky on mobile */
         order: -1;
-        /* Moves to the top */
     }
 
     .profile-sidebar nav ul {
@@ -431,6 +417,37 @@ main.profile-main {
 
     .achievement-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        /* Smaller on mobile */
+    }
+
+    .auction-item-profile {
+        /* Allows elements to wrap on small screens */
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .auction-thumb-placeholder {
+        margin-right: 0;
+        margin-bottom: 10px;
+        order: 1;
+        /* Stays at the top */
+    }
+
+    .auction-details {
+        order: 2;
+        flex-basis: 100%;
+        /* Occupies the entire row */
+        margin-bottom: 10px;
+    }
+
+    .item-status {
+        order: 3;
+        margin: 0 10px 0 0;
+    }
+
+    .auction-item-profile button {
+        order: 4;
+        width: 100%;
+        margin-top: 10px;
     }
 }
