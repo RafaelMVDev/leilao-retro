@@ -14,6 +14,8 @@ from flask_login import LoginManager,logout_user,login_user,current_user
 from sqlalchemy import select
 from src.services.EmailService import generate_token, send_email
 
+from src.models.CityModel import CityModel
+from src.models.StateModel import StateModel
 
 from functools import wraps
 from setup.loaders.database import db  
@@ -61,9 +63,12 @@ def authenticate_user(db_session,email, password):
                 print(f"Logging user: {user}")
                 login_user(user)
                 print("LOGGED")
-                if not session.get("user_data"):
+                if session.get("user_data"):
+                    session["user_data"]["profile_settings"] = get_user_settings(user.idUser)
+                    session["user_data"]["address_data"]  =get_full_address_data(user.idUser)
+                    print(session["user_data"]["address_data"] )
+                else:
                     session["user_data"] = {}
-                    session["user_data"]["profile_settings"] = get_user_data(user.idUser)
                 return True
             else:
                 return "Usuário não autenticado"
@@ -198,7 +203,7 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
             return jsonify({"error": str(e)}), 500 
         
 
-def get_user_data(user_id):
+def get_user_settings(user_id):
     with DB_SESSION() as Session:
         print("V1")
         stm = (
@@ -218,6 +223,41 @@ def get_user_data(user_id):
         result = Session.execute(stm).mappings().one_or_none()
         print(result)
         return dict(result) if result else None
+
+    
+def get_full_address_data(user_id: int):
+        with DB_SESSION() as session:
+
+            query = (
+                select(UserAddressModel)
+                .options(
+                    joinedload("addresses")
+                        .joinedload("city")
+                        .joinedload("state")
+                        .joinedload("country")
+                )
+                .where(UserAddressModel.idUser == user_id)
+            )
+
+            result = session.execute(query).scalars().all()
+
+            if not result:
+                return None
+
+
+            addresses = []
+            for ua in result:
+                addr = ua.addresses
+                addresses.append({
+                    "street": addr.street,
+                    "district": addr.district,
+                    "number": addr.number,
+                    "city": addr.city.name,
+                    "state": addr.city.state.name,
+                    "country": addr.city.state.country.name,
+                })
+
+            return addresses
     
 
 def change_password(email,new_password):
