@@ -10,3 +10,4 @@ class UserAddressModel(db.Model):
     __table__ = Table("useraddress",DB_METADATA,autoload_with=db.engine)
     addresses = db.relationship("AddressModel", back_populates="user_addresses")
     users = db.relationship("UserModel",back_populates = "user_addresses" )
+    wallets = db.relationship("WalletModel", back_populates = "users")

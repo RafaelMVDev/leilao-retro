@@ -12,5 +12,4 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "True"
 
 project_settings = {
     "LOCALE": "pt"
-    
 }

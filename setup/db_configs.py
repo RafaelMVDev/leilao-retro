@@ -23,8 +23,8 @@ USER = os.getenv("USER")
 PASSWORD = os.getenv("PASSWORD")
 HOST = os.getenv("HOST")
 PORT = os.getenv("PORT")
-SCHEMA = os.getenv("SCHEMA")
+DATABASE = os.getenv("DATABASE")
 DB_CONN_DRIVER = os.getenv("DB_CONNECTION_DRIVER")
 RDBMS = os.getenv("RDBMS")
 
-DATABASE_URI = f"{RDBMS}+{DB_CONN_DRIVER}://{USER}:{PASSWORD}@{HOST}:{PORT}/{SCHEMA}"
+DATABASE_URI = f"{RDBMS}+{DB_CONN_DRIVER}://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
