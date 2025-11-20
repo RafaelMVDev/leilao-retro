@@ -20,7 +20,7 @@ def create_app():
     #initalizing flask - login
    
     with app.app_context():
-    # inicializando em ordem!
+    # Initializing in order!
         init_db(app)
         load_models("src.models")
         load_services("src.services")
