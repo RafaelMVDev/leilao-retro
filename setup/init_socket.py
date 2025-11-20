@@ -3,7 +3,7 @@ from flask_socketio import SocketIO
 
 socketio = SocketIO(
     cors_allowed_origins="*",
-    async_mode="eventlet"  # ou "gevent" ou "threading", dependendo do seu servidor
+    async_mode="threading"  # ou "gevent" ou "threading", dependendo do seu servidor
 )
 
 def init_socket(app):

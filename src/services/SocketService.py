@@ -1,7 +1,6 @@
 from flask_socketio import join_room, leave_room, emit
 from setup.init_socket import socketio
-from src.services import AuctionService as auction
-from src.services import ProductService as product
+import src.services.AuctionService as auction
 
 
 @socketio.on("join_auction")

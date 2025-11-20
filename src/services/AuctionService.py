@@ -1,4 +1,6 @@
-from models import db, AuctionModel, BidModel
+from src.models.AuctionModel import AuctionModel
+from src.models.BidModel import BidModel
+from setup.loaders.database import db
 
 def get_auction(auction_id: int):
     return AuctionModel.query.get(auction_id)
