@@ -1,4 +1,7 @@
+from dotenv import load_dotenv
 import os
+
+load_dotenv()  # loads the dotenv
 """
 Explaining the URI for later configuration if necessary (based on the example below):
 
@@ -16,10 +19,12 @@ TRACK_MODIFICATIONS = False
 #DATABASE_URI = "postgresql+psycopg2://postgres:senhamuitolegal123@db.nxyjokppbgznunayrgaz.supabase.co:5432/postgres"
 #TODO: add db sensitive information via environment variables
 
-USER = ""
-PASSWORD = ""
-HOST = "" #comment here
-PORT = ""
-DATABASE = "marauction"
+USER = os.getenv("USER")
+PASSWORD = os.getenv("PASSWORD")
+HOST = os.getenv("HOST")
+PORT = os.getenv("PORT")
+SCHEMA = os.getenv("SCHEMA")
+DB_CONN_DRIVER = os.getenv("DB_CONNECTION_DRIVER")
+RDBMS = os.getenv("RDBMS")
 
-DATABASE_URI = "mysql+pymysql://root:%40Sccp1910@127.0.0.1:3306/marauction"
+DATABASE_URI = f"{RDBMS}+{DB_CONN_DRIVER}://{USER}:{PASSWORD}@{HOST}:{PORT}/{SCHEMA}"
