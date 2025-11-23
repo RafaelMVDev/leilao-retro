@@ -39,7 +39,6 @@
 
 /* Main button style (specific to the register card) */
 .register-card button {
-    /* Keeping the purple gradient, which is exclusive to action buttons */
     background: linear-gradient(90deg, #fa8806, #f8a201);
     color: white;
     font-weight: bold;
@@ -48,7 +47,7 @@
     padding: 12px 20px;
     /* Aligning with padding from base.css */
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform (0.2s);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }

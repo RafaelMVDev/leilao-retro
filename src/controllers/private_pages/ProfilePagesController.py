@@ -1,8 +1,7 @@
 from flask import render_template, request, redirect, url_for, session, Blueprint,jsonify
 from setup.login_manager import  *
-from src.services.UserService import *
-from setup.login_manager import login_manager
-from src.services.EmailService import generate_token, send_email,confirm_token
+from src.services import UserService
+from flask_wtf.csrf import CSRFProtect
 bp = Blueprint('profile_pages', __name__)
 
 temporary_wallet_data = {
@@ -28,11 +27,7 @@ def get_profile_page():
 @authenticated_only
 def submit_logout():
     print("Logging off")
-    logout()
+    UserService.logout()
     return redirect(url_for("auth_pages.login_page"))
-
-
-
-
 
 

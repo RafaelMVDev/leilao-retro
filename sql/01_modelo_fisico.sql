@@ -151,7 +151,7 @@ CREATE TABLE User (
 	phone VARCHAR(20),
 	birthDate DATETIME,
 	registrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
+	fkAddressIdAddress INT NOT NULL
 );
 
 CREATE TABLE UserAddress (

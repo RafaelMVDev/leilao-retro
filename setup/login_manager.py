@@ -15,7 +15,7 @@ login_manager.login_view = "auth_pages.get_login"  # endpoint
 def authenticated_only(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if not current_user.is_authenticated: 
+        if not current_user.is_authenticated:
             flash("Você precisa estar logado para acessar!", "warning") 
             return redirect(url_for("auth_pages.login_page"))
         return f(*args, **kwargs)

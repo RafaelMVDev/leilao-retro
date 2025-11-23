@@ -65,8 +65,7 @@ def reset_password(token):
 
     if request.method == "POST":
         # UserService (changepassword)
-        data = request.get_json()
-        new_password = data.get("password")
+        new_password = request.form.get("password")
         change_password(email,new_password=new_password)
         
         return jsonify("Senha redefinida com sucesso!")
@@ -74,6 +73,7 @@ def reset_password(token):
     return render_template("public/auth_pages/reset_password.html")
 
 @bp.route("/forgot_password", methods=["GET", "POST"])
+
 def forgot_password():
     if request.method == "POST":
         data = request.get_json()
@@ -82,7 +82,7 @@ def forgot_password():
 
         if not user:
             return jsonify("Email não encontrado"), 404
-        print("MANDANDO EMAIL")
+
         token = generate_token(email)
         reset_url = f"http://127.0.0.1:5000{url_for('auth_pages.reset_password',token = token)}"
 
@@ -97,20 +97,8 @@ def forgot_password():
 
     return render_template("public/auth_pages/forgot_password.html")
 
-@bp.route("/confirm_email/<token>")
-def confirm_email(token):
-    with DB_SESSION() as Session:
-        email = confirm_token(token)
-        if not email:
-            return "Token inválido ou expirado", 400
-        
-        user = UserModel.query.filter_by(email=email).first()
-        if not user:
-            return "Usuário não encontrado", 404
-
-        user.isAuthenticated = True
-        db.session.commit()
-        return render_template("private/auth/email_confirmed.html")
 
 
 
+
+    
