@@ -2,7 +2,7 @@ from src.models.UserModel import UserModel
 from src.models.UserAddressModel import UserAddressModel
 from src.models.WalletModel import WalletModel
 from src.services.AdressService import *
-
+from pprint import pprint
 from setup.loaders.database import DB_SESSION
 from setup.login_manager import login_manager
 from sqlalchemy import select
@@ -13,7 +13,7 @@ from datetime import datetime
 from flask_login import LoginManager,logout_user,login_user,current_user
 from sqlalchemy import select
 from src.services.EmailService import generate_token, send_email
-
+from sqlalchemy.orm import joinedload
 from src.models.CityModel import CityModel
 from src.models.StateModel import StateModel
 
@@ -59,12 +59,7 @@ def authenticate_user(db_session,email, password):
             if user.isAuthenticated:
                 print(f"Logging user: {user}")
                 login_user(user)
-                if session.get("user_data"):
-                    session["user_data"]["profile_settings"] = get_user_settings(user.idUser)
-                    session["user_data"]["address_data"]  =get_full_address_data(user.idUser)
-                    print(session["user_data"]["address_data"] )
-                else:
-                    session["user_data"] = {}
+                set_user_session_data(user)
                 return True
             else:
                 return "Usuário não autenticado"
@@ -72,6 +67,28 @@ def authenticate_user(db_session,email, password):
         print(e)
         return False
 
+
+def get_wallets_data(idUser):
+    with DB_SESSION() as Session:
+        stm_wallet_internal = select(WalletModel).filter_by(fkUserIdUser = idUser,fkCurrencyIdCurrency = 1)
+        wallet_internal = Session.execute(stm_wallet_internal).scalars().first()
+
+        stm_wallet_external = select(WalletModel).filter_by(fkUserIdUser = idUser,fkCurrencyIdCurrency = 2)
+        wallet_external = Session.execute(stm_wallet_external).scalars().first()
+        if wallet_internal and wallet_external:
+            return {
+                "wallet_external": wallet_external,
+                "wallet_internal":wallet_internal
+            }
+        return False
+def set_user_session_data(user):
+    if not(session.get("user_data")):
+        session["user_data"] = {}
+    print("setting user data!")
+    session["user_data"]["profile_settings"] = get_user_settings(user.idUser)
+    session["user_data"]["address_data"]  =get_full_address_data(user.idUser)
+    session["user_data"]["wallets_data"] = get_wallets_data(user.idUser) 
+        
 def logout():
     logout_user()
 
@@ -233,43 +250,51 @@ def get_user_settings(user_id):
 )
 
         result = Session.execute(stm).mappings().one_or_none()
-        print(result)
         return dict(result) if result else None
 
     
 def get_full_address_data(user_id: int):
-        with DB_SESSION() as session:
+    with DB_SESSION() as session:
 
-            query = (
-                select(UserAddressModel)
-                .options(
-                    joinedload("addresses")
-                        .joinedload("city")
-                        .joinedload("state")
-                        .joinedload("country")
-                )
-                .where(UserAddressModel.idUser == user_id)
+        query = (
+            select(UserAddressModel)
+            .options(
+                joinedload(UserAddressModel.addresses)
+                .joinedload(AddressModel.cities)
+                .joinedload(CityModel.states)
+                .joinedload(StateModel.countries)
             )
+            .where(UserAddressModel.fkUserIdUser == user_id)
+        )
 
-            result = session.execute(query).scalars().all()
+        result = session.execute(query).scalars().all()
+        ua = result[0]
+        if ua:
+            cpt_address_data = {
+                "street": ua.addresses.street,
+                "district": ua.addresses.district,
+                "numberAddress": ua.addresses.numberAddress,
+                "zipCode": ua.addresses.zipCode,
+                "complement":ua.addresses.complement,
+                # City
+                "nameCity": ua.addresses.cities.nameCity,
 
-            if not result:
-                return None
+                # State
+                "stateName":  ua.addresses.cities.states.stateName,
 
+                # Country
+                "nameCountry": ua.addresses.cities.states.countries.nameCountry,
+            }
+        
+            print(cpt_address_data)
+        if not result:
+            print("NAO RETORNOU NADA")
+            return None
+        print(result[0].__dict__.keys())
+    
 
-            addresses = []
-            for ua in result:
-                addr = ua.addresses
-                addresses.append({
-                    "street": addr.street,
-                    "district": addr.district,
-                    "number": addr.number,
-                    "city": addr.city.name,
-                    "state": addr.city.state.name,
-                    "country": addr.city.state.country.name,
-                })
+        return cpt_address_data
 
-            return addresses
     
 
 def change_password(email,new_password):

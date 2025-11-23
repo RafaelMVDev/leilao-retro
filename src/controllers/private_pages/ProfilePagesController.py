@@ -4,11 +4,23 @@ from src.services import UserService
 from flask_wtf.csrf import CSRFProtect
 bp = Blueprint('profile_pages', __name__)
 
+temporary_wallet_data = {
+    "wallet_external": {"currentBalance": 0},
+    "wallet_internal": {"currentBalance": 0}
+}
 @bp.route('/profile_settings', methods=['GET'])
 @authenticated_only # check
 def get_profile_page():
-
-    return render_template('private/profile/profile.html')
+    user_data = session.get("user_data")
+    profile_settings = user_data.get("profile_settings")
+    address_data = user_data.get("address_data")
+    wallets_data = user_data.get("wallets_data")
+    print("testss")
+    print(wallets_data if wallets_data else temporary_wallet_data)
+    return render_template('private/profile/profile.html',
+                           profile_settings = profile_settings,
+                           address_data = address_data,
+                           wallets_data = wallets_data if wallets_data else temporary_wallet_data )
 
 
 @bp.route('/submit_logout', methods=['POST'])

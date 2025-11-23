@@ -12,74 +12,72 @@
 
 {% block content %}
 
-<div class="form-card register-card">
-    <h2 class="card-header-title">Cadastre seus Dados</h2>
+ <main>
+        <div class="form-card register-card">
+            <h2 class="card-header-title">Cadastre seus Dados</h2>
 
-    <form id="register_form">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-
-        <!-- step 1 -->
-        <div id="step_user">
-            <div class="line">
-                <input type="text" placeholder="Nome" name="firstName" required minlength="3">
-                <input type="text" placeholder="Sobrenome" name="lastName" required minlength="3">
-            </div>
-
-            <div class="line">
-                <input type="email" placeholder="E-mail" name="email" minlength="6" maxlength="100" required>
-            </div>
-
-            <div class="line">
-                <input type="password" placeholder="Senha" name="userPassword" required>
-                <input type="password" placeholder="Confirmar senha" name="confirmPassword" required>
-            </div>
-
-            <input type="text" placeholder="Nickname" name="nickname" class="full" required minlength="3" maxlength="30">
-
-            <div class="line">
-                <input type="tel" placeholder="Telefone" name="phone" required minlength="9" maxlength="14">
-                <input type="date" placeholder="Data de Nascimento" name="birthDate" required>
-            </div>
-
-            <button type="button" id="next_step">Avançar</button>
-        </div>
-
-        <!-- step 2 -->
-        <div id="step_address" class="hidden">
-            <fieldset class="address-group">
-                <legend>Endereço</legend>
-
-                <div class="line">
-                    <div class="zipCode-wrapper">
-                        <input type="text" placeholder="CEP" name="zipCode" class="zipCode-input" required maxlength="9">
-                        <span class="zipCode-status"></span>
+            <form id="register_form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <!-- step 1 -->
+                <div id="step_user">
+                    <div class="line">
+                        <input type="text" placeholder="Nome" name="firstName" required minlength="3">
+                        <input type="text" placeholder="Sobrenome" name="lastName" required minlength="3">
+                    </div>
+                    
+                    <div class="line">
+                    <input type="email" placeholder="E-mail" name="email" minlength="6" maxlength="100" required>
+                    <!--<input type="email" placeholder="CPF" name="CPF" required minlength="" maxlength="11">-->
+                    </div>
+                    <div class="line">
+                        <input type="password" placeholder="Senha" name="userPassword" required>
+                        <input type="password" placeholder="Confirmar senha" name="confirmPassword" required>
                     </div>
 
-                    <input type="text" placeholder="País" name="nameCountry" class="Country-input" required maxlength="90">
+                    <input type="text" placeholder="Nickname" name="nickname" class="full" required minlength="3" maxlength="30">
+
+                    <div class="line">
+                        <input type="tel" placeholder="Telefone" name="phone" required minlength="9" maxlength="14">
+                        <input type="date" placeholder="Data de Nascimento" name="birthDate" required>
+                    </div>
+
+                    <button type="button" id="next_step">Avançar</button>
                 </div>
 
-                <div>
-                    <input type="text" placeholder="Rua / Logradouro" name="street" class="Street-input" required maxlength="50">
-                    <input type="text" placeholder="Bairro" name="district" class="District-input" required maxlength="50">
-                </div>
+                <!-- step 2 -->
+                <div id="step_address" class="hidden">
+                    <fieldset class="address-group">
+                        <legend>Endereço</legend>
 
-                <div class="line">
-                    <input type="text" placeholder="Número" name="numberAddress" class="numberAdress-input" required maxlength="10">
-                    <input type="text" placeholder="Complemento" name="complement" class="complement-input" maxlength="35">
-                </div>
+                        <div class="line">
+                            <div class="zipCode-wrapper">
+                                <input type="text" placeholder="CEP" name="zipCode" class="zipCode-input" required maxlength="9">
+                                <span class="zipCode-status"></span>
+                            </div>
+                            <input type="text" placeholder="País" name="nameCountry" class="Country-input" required maxlength="90">
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Rua / Logradouro" name="street" class="Street-input" required maxlength="50">
+                            <input type="text" placeholder="Bairro" name="district" class="District-input" required maxlength="50">
+                        </div>
+                        <div class="line">
+                            <input type="text" placeholder="Número" name="numberAddress" class="numberAdress-input" required maxlength="10">
+                            <input type="text" placeholder="Complemento" name="complement" class="complement-input" maxlength="35">
+                        </div>
 
-                <div class="line">
-                    <input type="text" placeholder="Cidade" name="nameCity" class="City-input" required>
-                    <input type="text" placeholder="Estado (UF)" name="stateName" class="State-input" required>
-                </div>
+                        <div class="line">
+                            <input type="text" placeholder="Cidade" name="nameCity" class="City-input" required>
+                            <input type="text" placeholder="Estado (UF)" name="stateName" class="State-input" required>
+                        </div>
 
-                <div class="line" style="margin-top: 15px;">
-                    <button type="button" id="back_step" class="size">Voltar</button>
-                    <button type="submit" id="register" class="size">Cadastrar</button>
+                        <div class="line" style="margin-top: 15px;">
+                            <button type="button" id="back_step" class="size">Voltar</button>
+                            <button type="submit" id="register" class="size">Cadastrar</button>
+                        </div>
+                    </fieldset>
                 </div>
-            </fieldset>
+            </form>
         </div>
-    </form>
-</div>
+    </main>
 
 {% endblock %}

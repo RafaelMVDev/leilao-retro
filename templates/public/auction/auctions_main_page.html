@@ -1,33 +1,16 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "layouts/base.html" %}
+{% block title %}
     <title>Maradindiduns - Leilões</title>
+{% endblock %}
 
+{% block css %}
     <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/auction/auctions_main_Page_style.css')}}">
-
+{% endblock %}
+{% block js %}
     <script src="{{url_for('static',filename = 'js/public/auction/auctions_main_page.js')}}" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body>
-    <header>
-        <div class="header-esquerda">
-            <div class="logo-img-placeholder"></div>
-            <p> Maradindiduns </p>
-        </div>
-        <div class="header-direita">
-            <ul>
-                <li><a href="#">Início</a></li>
-                <li><a class="ativo" href="#">Leilões</a></li>
-                <li><a href="#">Entrar</a></li>
-                <li><a href="#">Cadastrar-se</a></li>
-            </ul>
-        </div>
-    </header>
-
+{% endblock %}
+{% block content %}
     <main class="main-leiloes-page">
         <div class="leiloes-layout-container">
 
@@ -378,15 +361,4 @@
         </nav>
     </main>
 
-    <footer>
-        <div class="footer-cellphone">
-            <p> Telefone: (11) 97321-0013 </p>
-        </div>
-        <div class="footer-copyright">
-            <p> @Copyright 2025 </p>
-        </div>
-        <div class="footer-empty-space"></div>
-    </footer>
-</body>
-
-</html>
+{% endblock %}

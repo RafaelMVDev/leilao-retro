@@ -1,122 +1,99 @@
 {% extends "layouts/base.html" %}
 
-{% block head %}
+{% block title %}
     <title>Maradindiduns - Início</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/homepage/homepage_style.css') }}">
+{% endblock %}
+
+{% block css %}
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/public/homepage/homepage_style.css') }}">
 {% endblock %}
 
 {% block content %}
 
-<header>
-    <div class="header-left">
-        <div class="logo-img-placeholder"></div>
-        <p> Maradindiduns </p>
-    </div>
-    <div class="header-right">
-        <ul>
-            <li><a href="{{ url_for('public_pages.homepage') }}">Início</a></li>
-            <li><a href="#">Leilões</a></li>
-            <li><a href="{{ url_for('auth_pages.login_page') }}">Entrar</a></li>
-            <li><a class="activate" href="{{ url_for('auth_pages.register_page') }}">Cadastrar-se</a></li>
-        </ul>
-    </div>
-</header>
+    </header>
 
-<main class="main-gallery">
-    
-    <div class="auction-container">
+    <main class="main-gallery">
         
-        <div class="filter-bar">
-            <input type="text" placeholder="Pesquise por um console, jogo ou item...">
+        <div class="auction-container">
+            
+            <div class="filter-bar">
+                <input type="text" placeholder="Pesquise por um console, jogo ou item...">
+            </div>
+
+            <div class="auction-grid">
+
+                <div class="auction-card">
+                    <div class="auction-img-placeholder">
+                        <p>Imagem do Item</p>
+                    </div>
+                    <div class="auction-content">
+                        <h3 class="auction-title">Super Nintendo (SNES) com 20 Jogos</h3>
+                        
+                        <span class="auction-status status-progress">EM ANDAMENTO</span>
+                        
+                        <div class="auction-info">
+                            <div class="auction-value">
+                                <span>Valor Atual</span>
+                                <strong id="valor-leilao-1">R$ 450,00</strong>
+                            </div>
+                            <div class="auction-time">
+                                <span>Tempo Restante</span>
+                                <strong id="time-auction-1">00:15:32</strong>
+                            </div>
+                        </div>
+                        
+                        <button class="bid-btn">Dar Lance</button>
+                    </div>
+                </div>
+
+                <div class="auction-card">
+                    <div class="auction-img-placeholder"><p>Imagem do Item</p></div>
+                    <div class="auction-content">
+                        <h3 class="auction-title">Sega Dreamcast Edição Especial</h3>
+                        
+                        <span class="auction-status status-future">EM BREVE</span>
+                        
+                        <div class="auction-info">
+                            <div class="auction-value">
+                                <span>Lance Inicial</span>
+                                <strong>R$ 700,00</strong>
+                            </div>
+                            <div class="auction-time">
+                                <span>Inicia em</span>
+                                <strong>2d 10h 05m</strong>
+                            </div>
+                        </div>
+                        
+                        <button class="bid-btn" disabled>Aguarde</button>
+                    </div>
+                </div>
+
+                <div class="auction-card">
+                    <div class="auction-img-placeholder"><p>Imagem do Item</p></div>
+                    <div class="auction-content">
+                        <h3 class="auction-title">Lote de Cartuchos de N64</h3>
+                        
+                        <span class="auction-status status-closed">ENCERRADO</span>
+                        
+                        <div class="auction-info">
+                            <div class="auction-value">
+                                <span>Vendido Por</span>
+                                <strong>R$ 1.250,00</strong>
+                            </div>
+                            <div class="auction-time">
+                                <span>Vencedor</span>
+                                <strong>RafaMorales</strong>
+                            </div>
+                        </div>
+                        
+                        <button class="bid-btn" disabled>Ver Detalhes</button>
+                    </div>
+                </div>
+
+                </div>
         </div>
 
-        <div class="auction-grid">
+    </main>
 
-            <div class="auction-card">
-                <div class="auction-img-placeholder">
-                    <p>Imagem do Item</p>
-                </div>
-                <div class="auction-content">
-                    <h3 class="auction-title">Super Nintendo (SNES) com 20 Jogos</h3>
-
-                    <span class="auction-status status-progress">EM ANDAMENTO</span>
-
-                    <div class="auction-info">
-                        <div class="auction-value">
-                            <span>Valor Atual</span>
-                            <strong id="valor-leilao-1">R$ 450,00</strong>
-                        </div>
-                        <div class="auction-time">
-                            <span>Tempo Restante</span>
-                            <strong id="time-auction-1">00:15:32</strong>
-                        </div>
-                    </div>
-
-                    <button class="bid-btn">Dar Lance</button>
-                </div>
-            </div>
-
-            <div class="auction-card">
-                <div class="auction-img-placeholder">
-                    <p>Imagem do Item</p>
-                </div>
-                <div class="auction-content">
-                    <h3 class="auction-title">Sega Dreamcast Edição Especial</h3>
-
-                    <span class="auction-status status-future">EM BREVE</span>
-
-                    <div class="auction-info">
-                        <div class="auction-value">
-                            <span>Lance Inicial</span>
-                            <strong>R$ 700,00</strong>
-                        </div>
-                        <div class="auction-time">
-                            <span>Inicia em</span>
-                            <strong>2d 10h 05m</strong>
-                        </div>
-                    </div>
-
-                    <button class="bid-btn" disabled>Aguarde</button>
-                </div>
-            </div>
-
-            <div class="auction-card">
-                <div class="auction-img-placeholder">
-                    <p>Imagem do Item</p>
-                </div>
-                <div class="auction-content">
-                    <h3 class="auction-title">Lote de Cartuchos de N64</h3>
-
-                    <span class="auction-status status-closed">ENCERRADO</span>
-
-                    <div class="auction-info">
-                        <div class="auction-value">
-                            <span>Vendido Por</span>
-                            <strong>R$ 1.250,00</strong>
-                        </div>
-                        <div class="auction-time">
-                            <span>Vencedor</span>
-                            <strong>RafaMorales</strong>
-                        </div>
-                    </div>
-
-                    <button class="bid-btn" disabled>Ver Detalhes</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-</main>
-
-<footer>
-    <div class="footer-cellphone">
-        <p> Telefone: (11) 97321-0013 </p>
-    </div>
-    <div class="footer-copyright">
-        <p> @Copyright 2025 </p>
-    </div>
-    <div class="footer-empty-space"></div>
-</footer>
 
 {% endblock %}

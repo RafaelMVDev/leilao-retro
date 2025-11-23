@@ -1,35 +1,17 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<meta name="csrf-token" content="{{ (csrf_token() if (csrf_token is defined) else '') }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "layouts/base.html" %}
 
-    <title>Maradindiduns - Seu Perfil</title>
+{% block title %}Maradindiduns - Seu Perfil{% endblock %}
 
-    <link rel="stylesheet" href="{{url_for('static',filename = 'css/layouts/base.css')}}">
-    <link rel="stylesheet" href="{{url_for('static',filename = 'css/private/profile/profile_style.css')}}">
+{% block css %}
+<link rel="stylesheet" href="{{url_for('static',filename = 'css/private/profile/profile_style.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
 
-    <script src="{{url_for('static',filename = 'js/private/profile/profile.js')}}" defer></script>
-</head>
+{% block js %}
+<script src="{{url_for('static',filename = 'js/private/profile/profile.js')}}" defer></script>
+{% endblock %}
 
-<body>
-    <header>
-        <div class="header-left">
-            <div class="logo-img-placeholder"></div>
-            <p> Maradindinduns </p>
-        </div>
-
-        <div class="header-right">
-            <ul>
-                <li><a href="{{url_for('public_pages.homepage')}}">Início</a></li>
-                <li><a href="#">Leilões</a></li>
-                <li><a class="activate" href="{{url_for('profile_pages.get_profile_page')}}">Seu Perfil</a></li>
-            </ul>
-        </div>
-    </header>
-
+{% block content %}
     <main class="profile-main">
         <aside class="profile-sidebar">
             <div class="profile-info-card">
@@ -37,7 +19,7 @@
                     <i class="fas fa-user-astronaut"></i>
                 </div>
 
-                <h3 id="user_nickname">RafaMorales</h3>
+                <h3 id="user_nickname">{{profile_settings.nickname}}</h3>
 
                 <p>Membro desde Fev/2024</p>
             </div>
@@ -45,14 +27,14 @@
             <div class="balance-cards">
                 <div class="balance-card">
                     <span>Saldo (R$)</span>
-
-                    <strong id="user_balance">R$ 850,50</strong>
+                    {{wallets_data.wallet_external.currentBalance if wallets_data else 250}}
+                    <!--<strong id="user_balance"><i>{{wallets_data.wallet_external.currentBalance if wallets_data else 250}} </i></strong>-->
                 </div>
 
                 <div class="balance-card">
                     <span>Moedas</span>
-
-                    <strong id="user_coins">2.500 <i class="fas fa-coins" style="color: gold;"></i></strong>
+                    {{wallets_data.wallet_internal.currentBalance if wallets_data else 250}}
+                    <!--<strong id="user_coins"><i class="fas fa-coins" style="color: gold;">{{wallets_data.wallet_internal.currentBalance if wallets_data else 250}} 250</i></strong>-->
                 </div>
             </div>
 
@@ -96,10 +78,10 @@
 
                     <div class="line" style="margin-bottom: 15px;">
                         <input type="text" placeholder="Nome Completo" name="nome" id="input_nome"
-                        value="Rafael Morales Villela" readonly required minlength="3">
+                        value="{{profile_settings.get("firstName")}} {{profile_settings.get("lastName")}}" readonly required minlength="3">
 
                         <input type="text" placeholder="Nickname" name="nickname" id="input_nickname"
-                            value="RafaMorales" readonly required minlength="3" maxlength="30">
+                            value="{{profile_settings.get("nickname")}}" readonly required minlength="3" maxlength="30">
                     </div>
                     
                     <div class="line" style="margin-bottom: 15px;">
@@ -117,32 +99,32 @@
                     </h3>
 
                     <div class="line" style="margin-bottom: 15px;">
-                        <input type="text" placeholder="CEP" name="zipCode" id="input_zipCode" value="04001-001" 
+                        <input type="text" placeholder="CEP" name="zipCode" id="input_zipCode" value="{{address_data.get("zipCode")}}" 
                         readonly maxlength="9">
 
-                        <input type="text" placeholder="País" name="country" id="input_country" value="Brasil" readonly
+                        <input type="text" placeholder="País" name="country" id="input_country" value="{{address_data.get("nameCountry")}}" readonly
                             required maxlength="90">
                     </div>
 
                     <input type="text" placeholder="Rua / Logradouro" name="street" id="input_street"
-                        value="Rua da Consolação" readonly required maxlength="50">
+                        value="{{address_data.get("street")}}" readonly required maxlength="50">
 
-                        <input type="text" placeholder="Bairro" name="district" id="input_district" value="Centro"
+                        <input type="text" placeholder="Bairro" name="district" id="input_district" value="{{address_data.get("district")}}"
                             readonly required maxlength="50">
 
                     <div class="line" style="margin-bottom: 15px;">
-                        <input type="number" placeholder="Número" name="numberAdress" id="input_numberAdress" value="1234"
+                        <input type="number" placeholder="Número" name="numberAdress" id="input_numberAdress" value="{{address_data.get("numberAddress")}}"
                             readonly required maxlength="10">
 
-                        <input type="number" placeholder="Complemento ( Opcional )" name="complement" id="input_complement" value="ap 204"
+                        <input type="number" placeholder="Complemento ( Opcional )" name="complement" id="input_complement" value="{{address_data.get("complement")}}"
                             readonly maxlength="35">
                     </div>
 
                     <div class="line">
-                        <input type="text" placeholder="Cidade" name="city" id="input_city" value="São Paulo" readonly
+                        <input type="text" placeholder="Cidade" name="city" id="input_city" value="{{address_data.get("nameCity")}}" readonly
                             required maxlength="60">
 
-                        <input type="text" placeholder="Estado (UF)" name="state" id="input_state" value="SP" readonly
+                        <input type="text" placeholder="Estado (UF)" name="state" id="input_state" value="{{address_data.get("stateName")}}" readonly
                             required minlength="2" maxlength="3">
                     </div>
 
@@ -395,26 +377,5 @@
         </section>
 
     </main>
+{% endblock %}
 
-    <div id="custom_modal" class="custom-modal-backdrop">
-        <div class="custom-modal-content">
-
-            <p id="modal_message">Os dados do perfil foram alterados com sucesso.</p>
-
-            <button id="modal_ok_btn">OK</button>
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-cellphone">
-            <p> Telefone: (11) 97321-0013 </p>
-        </div>
-
-        <div class="footer-copyright">
-            <p> @Copyright 2025 </p>
-        </div>
-        <div class="footer-empty-space"></div>
-    </footer>
-</body>
-
-</html>

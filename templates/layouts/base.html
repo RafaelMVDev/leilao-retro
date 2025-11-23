@@ -9,7 +9,7 @@
 
     <!-- CSS global -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/base.css') }}">
-
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='media/MarAuction_logo.webp')}}">
     {% block css %}{% endblock %}
 
     <!-- CSRF fixo -->
@@ -21,7 +21,7 @@
 <header>
     <div class="header-left">
         <div class="logo-img-placeholder"></div>
-        <p>Maradindiduns</p>
+        <p>MarAuction</p>
     </div>
 
     <div class="header-right">
@@ -31,27 +31,38 @@
             </li>
 
             <li>
-                <a href="#">Leilões</a>
+                <a href="{{ url_for('auction_public_pages.get_auctions_main_page') }}">Leilões</a>
             </li>
 
             {% if current_user.is_authenticated %}
 
                 <li class="profile-area">
-                    <a href="{{ url_for('user_pages.profile_page') }}" class="profile-link">
+                    <a href="{{ url_for('profile_pages.get_profile_page') }}" class="profile-link">
+                        {% if current_user.profile_image%}
+                            <img 
+                                src="{{ current_user.profile_image or url_for('static', filename='img/default_user.png') }}"
+                                class="profile-img" 
+                                alt="Foto de perfil">
 
-                        <img 
-                            src="{{ current_user.profile_image or url_for('static', filename='img/default_user.png') }}"
-                            class="profile-img" 
-                            alt="Foto de perfil">
 
-                        <span>Perfil</span>
+                         {% else %}
+                              <div class="profile-icon">
+                                <i class="fas fa-user-astronaut"></i>
+                              </div>
+                         {% endif %}
+                         <span>Perfil</span>
+                         <form action="{{ url_for('profile_pages.submit_logout') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                <input type="submit" value="SAIR" data-acao="sair">
+            </form>
                     </a>
                 </li>
-
+                <!--
                 <li>
-                    <a href="{{ url_for('auth_pages.logout') }}">Sair</a>
+                    <a href="{{ url_for('profile_pages.submit_logout') }}">Sair</a>
                 </li>
-
+                -->
             {% else %}
 
                 <li>
@@ -67,9 +78,9 @@
     </div>
 </header>
 
-<main>
-    {% block content %}{% endblock %}
-</main>
+{% block content %}
+
+{% endblock %}
 
 <footer>
     <div class="footer-cellphone">
@@ -82,7 +93,9 @@
 </footer>
 
 <!-- JS global -->
-{% block js %}{% endblock %}
+{% block js %}
+
+{% endblock %}
 
 </body>
 </html>

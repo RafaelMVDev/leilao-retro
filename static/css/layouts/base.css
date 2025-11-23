@@ -178,6 +178,26 @@ main {
     padding: 50px 20px; 
 }
 
+.profile-area {
+    display: flex;
+    align-items: center;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.profile-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 /* --- Media Queries Globais --- */
 @media (max-width: 768px) {
     header, footer {

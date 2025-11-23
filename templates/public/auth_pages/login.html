@@ -2,28 +2,29 @@
 
 {% block title %}Entrar - Maradindinduns{% endblock %}
 
-{% block head_extra %}
+{% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/public/login/login_style.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="login-container">
+<main>
+        <div class="form-card login-card">
+            <h2 class="card-header-title">Entre com sua Conta</h2>
 
-    <h2>Entrar</h2>
+            <form id="login-form" action="{{url_for('auth_pages.submit_login')}}" , method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <input name="email" type="email" placeholder="E-mail" required>
+                <input name="password" type="password" placeholder="Senha" required>
 
-    <form method="POST" action="{{ url_for('auth_pages.submit_login') }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn" type="submit">Entrar</button>
 
-        <input type="email" name="email" placeholder="E-mail" required>
-        <input type="password" name="password" placeholder="Senha" required>
+                <div class="form-links-footer">
 
-        <button type="submit">Entrar</button>
-    </form>
+                    <p class="forgot-password-prompt">Esqueceu a senha? <a href="" class="forgot-password-link">Clique aqui</a></p>
 
-    <div class="login-links">
-        <a href="{{ url_for('auth_pages.forgot_password_page') }}">Esqueci minha senha</a>
-        <a href="{{ url_for('auth_pages.register_page') }}">Criar Conta</a>
-    </div>
-
-</div>
+                    <p class="register-prompt">Não tem uma conta? <a href="{{url_for('auth_pages.register_page')}}">Cadastre-se</a></p>
+                </div>
+            </form>
+        </div>
+    </main>
 {% endblock %}
