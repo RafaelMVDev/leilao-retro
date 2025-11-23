@@ -1,0 +1,109 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Criar Leilão{% endblock %}
+
+{% block content %}
+<div class="auction-create-wrapper">
+
+  <div class="auction-form-panel">
+    <h2>Criar um novo leilão</h2>
+    <p>Preencha os detalhes abaixo para configurar seu leilão e os itens que farão parte dele.</p>
+
+    <form id="createAuctionForm" enctype="multipart/form-data">
+
+      <!-- Seção: Dados do Leilão -->
+      <div class="form-section">
+        <h3>1. Informações do Leilão</h3>
+
+        <div class="form-group">
+          <label for="title">Título do Leilão</label>
+          <input type="text" id="title" name="title" placeholder="Ex: Coleção de Jogos Retrô" required>
+          <small>Esse é o nome que compradores vão ver.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrição do Leilão</label>
+          <textarea id="description" name="description" rows="4" placeholder="Descreva o que será leiloado (itens, condição, quantidades, etc)"></textarea>
+        </div>
+
+        <div class="form-two-col">
+          <div class="form-group">
+            <label for="startDate">Data & Hora de Início</label>
+            <input type="datetime-local" id="startDate" name="start_date" required>
+            <small>Quando este leilão começará.</small>
+          </div>
+          <div class="form-group">
+            <label for="endDate">Data & Hora de Término</label>
+            <input type="datetime-local" id="endDate" name="end_date" required>
+            <small>Quando os lances terminarão.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção: Lote Principal -->
+      <div class="form-section">
+        <h3>2. Lote Inicial</h3>
+
+        <div class="form-two-col">
+          <div class="form-group">
+            <label for="lotNumber">Número do Lote</label>
+            <input type="number" id="lotNumber" name="lot_number" min="1" value="1" required>
+            <small>Identificador para este lote dentro do leilão.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="minimumBid">Lance Mínimo (R$)</label>
+            <input type="number" id="minimumBid" name="minimum_bid" min="0" step="0.01" required>
+            <small>Menor valor aceitável para o primeiro lance.</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="minimumIncrement">Incremento de Lance (R$)</label>
+          <input type="number" id="minimumIncrement" name="minimum_increment" min="0" step="0.01" value="1.00">
+          <small>Quanto deve aumentar o valor a cada novo lance.</small>
+        </div>
+      </div>
+
+      <!-- Seção: Produtos no Lote -->
+      <div class="form-section">
+        <h3>3. Itens / Produtos do Lote</h3>
+        <p>Adicione os produtos que farão parte deste lote.</p>
+
+        <div id="productsSection"></div>
+
+        <button type="button" id="addProductBtn" class="btn-outline">+ Adicionar Item</button>
+      </div>
+
+      <!-- Botão para criar -->
+      <div class="form-section actions">
+        <button type="submit" class="btn-primary">Criar Leilão</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Painel de Pré-visualização -->
+  <div class="preview-panel">
+    <h3>Pré-visualização do Leilão</h3>
+    <div class="preview-box">
+      <p><strong>Título:</strong> <span id="previewTitle">—</span></p>
+      <p><strong>Descrição:</strong> <span id="previewDescription">—</span></p>
+      <p><strong>Lote nº:</strong> <span id="previewLotNum">—</span></p>
+      <p><strong>Lance inicial:</strong> R$ <span id="previewMinBid">—</span></p>
+      <p><strong>Incremento:</strong> R$ <span id="previewIncrement">—</span></p>
+      <hr>
+      <h4>Itens neste Lote</h4>
+      <ul id="previewProductsList" class="preview-products-list"></ul>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/private/auction/create_auction.js') }}"></script>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/private/auction/create_auction.css') }}">
+{% endblock %}

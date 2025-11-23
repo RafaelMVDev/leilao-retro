@@ -7,5 +7,5 @@ from sqlalchemy import Table,Column,select
 
 class BidModel(db.Model):
     __table__ = Table("bid",DB_METADATA,autoload_with=db.engine)
-  
+    lot = db.relationship("LotModel", back_populates="bids")
     

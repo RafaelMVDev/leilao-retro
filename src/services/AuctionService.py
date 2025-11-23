@@ -1,4 +1,94 @@
+# src/services/auction_service.py
+from setup.loaders.database import db
+from src.models.AuctionModel import AuctionModel
+from src.models.LotModel import LotModel
 from src.models.ProductModel import ProductModel
+from src.models.BidModel import BidModel
+from datetime import datetime
+
+def create_auction_with_lot(title, description, start_date, end_date, owner_id, initial_price=0.0):
+    auction = AuctionModel(
+        title=title,
+        descriptionAuction=description,
+        startDate=start_date,
+        endDate=end_date,
+        statusAuction="ACTIVE" if start_date and start_date <= datetime.utcnow() else "CREATED",
+        fkUserIdUser=owner_id
+    )
+    db.session.add(auction)
+    db.session.flush()  # garante idAuction
+
+    # cria lote inicial
+    lot = LotModel(
+        minimumIncrement=1.0,
+        minimumBid=initial_price,
+        lotNumber=1,
+        currentBidValue=initial_price,
+        fkAuctionIdAuction=auction.idAuction
+    )
+    db.session.add(lot)
+    db.session.commit()
+    return auction, lot
+
+def add_product_to_lot(lot_id, product_data):
+    product = ProductModel(
+        productName=product_data.get("name"),
+        productDescription=product_data.get("description"),
+        basePrice=product_data.get("price", 0),
+        imageUrl=product_data.get("imageUrl"),
+        fkLotIdLot=lot_id
+    )
+    db.session.add(product)
+    db.session.commit()
+    return product
+
+def place_bid(lot_id, user_id, bid_value):
+    lot = LotModel.query.get(lot_id)
+    if not lot:
+        raise ValueError("Lot not found")
+
+    # validação simples: bid maior que currentBidValue + minimumIncrement
+    min_valid = (lot.currentBidValue or lot.minimumBid) + (lot.minimumIncrement or 0)
+    if bid_value < min_valid:
+        raise ValueError(f"Bid must be at least {min_valid}")
+
+    bid = BidModel(
+        bidValue=bid_value,
+        fkUserIdUser=user_id,
+        fkLotIdLot=lot_id
+    )
+    db.session.add(bid)
+
+    # atualiza lot
+    lot.currentBidValue = bid_value
+    # atualize currentWinner com nome do user (ou user id)
+    # aqui suponho que você queira o nickname: busque user se desejar
+    lot.currentWinner = str(user_id)
+    db.session.commit()
+    return bid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""from src.models.ProductModel import ProductModel
 from src.models.ImageModel import ImageModel
 from sqlalchemy import func
 from src.models.BidModel import BidModel
@@ -187,4 +277,4 @@ def get_product_with_images_from_auction(auction_id):
         return {
             "product": product,
             "images": product.images
-        }
+        }"""

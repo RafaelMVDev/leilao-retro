@@ -1,0 +1,114 @@
+.auction-create-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.auction-form-panel {
+  flex: 1 1 500px;
+  background: #242424;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.preview-panel {
+  flex: 1 1 350px;
+  background: #242424;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.preview-box p {
+  margin: 10px 0;
+}
+
+.preview-products-list {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.form-section {
+  margin-bottom: 24px;
+}
+
+.form-section h3 {
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group small {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.form-two-col {
+  display: flex;
+  gap: 16px;
+}
+
+.form-two-col .form-group {
+  flex: 1;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button.btn-primary {
+  background-color: #2563eb;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button.btn-primary:hover {
+  background-color: #1e40af;
+}
+
+button.btn-outline {
+  background: none;
+  border: 2px dashed #ebb625;
+  color: #ebcd25;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+button.btn-outline:hover {
+  background: #eef2ff;
+}
+
+.actions {
+  text-align: right;
+}
+
