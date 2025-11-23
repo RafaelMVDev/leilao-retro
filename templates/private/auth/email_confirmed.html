@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Confirmado - MarAuction</title>
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/layouts/base.css')}}">
+     <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo-img-placeholder"></div>
+        <p>MarAuction</p>
+    </div>
+
+    <div class="header-right">
+        <ul>
+            <li><a href="/">Início</a></li>
+            <li><a href="/login">Entrar</a></li>
+        </ul>
+    </div>
+</header>
+
+<main>
+    <div style="
+        background: var(--purple-medium);
+        padding: 30px;
+        width: 420px;
+        border-radius: 15px;
+        text-align: center;
+    ">
+        <h2 style="margin-bottom: 20px;">Conta confirmada!</h2>
+        <p style="margin-bottom: 20px;">Seu e-mail foi verificado com sucesso.</p>
+
+      <button type="button" onclick="window.location.href='{{ url_for('auth_pages.login_page') }}'" style="width: 100%;">
+        Ir para Login
+     </button>
+    </div>
+</main>
+
+<footer>
+    <p class="footer-cellphone">Contato: (11) 99999-9999</p>
+    <p class="footer-copyright">© 2025 MarAuction - Todos os direitos reservados</p>
+    <p class="footer-empty-space"></p>
+</footer>
+
+</body>
+</html>

@@ -69,18 +69,36 @@ def authenticate_user(db_session,email, password):
 
 
 def get_wallets_data(idUser):
-    with DB_SESSION() as Session:
-        stm_wallet_internal = select(WalletModel).filter_by(fkUserIdUser = idUser,fkCurrencyIdCurrency = 1)
-        wallet_internal = Session.execute(stm_wallet_internal).scalars().first()
+    with DB_SESSION() as session:
+        wallet_internal = session.execute(
+            select(WalletModel).filter_by(
+                fkUserIdUser=idUser,
+                fkCurrencyIdCurrency=1
+            )
+        ).scalars().first()
 
-        stm_wallet_external = select(WalletModel).filter_by(fkUserIdUser = idUser,fkCurrencyIdCurrency = 2)
-        wallet_external = Session.execute(stm_wallet_external).scalars().first()
-        if wallet_internal and wallet_external:
-            return {
-                "wallet_external": wallet_external,
-                "wallet_internal":wallet_internal
+        wallet_external = session.execute(
+            select(WalletModel).filter_by(
+                fkUserIdUser=idUser,
+                fkCurrencyIdCurrency=2
+            )
+        ).scalars().first()
+
+        if not wallet_internal or not wallet_external:
+            return False
+
+        return {
+            "wallet_internal": {
+                key: value
+                for key, value in wallet_internal.__dict__.items()
+                if not key.startswith("_")
+            },
+            "wallet_external": {
+                key: value
+                for key, value in wallet_external.__dict__.items()
+                if not key.startswith("_")
             }
-        return False
+        }
 def set_user_session_data(user):
     if not(session.get("user_data")):
         session["user_data"] = {}
@@ -214,7 +232,7 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
             Session.add(new_user,new_user_address)
             Session.commit()
             token = generate_token(user_data.get("email"))
-            confirm_url = f"{url_for("auth_pages.confirm_email")}/{token}"
+            confirm_url = f"http://127.0.0.1:5000{url_for('auth_pages.confirm_email',token = token)}"
 
             html = f"""
             <h3>Confirme sua conta</h3>

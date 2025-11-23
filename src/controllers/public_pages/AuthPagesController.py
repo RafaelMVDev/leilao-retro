@@ -97,6 +97,20 @@ def forgot_password():
 
     return render_template("public/auth_pages/forgot_password.html")
 
+@bp.route("/confirm_email/<token>")
+def confirm_email(token):
+    with DB_SESSION() as Session:
+        email = confirm_token(token)
+        if not email:
+            return "Token inválido ou expirado", 400
+        
+        user = UserModel.query.filter_by(email=email).first()
+        if not user:
+            return "Usuário não encontrado", 404
+
+        user.isAuthenticated = True
+        db.session.commit()
+        return render_template("private/auth/email_confirmed.html")
 
 
 

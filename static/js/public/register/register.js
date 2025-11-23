@@ -178,7 +178,7 @@ form.addEventListener("submit", async (e) => {
         });
 
         if (response.ok) {
-            alert("Cadastro realizado com sucesso!");
+            alert("Cadastro realizado com sucesso! Você receberá um e-mail de confirmação de conta em alguns instantes");
             form.reset();
             // Clears the CEP statuses
             document.querySelectorAll('.zipCode-status').forEach(s => s.textContent = '');
