@@ -315,10 +315,17 @@ def get_full_address_data(user_id: int):
 
     
 
-def change_password(email,new_password):
-    with DB_SESSION() as Session:
-        user_email = current_user.email
-        if user_email == email:
-            
-            current_user.userPassword = generate_password_hash(new_password)
-            db.session.commit()
+
+def change_password(email, new_password):
+    with DB_SESSION() as session:
+        print("CHANGING PASSWORD.")
+        user = session.query(UserModel).filter_by(email=email).first()
+        print(new_password)
+        if not user:
+            return False  # usuário não encontrado
+        print("FOUND USER")
+        
+        user.userPassword = generate_password_hash(new_password)
+        session.commit()
+
+        return True

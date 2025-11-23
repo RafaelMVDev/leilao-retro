@@ -65,7 +65,8 @@ def reset_password(token):
 
     if request.method == "POST":
         # UserService (changepassword)
-        new_password = request.form.get("password")
+        data = request.get_json()
+        new_password = data.get("password")
         change_password(email,new_password=new_password)
         
         return jsonify("Senha redefinida com sucesso!")
@@ -73,7 +74,6 @@ def reset_password(token):
     return render_template("public/auth_pages/reset_password.html")
 
 @bp.route("/forgot_password", methods=["GET", "POST"])
-
 def forgot_password():
     if request.method == "POST":
         data = request.get_json()
@@ -82,7 +82,7 @@ def forgot_password():
 
         if not user:
             return jsonify("Email não encontrado"), 404
-
+        print("MANDANDO EMAIL")
         token = generate_token(email)
         reset_url = f"http://127.0.0.1:5000{url_for('auth_pages.reset_password',token = token)}"
 
@@ -114,5 +114,3 @@ def confirm_email(token):
 
 
 
-
-    
