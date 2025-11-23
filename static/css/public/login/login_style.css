@@ -30,7 +30,9 @@ form {
 /* --- Login Button Specifics --- */
 .login-card button {
     margin-top: 10px;
-    /* Hover and general button styling is inherited from base.css */
+    transition: transform (0.2s);
+    transform: scale(1.02);
+    background: linear-gradient(90deg, #fa8806, #f8a201);
 }
 
 /* --- Footer Links Container --- */
@@ -65,8 +67,4 @@ form {
     color: #ffd88a;
     /* Slightly lighter shade of highlight on hover */
     text-decoration: underline;
-}
-
-.btn {
-    background: linear-gradient(90deg, #fa8806, #f8a201);
 }
