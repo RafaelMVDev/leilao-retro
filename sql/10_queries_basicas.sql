@@ -1,4 +1,15 @@
--- BASIC QUERIES
+/* ============================================================
+   File: 10_queries_basicas.sql
+   Author(s): Calixto, Júlia; Henrique, Luis; Morales, Rafael; Moreira, Rafael
+   Project: Marauction
+   Class: 213
+   DBMS: MySQL 8.0.41
+   OBJECTIVE: Provide basic queries for general data inspection
+   EXPECTED PERFORMANCE:
+        - Simple SELECT queries for key tables
+        - Quick data retrieval for validation and analysis
+========================================================== */
+
 
 /* ============================================================
    QUERY 1

@@ -1,4 +1,15 @@
--- in this document, we'll test all the sql inserts that may be correct or may show an error
+/* ============================================================
+   File: 03_insercoes_casos_teste.sql
+   Author(s): Calixto, Júlia; Henrique, Luis; Morales, Rafael; Moreira, Rafael
+   Project: Marauction
+   Class: 213
+   DBMS: MySQL 8.0.41
+   OBJECTIVE: Insert test-case data for validation and debugging
+   EXPECTED PERFORMANCE:
+        - Create valid and invalid test scenarios
+        - Populate tables in a way that allows business-rule validation
+        - Support debugging and manual testing
+========================================================== */
 
 -- CORRECT CASES
 
@@ -55,7 +66,7 @@ VALUES ('julia_clone', 'Julia', 'Calixto', 'juliacalixto@marauction.com.br', SHA
 
 -- SCENARY C: bid with value zero
 -- user try to do a bid with the value zero
--- expected result: trigger block it and shows "invalid bid, your bid must be bigger than zero"alter
+-- expected result: trigger block it and shows "invalid bid, your bid must be bigger than zero"
 
 INSERT INTO bid (bidValue, fkUserIdUser, fkLotIdLot)
 VALUES (0.00, 2, 1);
@@ -69,7 +80,7 @@ VALUES ('usuario_sem_senha', 'Claudete', 'Alves', 'claudete.alves@teste.com', '1
 
 -- SCENARY E: invalid auction
 -- user try to create an auction with the end date being before the start date
--- expected result: trigger block it and shows "invalid end date"alter
+-- expected result: trigger block it and shows "invalid end date"
 
 INSERT INTO auction (title, descriptionAuction, startDate, endDate, statusAuction, fkUserIdUser)
 VALUES ('Leilão teste', 'Essa é a descrição do leilão teste', '2025-12-12', '2024-12,12', 'Scheduled', 1)

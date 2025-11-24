@@ -1,4 +1,17 @@
 /* ============================================================
+   File: 90_verificacoes_pos_execucao.sql
+   Author(s): Calixto, Júlia; Henrique, Luis; Morales, Rafael; Moreira, Rafael
+   Project: Marauction
+   Class: 213
+   DBMS: MySQL 8.0.41
+   OBJECTIVE: Execute post-run validations and integrity checks
+   EXPECTED PERFORMANCE:
+        - Run quick integrity verifications after executing all scripts
+        - Check record counts, logical relationships, and data quality
+        - Confirm that the database is ready for use
+========================================================== */
+
+/* ============================================================
    POST-EXECUTION VALIDATION SCRIPT
    PURPOSE: Perform quick integrity and sanity checks after running the full database creation script.
    NOTE: No changes are made — all commands are SELECT-only.

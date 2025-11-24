@@ -1,3 +1,15 @@
+/* ============================================================
+   File: 21_procedures.sql
+   Author(s): Calixto, Júlia; Henrique, Luis; Morales, Rafael; Moreira, Rafael
+   Project: Marauction
+   Class: 213
+   DBMS: MySQL 8.0.41
+   OBJECTIVE: Create stored procedures for business logic execution
+   EXPECTED PERFORMANCE:
+        - Implement structured business rules (bidding, payments, audits)
+        - Automate repetitive or critical operations
+========================================================== */
+
 -- =============================================================
 -- PROCEDURE 1
 -- usp_place_bid
@@ -15,7 +27,6 @@
 -- WHEN TO USE: Use whenever a user manually places a bid mixing REAL and BZZCOIN.
 -- NOTES: Conversion rate used: 1 BZZCOIN = 0.10 REAL
 -- =============================================================
-
 
 DELIMITER $$
 
