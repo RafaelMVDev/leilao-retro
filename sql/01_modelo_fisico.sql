@@ -19,7 +19,7 @@ CREATE DATABASE IF NOT EXISTS Marauction
 CREATE TABLE Achievement (
 	idAchievement INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	title VARCHAR(100),
-	descriptionAchievement VARCHAR(255)
+	description VARCHAR(255)
 );
 
 CREATE TABLE AchievementUser (
@@ -40,10 +40,10 @@ CREATE TABLE Address (
 CREATE TABLE Auction (
 	idAuction INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	title VARCHAR(150),
-	descriptionAuction VARCHAR(500),
+	description VARCHAR(500),
 	startDate DATETIME,
 	endDate DATETIME,
-	statusAuction ENUM('Scheduled', 'Open', 'Finished', 'Canceled'),
+	status ENUM('Scheduled', 'Open', 'Finished', 'Canceled'),
 	fkUserIdUser INT NOT NULL
 );
 
@@ -74,7 +74,7 @@ CREATE TABLE City (
 
 CREATE TABLE ConditionTable (
 	idCondition INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	descriptionCondition VARCHAR(250) NOT NULL
+	description VARCHAR(250) NOT NULL
 );
 
 CREATE TABLE ConditionAchievement (
@@ -96,8 +96,7 @@ CREATE TABLE Currency (
 
 CREATE TABLE Image (
 	idImage INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	fileName VARCHAR(100),
-    fkProductIdProduct INT NOT NULL
+	fileName VARCHAR(100)
 );
 
 CREATE TABLE Lot (
@@ -125,6 +124,12 @@ CREATE TABLE Product (
 	fkLotIdLot INT NOT NULL
 );
 
+CREATE TABLE ProductImage (
+	fkProductIdProduct INT NOT NULL,
+    fkImageIdImage INT NOT NULL,
+    displayOrder INT
+);
+
 CREATE TABLE State (
 	idState INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     stateName VARCHAR(50)
@@ -150,8 +155,7 @@ CREATE TABLE User (
 	profilePhoto VARCHAR(100),
 	phone VARCHAR(20),
 	birthDate DATETIME,
-	registrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	fkAddressIdAddress INT NOT NULL
+	registrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE UserAddress (
@@ -209,11 +213,6 @@ ALTER TABLE AchievementUser ADD CONSTRAINT fkAchievementUser1
 ALTER TABLE AchievementUser ADD CONSTRAINT fkAchievementUser2
 	FOREIGN KEY (fkUserIdUser)
 	REFERENCES User (idUser)
-	ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE Image ADD CONSTRAINT fkImageProduct
-	FOREIGN KEY (fkProductIdProduct)
-	REFERENCES Product (idProduct)
 	ON DELETE CASCADE ON UPDATE CASCADE;
     
 ALTER TABLE Bid ADD CONSTRAINT fkBidLot
@@ -303,3 +302,6 @@ ADD COLUMN admin BOOLEAN;
 
 ALTER TABLE user
 ADD COLUMN isAuthenticated BOOLEAN;
+
+ALTER TABLE user
+ADD COLUMN cpf char(11);

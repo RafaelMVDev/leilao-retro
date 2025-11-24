@@ -1,23 +1,70 @@
+/* --- Login Card Container --- */
 .login-card {
-    /* Width adjusted to 480px */
-    background: var(--purple-medium);
+    /* Uses base background variable */
+    background: var(--medium-purple);
     padding: 40px;
     border-radius: 15px;
     width: 100%;
-    max-width: 480px; 
+    max-width: 480px;
     box-shadow: 0 0 20px #000;
     position: relative;
     color: var(--text-color);
 }
 
+/* --- Card Header and Title --- */
+.card-header-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: var(--text-color);
+}
+
+/* --- Form Layout (if not generalized in base.css) --- */
+/* Assuming 'form' layout is kept here if it's simpler than the Register form */
 form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Login button style (different color than register), already inherits hover from base.css */
+/* --- Login Button Specifics --- */
 .login-card button {
-    background: #9c3dff;
     margin-top: 10px;
+    transition: transform (0.2s);
+    transform: scale(1.02);
+    background: linear-gradient(90deg, #fa8806, #f8a201);
+}
+
+/* --- Footer Links Container --- */
+.form-links-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 16px;
+}
+
+/* --- Forgot Password Prompt Style --- */
+.forgot-password-prompt,
+.register-prompt {
+    margin: 0;
+    color: var(--text-color);
+}
+
+/* --- Links inside Prompts (specific hover) --- */
+.forgot-password-prompt a,
+.register-prompt a {
+    font-weight: bold;
+    color: var(--highlight-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.forgot-password-prompt a:hover,
+.register-prompt a:hover {
+    color: #ffd88a;
+    /* Slightly lighter shade of highlight on hover */
+    text-decoration: underline;
 }

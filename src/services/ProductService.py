@@ -1,5 +1,5 @@
-from src.models import db, ProductModel, CategoryModel, CategoryProductModel
-from setup.loaders.database import DB_SESSION
+from src.models import ProductModel, CategoryModel, CategoryProductModel
+from setup.loaders.database import db, DB_SESSION
 
 def create_product(data: dict, categories: list[int] = None):
     with DB_SESSION() as Session:

@@ -28,7 +28,7 @@ def admin_only(f):
         if not current_user.is_authenticated:
             return redirect(url_for("login"))
         if not getattr(current_user, "is_admin", False):
-            flash("Acesso restrito a administradores.", "danger") 
+            flash("Acesso restrito a administradores.", "danger") # return page later
             return redirect(url_for("home"))
         return f(*args, **kwargs)
     return decorated

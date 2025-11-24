@@ -7,4 +7,6 @@ from sqlalchemy import Table,Column,select
 
 class LotModel(db.Model):
     __table__ = Table("lot",DB_METADATA,autoload_with=db.engine)
-   
+    auction = db.relationship("AuctionModel", back_populates="lots")
+    products = db.relationship("ProductModel", back_populates="lot", cascade="all, delete-orphan")
+    bids = db.relationship("BidModel", back_populates="lot", cascade="all, delete-orphan")

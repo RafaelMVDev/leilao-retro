@@ -1,17 +1,23 @@
+/* This file must be loaded AFTER base.css */
+
 /* Adjusts 'main' not to center content,
-   allowing the container to take up the width */
+   allowing the container to take up the width for the gallery */
 main.main-gallery {
-    /* Removes center alignment from base.css */
+    /* Overrides center alignment from base.css */
     align-items: flex-start;
     justify-content: center;
+    padding-top: 40px;
+    /* Ensures space above the content */
 }
 
 /* Main container for the filter bar and the grid */
 .auction-container {
     width: 100%;
-    max-width: 1200px; /* Width limit for content */
+    max-width: 1200px;
+    /* Width limit for content */
     margin: 0 auto;
-    padding: 0 20px; /* Side spacing */
+    padding: 0 20px 50px 20px;
+    /* Adds bottom padding above the footer */
 }
 
 /* --- Filter Bar --- */
@@ -19,42 +25,40 @@ main.main-gallery {
     display: flex;
     gap: 15px;
     margin-bottom: 30px;
-    background: #2b2b2b; /* A dark gray, but not the background */
+    /* Using dark-purple or a slightly different color */
+    background: var(--medium-purple);
     padding: 15px;
     border-radius: 12px;
 }
 
 .filter-bar input[type="text"] {
-    flex: 1; /* Occupies maximum space */
-    margin: 0; /* Resets margin from base.css */
+    flex: 1;
+    /* Occupies maximum space */
+    margin: 0;
+    /* Resets margin from base.css input rule */
 }
 
 .filter-bar .filter-btn {
-    /* Takes the gradient from the register button */
-    background: linear-gradient(90deg, #8b3dff, #c55eff); 
+    /* Using the register/bid gradient, overriding the standard yellow button from base.css */
+    background: linear-gradient(90deg, #8b3dff, #c55eff);
     min-width: 100px;
 }
 
 /* --- Auction Grid --- */
 .auction-grid {
     display: grid;
-    /* * Creates responsive columns:
-     * - Tries to create columns of at least 300px.
-     * - 'auto-fill' creates as many columns as fit.
-     * - '1fr' makes them adjust and fill the space.
-     */
+    /* Responsive columns: Tries to create columns of at least 300px. */
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 25px;
 }
 
 /* --- Individual Auction Card --- */
 .auction-card {
-    /* Medium purple background, same as the login card */
-    background: var(--purple-medium);
+    background: var(--medium-purple);
     border-radius: 12px;
     box-shadow: 0 5px 15px #000000a9;
     color: var(--text-color);
-    overflow: hidden; /* Ensures the border-radius affects the image */
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -68,7 +72,7 @@ main.main-gallery {
 /* Item image placeholder */
 .auction-img-placeholder {
     height: 180px;
-    background: #111111ef; /* Same background as the photo placeholder */
+    background: #111111ef;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -81,13 +85,13 @@ main.main-gallery {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Makes the content grow */
+    flex-grow: 1;
 }
 
 .auction-title {
     font-size: 1.25rem;
     margin-bottom: 15px;
-    min-height: 50px; /* Ensures alignment if some have 1 line and others 2 */
+    min-height: 50px;
 }
 
 /* --- Auction Status (WebSocket) --- */
@@ -99,21 +103,24 @@ main.main-gallery {
     text-align: center;
     margin-bottom: 15px;
     text-transform: uppercase;
-    align-self: flex-start; /* Does not stretch */
+    align-self: flex-start;
 }
 
 .status-progress {
-    background-color: #28a745; /* Green */
+    background-color: #28a745;
+    /* Green */
     color: white;
 }
 
 .status-future {
-    background-color: var(--highlight-color); /* Yellow from base.css */
+    background-color: var(--highlight-color);
+    /* Yellow highlight */
     color: #111;
 }
 
 .status-closed {
-    background-color: #6c757d; /* Gray */
+    background-color: #6c757d;
+    /* Gray */
     color: white;
 }
 
@@ -146,24 +153,26 @@ main.main-gallery {
 }
 
 .auction-value strong {
-    color: var(--highlight-color); /* Yellow highlight for the price */
+    color: var(--highlight-color);
+    /* Yellow highlight for the price */
 }
 
 /* --- Bid Button --- */
 .bid-btn {
     /* Button with the register gradient */
-    background: linear-gradient(90deg, #8b3dff, #c55eff);
-    margin-top: auto; /* Pushes the button to the bottom of the card */
+    background: linear-gradient(90deg, #fa8806, #f8a201);
+    margin-top: auto;
+    /* Pushes the button to the bottom of the card */
 }
 
 .bid-btn:disabled {
-    background: #555;
+    background: #aa9090;
     filter: none;
     cursor: not-allowed;
     opacity: 0.7;
 }
 
-/* --- Responsiveness --- */
+/* --- Gallery Specific Responsiveness --- */
 @media (max-width: 550px) {
     .filter-bar {
         flex-direction: column;

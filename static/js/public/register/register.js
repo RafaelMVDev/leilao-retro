@@ -131,13 +131,35 @@ nextBtn.addEventListener("click", () => {
         }
 
         // Hide Step 1 and show Step 2
+
+        stepUser.querySelectorAll("input").forEach(input => {
+            input.disabled = true;
+        });
+
+        // Ativa os inputs do Step 2
+        stepAddr.querySelectorAll("input").forEach(input => {
+            input.disabled = false;
+        });
+
+        // Troca de tela
         stepUser.classList.add("hidden");
-        stepAddr.classList.remove("hidden");
-    }
+        stepAddr.classList.remove("hidden")
+            }
 });
 
 // --- Back button event ---
 backBtn.addEventListener("click", () => {
+
+    stepAddr.querySelectorAll("input").forEach(input => {
+        input.disabled = true;
+    });
+
+    // Ativa os inputs do Step 1
+    stepUser.querySelectorAll("input").forEach(input => {
+        input.disabled = false;
+    });
+
+    // Mostra tela anterior
     stepAddr.classList.add("hidden");
     stepUser.classList.remove("hidden");
 });
@@ -178,18 +200,26 @@ form.addEventListener("submit", async (e) => {
         });
 
         if (response.ok) {
-            alert("Cadastro realizado com sucesso!");
-            form.reset();
-            // Clears the CEP statuses
-            document.querySelectorAll('.zipCode-status').forEach(s => s.textContent = '');
-            document.querySelectorAll('.zipCode-input').forEach(i => i.classList.remove('zipCode-error'));
-            document.querySelectorAll('.api-filled').forEach(i => {
-                i.removeAttribute('readonly');
-                i.classList.remove('api-filled');
-            });
-            // Returns to the first step
-            stepAddr.classList.add("hidden");
-            stepUser.classList.remove("hidden");
+            const result = await response.json();
+            console.log("Resposta do servidor:", result);
+            if (result.query_status === "success") {
+                alert(result.message);
+                form.reset();
+                // Clears the CEP statuses
+                document.querySelectorAll('.zipCode-status').forEach(s => s.textContent = '');
+                document.querySelectorAll('.zipCode-input').forEach(i => i.classList.remove('zipCode-error'));
+                document.querySelectorAll('.api-filled').forEach(i => {
+                    i.removeAttribute('readonly');
+                    i.classList.remove('api-filled');
+                });
+                // Returns to the first step
+                stepAddr.classList.add("hidden");
+                stepUser.classList.remove("hidden");
+            }
+            else if (result.query_status === "fail") {
+                alert(result.message || "Ocorreu um erro no cadastro.");
+            } 
+    
         } else {
             alert("Erro ao cadastrar usuário.");
         }

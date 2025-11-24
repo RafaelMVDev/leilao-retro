@@ -25,4 +25,3 @@ def homepage():
         return render_template('public/homepage/homepage.html')
     else:
         pass
-    

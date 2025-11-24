@@ -1,17 +1,100 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página em Construção</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280">
+    
+    <title>{% block title %}Maradindiduns{% endblock %}</title>
 
+    <!-- CSS global -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/base.css') }}">
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='media/MarAuction_logo.webp')}}">
+    {% block css %}{% endblock %}
+
+    <!-- CSRF fixo -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-<body>
-  <div>
-    <div></div>
-    <h1>Página em Construção</h1>
 
-    <p>🔧 Placeholder temporário</p>
-  </div>
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo-img-placeholder"></div>
+        <p>MarAuction</p>
+    </div>
+
+    <div class="header-right">
+        <ul>
+            <li>
+                <a href="{{ url_for('public_pages.homepage') }}">Início</a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('auction_public_pages.get_auctions_main_page') }}">Leilões</a>
+            </li>
+
+            {% if current_user.is_authenticated %}
+
+                <li class="profile-area">
+                    <a href="{{ url_for('profile_pages.get_profile_page') }}" class="profile-link">
+                        {% if current_user.profile_image%}
+                            <img 
+                                src="{{ current_user.profile_image or url_for('static', filename='img/default_user.png') }}"
+                                class="profile-img" 
+                                alt="Foto de perfil">
+
+
+                         {% else %}
+                              <div class="profile-icon">
+                                <i class="fas fa-user-astronaut"></i>
+                              </div>
+                         {% endif %}
+                         <span>Perfil</span>
+                         <form action="{{ url_for('profile_pages.submit_logout') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                <input type="submit" value="SAIR" data-acao="sair">
+            </form>
+                    </a>
+                </li>
+                <!--
+                <li>
+                    <a href="{{ url_for('profile_pages.submit_logout') }}">Sair</a>
+                </li>
+                -->
+            {% else %}
+
+                <li>
+                    <a href="{{ url_for('auth_pages.login_page') }}">Entrar</a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('auth_pages.register_page') }}">Cadastrar-se</a>
+                </li>
+
+            {% endif %}
+        </ul>
+    </div>
+</header>
+
+{% block content %}
+
+{% endblock %}
+
+<footer>
+    <div class="footer-cellphone">
+        <p>Telefone: (11) 97321-0013</p>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2025 Maradindiduns</p>
+    </div>
+    <div class="footer-empty-space"></div>
+</footer>
+
+{% block js %}
+
+{% endblock %}
+
 </body>
 </html>
