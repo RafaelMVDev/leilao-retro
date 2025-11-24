@@ -3,107 +3,129 @@
 {% block title %}Criar Leilão{% endblock %}
 
 {% block content %}
+
+
 <div class="auction-create-wrapper">
 
   <div class="auction-form-panel">
-    <h2>Criar um novo leilão</h2>
-    <p>Preencha os detalhes abaixo para configurar seu leilão e os itens que farão parte dele.</p>
+    <h2>Criar Novo Leilão</h2>
 
     <form id="createAuctionForm" enctype="multipart/form-data">
 
-      <!-- Seção: Dados do Leilão -->
+
       <div class="form-section">
-        <h3>1. Informações do Leilão</h3>
+        <h3>Informações do Leilão</h3>
 
         <div class="form-group">
-          <label for="title">Título do Leilão</label>
-          <input type="text" id="title" name="title" placeholder="Ex: Coleção de Jogos Retrô" required>
-          <small>Esse é o nome que compradores vão ver.</small>
+          <label>Título do Leilão</label>
+          <input type="text" name="title" placeholder="Ex: Lote especial de consoles retrô">
         </div>
 
         <div class="form-group">
-          <label for="description">Descrição do Leilão</label>
-          <textarea id="description" name="description" rows="4" placeholder="Descreva o que será leiloado (itens, condição, quantidades, etc)"></textarea>
+          <label>Descrição do Leilão</label>
+          <textarea name="description" rows="3" placeholder="Descrição geral do lote"></textarea>
         </div>
 
         <div class="form-two-col">
           <div class="form-group">
-            <label for="startDate">Data & Hora de Início</label>
-            <input type="datetime-local" id="startDate" name="start_date" required>
-            <small>Quando este leilão começará.</small>
+            <label>Data/Hora de Início</label>
+            <input type="datetime-local" name="start_date">
           </div>
           <div class="form-group">
-            <label for="endDate">Data & Hora de Término</label>
-            <input type="datetime-local" id="endDate" name="end_date" required>
-            <small>Quando os lances terminarão.</small>
+            <label>Data/Hora de Encerramento</label>
+            <input type="datetime-local" name="end_date">
           </div>
         </div>
       </div>
 
-      <!-- Seção: Lote Principal -->
+      <hr>
+
+
       <div class="form-section">
-        <h3>2. Lote Inicial</h3>
+        <h3>Informações do Lote</h3>
 
         <div class="form-two-col">
           <div class="form-group">
-            <label for="lotNumber">Número do Lote</label>
-            <input type="number" id="lotNumber" name="lot_number" min="1" value="1" required>
-            <small>Identificador para este lote dentro do leilão.</small>
+            <label>Número do Lote</label>
+            <input type="text" name="lot_number" placeholder="Ex: Lote #15">
           </div>
 
           <div class="form-group">
-            <label for="minimumBid">Lance Mínimo (R$)</label>
-            <input type="number" id="minimumBid" name="minimum_bid" min="0" step="0.01" required>
-            <small>Menor valor aceitável para o primeiro lance.</small>
+            <label>Lance mínimo (R$)</label>
+            <input type="number" name="minimum_bid" step="0.01" min="0">
           </div>
         </div>
 
         <div class="form-group">
-          <label for="minimumIncrement">Incremento de Lance (R$)</label>
-          <input type="number" id="minimumIncrement" name="minimum_increment" min="0" step="0.01" value="1.00">
-          <small>Quanto deve aumentar o valor a cada novo lance.</small>
+          <label>Incremento mínimo (R$)</label>
+          <input type="number" name="minimum_increment" step="0.01" min="0">
         </div>
       </div>
 
-      <!-- Seção: Produtos no Lote -->
+      <hr>
+
+
       <div class="form-section">
-        <h3>3. Itens / Produtos do Lote</h3>
-        <p>Adicione os produtos que farão parte deste lote.</p>
+        <h3>Produtos do Lote</h3>
 
-        <div id="productsSection"></div>
+        <div id="productsSection">
 
-        <button type="button" id="addProductBtn" class="btn-outline">+ Adicionar Item</button>
+        </div>
+
+        <button type="button" id="addProductBtn" class="btn-outline">
+          + Adicionar Produto
+        </button>
       </div>
 
-      <!-- Botão para criar -->
-      <div class="form-section actions">
+      <hr>
+
+      <div style="margin-top:20px; text-align:right;">
         <button type="submit" class="btn-primary">Criar Leilão</button>
       </div>
+
     </form>
   </div>
 
-  <!-- Painel de Pré-visualização -->
+  <!-- PREVIEW -->
   <div class="preview-panel">
-    <h3>Pré-visualização do Leilão</h3>
+    <h3>Prévia do Leilão</h3>
+
     <div class="preview-box">
+
       <p><strong>Título:</strong> <span id="previewTitle">—</span></p>
       <p><strong>Descrição:</strong> <span id="previewDescription">—</span></p>
-      <p><strong>Lote nº:</strong> <span id="previewLotNum">—</span></p>
-      <p><strong>Lance inicial:</strong> R$ <span id="previewMinBid">—</span></p>
-      <p><strong>Incremento:</strong> R$ <span id="previewIncrement">—</span></p>
+      <p><strong>Lote:</strong> <span id="previewLotNum">—</span></p>
+
+      <p>
+        <strong>Lance mínimo:</strong> R$
+        <span id="previewMinBid">0.00</span>
+      </p>
+
+      <p>
+        <strong>Incremento:</strong> R$
+        <span id="previewIncrement">0.00</span>
+      </p>
+
       <hr>
-      <h4>Itens neste Lote</h4>
-      <ul id="previewProductsList" class="preview-products-list"></ul>
+
+      <p><strong>Produtos:</strong></p>
+      <ul id="previewProductsList" class="preview-products-list">
+
+      </ul>
+
     </div>
   </div>
 
 </div>
+
+
 {% endblock %}
 
 {% block js %}
 <script src="{{ url_for('static', filename='js/private/auction/create_auction.js') }}"></script>
 {% endblock %}
 
+
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/private/auction/create_auction.css') }}">
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/private/auction/create_auction.css')}}">
 {% endblock %}

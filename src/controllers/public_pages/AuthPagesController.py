@@ -53,7 +53,7 @@ def submit_register():
     if user_data and addr_data:
         result = register_user(user_data=user_data, addr_data=addr_data) # function that validates the data and also commits the data to the db ( returns error if somehting went wrong)
     print(result)
-    return jsonify("Deu certo?")
+    return result
 
 
 @bp.route("/reset_password/<token>", methods=["GET","POST"])
@@ -98,7 +98,20 @@ def forgot_password():
     return render_template("public/auth_pages/forgot_password.html")
 
 
+@bp.route("/confirm_email/<token>")
+def confirm_email(token):
+    with DB_SESSION() as Session:
+        email = confirm_token(token)
+        if not email:
+            return "Token inválido ou expirado", 400
+        
+        user = UserModel.query.filter_by(email=email).first()
+        if not user:
+            return "Usuário não encontrado", 404
 
+        user.isAuthenticated = True
+        db.session.commit()
+        return render_template("public/auth_pages/email_confirmed.html")
 
 
     

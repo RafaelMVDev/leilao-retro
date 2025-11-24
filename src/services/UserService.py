@@ -28,6 +28,7 @@ _user_obrigatory_fields =  [   # reference table to verify if there is any missi
         "userPassword",
         "phone",
         "birthDate",
+        "cpf"
         
 ]
 
@@ -67,7 +68,15 @@ def authenticate_user(db_session,email, password):
         print(e)
         return False
 
-
+def serialize_wallet(wallet: WalletModel):
+    return {
+        "idWallet": wallet.idWallet,
+        "currentBalance": float(wallet.currentBalance),
+        "fkUserIdUser": wallet.fkUserIdUser,
+        "fkCurrencyIdCurrency": wallet.fkCurrencyIdCurrency,
+        "creationDate": wallet.creationDate.isoformat() if wallet.creationDate else None,
+        "lastUpdate": wallet.lastUpdate.isoformat() if wallet.lastUpdate else None
+    }
 def get_wallets_data(idUser):
     with DB_SESSION() as Session:
         stm_wallet_internal = select(WalletModel).filter_by(fkUserIdUser = idUser,fkCurrencyIdCurrency = 1)
@@ -77,8 +86,8 @@ def get_wallets_data(idUser):
         wallet_external = Session.execute(stm_wallet_external).scalars().first()
         if wallet_internal and wallet_external:
             return {
-                "wallet_external": wallet_external,
-                "wallet_internal":wallet_internal
+                "wallet_external": serialize_wallet(wallet_external),
+                "wallet_internal":serialize_wallet(wallet_internal)
             }
         return False
 def set_user_session_data(user):
@@ -159,12 +168,12 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
         email_exists = db.session.query(UserModel).filter_by(email=user_data.get("email")).first() # maybe turn into function later
         if email_exists:
             print("EMAIL JA EXISTE VAGABUNDO")
-            return jsonify({"error": "E-mail já cadastrado."}), 400
+            return jsonify({"query_status" : "fail","message": "E-mail já cadastrado."}), 400
         
         field_missing = missing_fields(user_data=user_data,addr_data=addr_data) # move to address service later? 
         if field_missing:
             print("MISSING FIELD!")
-            return field_missing[1]
+            return jsonify({"query_status" : "fail", "message": f"Campo faltante: {field_missing[1]}"})
         
         #add hash here (CHANGE LATER)
         hashed_password = generate_password_hash(user_data.get("userPassword"))
@@ -172,7 +181,7 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
         is_valid, data = register_adress(Session,addr_data_unv = addr_data)
         if not is_valid: # if it's not valid,data represents a json with the error
             print(f"Is valid? {is_valid}: {data}")
-            return data # the
+            return jsonify({"query_status" : "fail", "message": "Campo enviado malformatado: "})
         print(f"Address Model: {data}")
         #add verification in the fields later
         new_user = UserModel(
@@ -185,6 +194,7 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
             phone=user_data.get("phone"),
             birthDate=user_data.get("birthDate"),
             registrationDate=datetime.utcnow(),
+            cpf = user_data.get("cpf")
             
         )
         wallet_bzz_coins = WalletModel(
@@ -211,10 +221,10 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
         # 4️⃣ Salva no banco
         try:
             print("REGISTRANDO!!")
-            Session.add(new_user,new_user_address)
+            Session.add_all([new_user,new_user_address,wallet_bzz_coins,wallet_country_coins])
             Session.commit()
             token = generate_token(user_data.get("email"))
-            confirm_url = f"{url_for("auth_pages.confirm_email")}/{token}"
+            confirm_url = f"http://127.0.0.1:5000{url_for('auth_pages.confirm_email',token = token)}"
 
             html = f"""
             <h3>Confirme sua conta</h3>
@@ -223,13 +233,13 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
             """
 
             send_email(user_data.get("email"), "Confirmação da Conta", html)
-            return jsonify({"message": f"Usuário registrado com sucesso! Email de autenticação enviado para: {user_data.get("email")}"}), 201
+            return jsonify({"query_status" : "success", "message": f"Cadastro realziado com sucesso! Um email de autenticação será enviado para: {user_data.get("email")}"})
         except IntegrityError as e:
             print(e)
-            return jsonify({"error": f"Erro when registering user (duplicate?). {e}" }), 400
+            return jsonify({"query_status" : "fail","message": f"Erro no registro de usuárior: Integrity Error" })
         except Exception as e:
             print(e)
-            return jsonify({"error": str(e)}), 500 
+            return jsonify({"query_status" : "fail","message": f"Erro desconhecido ao registrar usuário" })
         
 
 def get_user_settings(user_id):

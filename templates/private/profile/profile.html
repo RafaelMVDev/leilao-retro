@@ -27,13 +27,19 @@
             <div class="balance-cards">
                 <div class="balance-card">
                     <span>Saldo (R$)</span>
-                    {{wallets_data.wallet_external.currentBalance if wallets_data else 250}}
+                    <strong id="user_balance"
+                        data-balance="{{ wallets_data.wallet_external.currentBalance if wallets_data else 250 }}">
+                    </strong>
+
                     <!--<strong id="user_balance"><i>{{wallets_data.wallet_external.currentBalance if wallets_data else 250}} </i></strong>-->
                 </div>
 
                 <div class="balance-card">
-                    <span>Moedas</span>
-                    {{wallets_data.wallet_internal.currentBalance if wallets_data else 250}}
+                    <span>BzzCoins</span>
+
+                    <strong id="user_coins"
+                        data-coins="{{ wallets_data.wallet_internal.currentBalance if wallets_data else 250 }}">
+                    </strong>
                     <!--<strong id="user_coins"><i class="fas fa-coins" style="color: gold;">{{wallets_data.wallet_internal.currentBalance if wallets_data else 250}} 250</i></strong>-->
                 </div>
             </div>

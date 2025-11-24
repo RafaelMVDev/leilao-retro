@@ -12,6 +12,8 @@ const editSaveBtn = document.getElementById('edit_save_btn');
 const saveCancelGroup = document.getElementById('save_cancel_group');
 const newPassInput = document.getElementById('input_new_password');
 const confirmPassInput = document.getElementById('input_confirm_password');
+const balanceElement = document.getElementById('user_balance');
+const coinsElement = document.getElementById('user_coins');
 
 // MAIN INPUT FIELDS (HTML IDs)
 const inputName = document.getElementById('input_nome');
@@ -73,6 +75,8 @@ function loadUserData() {
     //inputName.value = MOCK_USER_DATA.name;
     //inputNickname.value = MOCK_USER_DATA.nickname;
     //inputPhone.value = MOCK_USER_DATA.phoneNumber;
+    CURRENT_DATA.currentBalance = balanceElement.dataset.balance;
+    CURRENT_DATA.bzzCoins = coinsElement.dataset.coins;
 
     // Address Data
     CURRENT_DATA.zipCode   = cepInput.value;
@@ -85,8 +89,8 @@ function loadUserData() {
 
     // Updates Sidebar Card
     document.getElementById('user_nickname').textContent = CURRENT_DATA.nickname;
-    document.getElementById('user_balance').textContent = CURRENT_DATA.balance;
-    document.getElementById('user_coins').innerHTML = `${CURRENT_DATA.coins} <i class="fas fa-coins" style="color: gold;"></i>`;
+    document.getElementById('user_balance').textContent = CURRENT_DATA.currentBalance;
+    document.getElementById('user_coins').innerHTML = `${CURRENT_DATA.bzzCoins} <i class="fas fa-coins" style="color: gold;"></i>`;
 }
 
 /**
