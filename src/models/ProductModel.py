@@ -8,6 +8,7 @@ from sqlalchemy import Table,Column,select
 class ProductModel(db.Model):
 
     __table__ = Table("product",DB_METADATA,autoload_with=db.engine)
-   
+    lot = db.relationship("LotModel", back_populates="products")
+    product_images = db.relationship("ProductImageModel",back_populates = "products")
 
     

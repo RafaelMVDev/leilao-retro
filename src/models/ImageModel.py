@@ -7,4 +7,4 @@ from sqlalchemy import Table,Column,select
 
 class ImageModel(db.Model):
     __table__ = Table("image",DB_METADATA,autoload_with=db.engine)
-    
+    product_images = db.relationship("ProductImageModel",back_populates = "images")

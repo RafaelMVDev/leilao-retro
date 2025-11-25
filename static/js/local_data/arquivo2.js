@@ -1,1 +1,0 @@
-import { getProfileInfo} from '/static/js/local_data/user_auth.js';

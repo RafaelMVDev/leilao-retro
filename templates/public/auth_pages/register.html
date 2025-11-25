@@ -1,47 +1,24 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "layouts/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maradindiduns - Cadastre-se</title>
+{% block title %}Maradindiduns - Cadastre-se{% endblock %}
 
-    <link rel="stylesheet" href="{{url_for('static',filename = 'css/layouts/base.css')}}">
-    <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/register/register_style.css')}}">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+{% block css %}
+<link rel="stylesheet" href="{{url_for('static',filename = 'css/public/register/register_style.css')}}">
+{% endblock %}
 
-    <style>
-        .hidden {
-            display: none !important;
-        }
-    </style>
+{% block js %}
+<script src="{{url_for('static',filename='js/public/register/register.js')}}" defer></script>
+{% endblock %}
 
-    <script src="{{url_for('static',filename = 'js/public/register/register.js')}}" defer></script>
-</head>
+{% block content %}
 
-<body>
-    <header>
-        <div class="header-left">
-            <div class="logo-img-placeholder"></div>
-            <p> Maradindinduns </p>
-        </div>
-        <div class="header-right">
-            <ul>
-                <li><a href="{{url_for('public_pages.homepage')}}">Início</a></li>
-                <li><a href="#">Leilões</a></li>
-                <li><a href="{{url_for('auth_pages.login_page')}}">Entrar</a></li>
-                <li><a class="activate" href="{{url_for('auth_pages.register_page')}}">Cadastrar-se</a></li>
-            </ul>
-        </div>
-    </header>
-
-    <main>
+ <main>
         <div class="form-card register-card">
             <h2 class="card-header-title">Cadastre seus Dados</h2>
 
-            <form id="register_form" novalidate>
+            <form id="register_form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <!-- Etapa 1 -->
+                <!-- step 1 -->
                 <div id="step_user">
                     <div class="line">
                         <input type="text" placeholder="Nome" name="firstName" required minlength="3">
@@ -49,8 +26,8 @@
                     </div>
                     
                     <div class="line">
-                    <input type="email" placeholder="E-mail" name="email" required minlength="6" maxlength="100">
-                    <!--<input type="email" placeholder="CPF" name="CPF" required minlength="" maxlength="11">-->
+                    <input type="email" placeholder="E-mail" name="email" minlength="6" maxlength="100" required>
+                    <input type="text" placeholder="CPF" name="cpf" pattern="[0-9]{11}" maxlength="11" minlength="11" required>
                     </div>
                     <div class="line">
                         <input type="password" placeholder="Senha" name="userPassword" required>
@@ -67,7 +44,7 @@
                     <button type="button" id="next_step">Avançar</button>
                 </div>
 
-                <!-- Etapa 2 -->
+                <!-- step 2 -->
                 <div id="step_address" class="hidden">
                     <fieldset class="address-group">
                         <legend>Endereço</legend>
@@ -103,15 +80,4 @@
         </div>
     </main>
 
-    <footer>
-        <div class="footer-cellphone">
-            <p>Telefone: (11) 97321-0013</p>
-        </div>
-        <div class="footer-copyright">
-            <p>@Copyright 2025</p>
-        </div>
-        <div class="footer-empty-space"></div>
-    </footer>
-</body>
-
-</html>
+{% endblock %}

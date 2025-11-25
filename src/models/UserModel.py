@@ -9,6 +9,6 @@ class UserModel(UserMixin,db.Model): #explain user mixin later  ( Flassk LOgin)
     __table__ = Table("user",DB_METADATA,autoload_with=db.engine)
    
     user_addresses = db.relationship("UserAddressModel", back_populates = "users")
-
+    wallets = db.relationship("WalletModel",back_populates = "users")
     def get_id(self):
         return str(self.idUser)

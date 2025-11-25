@@ -1,120 +1,175 @@
-/* Base Colors and Typography */
+/* --- Theme Variables --- */
 :root {
-    --header-footer-bg: #411B62;    /* Dark purple for header/footer */
-    --purple-medium: #6c1ebf;       /* Main Form background */
-    --purple-button: #5a00b3;       /* Main button (used if no gradient is present) */
-    --gray-background: #1A1A1A;     /* Main Body background */
-    --input-background: #cfcfcf;    /* Inputs background */
-    --text-color: #FFFFFF;
-    --highlight-color: #FFCE66;     /* Highlight (active link/hover) */
+    --dark-purple: #1e1b30; /* Main dark background (Used for body, header, footer) */
+    --medium-purple: #2c2941; /* Card and sidebar color (Background of info cards) */
+    --highlight-color: #ffc93c; /* Yellow highlight (Links, active states, titles) */
+    --text-color: #f0f0f0; /* Light text color */
+    --input-background: #ffffff; /* Inputs background */
+    
+    /* Variáveis de apoio (Manter para consistência) */
+    --simple-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --neon-glow-subtle: rgba(255, 201, 60, 0.3);
+    --neon-glow-hover: rgba(255, 201, 60, 0.5);
 }
 
-/* Reset and Full Height Configuration */
+/* --- Reset and Full Height Configuration --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif; 
 }
 
 html, body {
     height: 100%; 
 }
 
+/* --- Base Styles --- */
 body {
-    background-color: var(--gray-background);
+    background-color: var(--dark-purple);
     color: var(--text-color);
     display: flex;
     flex-direction: column;
     min-height: 100vh; 
-}
-
-/* --- Header --- */
-header {
-    width: 100%;
-    padding: 15px 50px; 
-    background: var(--header-footer-bg);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-}
-
-.header-left .logo-img-placeholder {
-    width: 30px; 
-    height: 30px; 
-    background-color: #7b2cbf; 
-    border-radius: 5px;
-    margin-right: 10px; 
-    flex-shrink: 0;
-}
-
-.header-left p {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.header-right ul {
-    display: flex;
-    list-style: none;
-    padding: 0;
     margin: 0;
-    gap: 20px;
+    padding: 0;
 }
 
-.header-right a {
-    color: var(--text-color);
+/* --- Global Links --- */
+a {
+    color: var(--highlight-color);
     text-decoration: none;
-    font-size: 20px;
     transition: color 0.3s;
 }
 
-.header-right a:hover,
-.header-right a.activate {
-    text-decoration: underline;
-    color: var(--highlight-color) !important;
+a:hover {
+    color: #ffe08a; /* Lighter shade of highlight */
 }
 
-/* --- Footer (CORRECTED) --- */
+/* --- Standard Buttons (Yellow) --- */
+/* Botões padrão que não são 'bid' ou 'info' */
+button:not(.bid-button, .info-button),
+.filter-apply-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    color: #fff4f4;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: var(--highlight-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+button:hover:not(:disabled):not(.bid-button, .info-button) {
+    background-color: #ffe08a;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Input Field --- */
+input:not([type="file"]) {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #4a456e;
+    background: var(--input-background);
+    color: #111;
+    font-size: 16px;
+    width: 100%;
+    margin: 8px 0;
+}
+
+
+/* --- HEADER --- */
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px; 
+    background-color: var(--dark-purple); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header-left,
+.header-right ul {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-left p {
+    font-size: 1.5rem; 
+    font-weight: bold;
+    color: var(--highlight-color);
+}
+
+.logo-placeholder, .logo-img-placeholder { 
+    width: 40px; 
+    height: 40px; 
+    background-color: var(--highlight-color); 
+    border-radius: 50%; 
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.header-right ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.header-right a {
+    padding: 8px 15px; 
+    border-radius: 6px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.header-right a:hover,
+.header-right a.active,
+.header-right a.activate { 
+    background-color: var(--medium-purple);
+    color: var(--highlight-color) !important;
+    text-decoration: none;
+}
+
+/* --- FOOTER --- */
 footer {
     width: 100%;
-    padding: 20px 50px; 
-    background: var(--header-footer-bg);
-    color: white;
-    font-size: 14px;
-    display: flex; 
-    justify-content: space-between; 
+    margin-top: auto; 
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 15px 30px; 
+    background-color: var(--dark-purple); 
+    color: var(--text-color);
+    font-size: 0.9rem;
+    border-top: 1px solid #ffffff1a; 
 }
 
 .footer-cellphone {
     text-align: left;
     flex-grow: 0;
     flex-shrink: 0;
-    /* Adds a FORCED right margin to separate it from the copyright */
     margin-right: 40px; 
 }
 
 .footer-copyright {
     text-align: center; 
     display:flexbox;
-    /* Allows it to grow slightly, but with the "empty-space" pushing */
     flex-grow: 10; 
     flex-shrink: 0;
-    /* Ensures a space on the left as well, preventing it from sticking to the phone */ 
 }
 
 .footer-empty-space {
-    /* Occupies all the remaining space (to the right of the copyright) */
     flex-grow: 2.5; 
 }
 
-/* --- Main Content (Main) --- */
+/* --- Main Content (Centralizado para Login/Registro) --- */
 main {
     flex-grow: 1;
     display: flex;
@@ -123,65 +178,58 @@ main {
     padding: 50px 20px; 
 }
 
-input:not([type="file"]) {
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    background: var(--input-background);
-    color: #111;
-    font-size: 14px;
-    width: 100%;
-    margin: 8px 0; 
+.profile-area {
+    display: flex;
+    align-items: center;
 }
 
-button {
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    color: white;
-    font-weight: bold;
-    font-size: 15px;
-    cursor: pointer;
-    transition: filter 0.3s; /* Transition only for the filter */
-    background: var(--purple-button);
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: inherit;
 }
 
-/* HOVER EFFECT LIGHTENING */
-button:hover {
-    filter: brightness(1.2); 
-    transform: none; 
-    opacity: 1; 
+.profile-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-/* --- Media Queries --- */
+/* --- Media Queries Globais --- */
 @media (max-width: 768px) {
     header, footer {
         flex-direction: column;
         align-items: center;
         padding: 15px 20px;
     }
+    
     .header-right ul {
         flex-direction: column;
         gap: 10px;
         margin-top: 15px;
         text-align: center;
     }
+    
     .header-left {
         margin-bottom: 10px;
     }
+    
     footer {
         flex-direction: column;
         align-items: center;
         padding: 15px 20px;
         gap: 10px;
     }
+    
     .footer-cellphone, 
     .footer-copyright,
     .footer-empty-space { 
         text-align: center; 
         width: 100%;
         flex-grow: 0;
-        /* Removes fixed margins on mobile to allow correct line breaking */
         margin-right: 0; 
         margin-left: 0;
     }

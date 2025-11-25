@@ -8,4 +8,4 @@ from sqlalchemy import Table,Column,select
 class WalletModel(db.Model):
     __table__ = Table("wallet",DB_METADATA,autoload_with=db.engine)
     users = db.relationship("UserModel",back_populates = "wallets")
-   
+    currencies = db.relationship("CurrencyModel", back_populates = "wallets")

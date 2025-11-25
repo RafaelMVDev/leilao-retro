@@ -155,8 +155,7 @@ CREATE TABLE User (
 	profilePhoto VARCHAR(100),
 	phone VARCHAR(20),
 	birthDate DATETIME,
-	registrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	fkAddressIdAddress INT NOT NULL
+	registrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE UserAddress (

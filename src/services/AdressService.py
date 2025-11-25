@@ -1,5 +1,4 @@
 from src.models.AddressModel import AddressModel
-from src.models.UserAddressModel import UserAddressModel
 from src.models.CityModel import CityModel
 from src.models.CountryModel import CountryModel
 from src.models.StateModel import StateModel
@@ -9,7 +8,6 @@ from setup.project_settings import project_settings
 import requests
 import json
 from sqlalchemy import select
-from sqlalchemy.orm import joinedload
 import re
 from flask import jsonify,json
 import json
@@ -129,4 +127,3 @@ def register_adress(session,addr_data_unv : dict) ->tuple[bool,AddressModel]: #u
         session.commit()
      
         return (True,address)
-    

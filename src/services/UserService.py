@@ -1,8 +1,8 @@
 from src.models.UserModel import UserModel
 from src.models.UserAddressModel import UserAddressModel
-
+from src.models.WalletModel import WalletModel
 from src.services.AdressService import *
-
+from pprint import pprint
 from setup.loaders.database import DB_SESSION
 from setup.login_manager import login_manager
 from sqlalchemy import select
@@ -13,7 +13,7 @@ from datetime import datetime
 from flask_login import LoginManager,logout_user,login_user,current_user
 from sqlalchemy import select
 from src.services.EmailService import generate_token, send_email
-
+from sqlalchemy.orm import joinedload
 from src.models.CityModel import CityModel
 from src.models.StateModel import StateModel
 
@@ -28,6 +28,7 @@ _user_obrigatory_fields =  [   # reference table to verify if there is any missi
         "userPassword",
         "phone",
         "birthDate",
+        "cpf"
         
 ]
 
@@ -59,12 +60,7 @@ def authenticate_user(db_session,email, password):
             if user.isAuthenticated:
                 print(f"Logging user: {user}")
                 login_user(user)
-                if session.get("user_data"):
-                    session["user_data"]["profile_settings"] = get_user_settings(user.idUser)
-                    session["user_data"]["address_data"]  =get_full_address_data(user.idUser)
-                    print(session["user_data"]["address_data"] )
-                else:
-                    session["user_data"] = {}
+                set_user_session_data(user)
                 return True
             else:
                 return "Usuário não autenticado"
@@ -72,6 +68,36 @@ def authenticate_user(db_session,email, password):
         print(e)
         return False
 
+def serialize_wallet(wallet: WalletModel):
+    return {
+        "idWallet": wallet.idWallet,
+        "currentBalance": float(wallet.currentBalance),
+        "fkUserIdUser": wallet.fkUserIdUser,
+        "fkCurrencyIdCurrency": wallet.fkCurrencyIdCurrency,
+        "creationDate": wallet.creationDate.isoformat() if wallet.creationDate else None,
+        "lastUpdate": wallet.lastUpdate.isoformat() if wallet.lastUpdate else None
+    }
+def get_wallets_data(idUser):
+    with DB_SESSION() as Session:
+        stm_wallet_internal = select(WalletModel).filter_by(fkUserIdUser = idUser,fkCurrencyIdCurrency = 1)
+        wallet_internal = Session.execute(stm_wallet_internal).scalars().first()
+
+        stm_wallet_external = select(WalletModel).filter_by(fkUserIdUser = idUser,fkCurrencyIdCurrency = 2)
+        wallet_external = Session.execute(stm_wallet_external).scalars().first()
+        if wallet_internal and wallet_external:
+            return {
+                "wallet_external": serialize_wallet(wallet_external),
+                "wallet_internal":serialize_wallet(wallet_internal)
+            }
+        return False
+def set_user_session_data(user):
+    if not(session.get("user_data")):
+        session["user_data"] = {}
+    print("setting user data!")
+    session["user_data"]["profile_settings"] = get_user_settings(user.idUser)
+    session["user_data"]["address_data"]  =get_full_address_data(user.idUser)
+    session["user_data"]["wallets_data"] = get_wallets_data(user.idUser) 
+        
 def logout():
     logout_user()
 
@@ -142,12 +168,12 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
         email_exists = db.session.query(UserModel).filter_by(email=user_data.get("email")).first() # maybe turn into function later
         if email_exists:
             print("EMAIL JA EXISTE VAGABUNDO")
-            return jsonify({"error": "E-mail já cadastrado."}), 400
+            return jsonify({"query_status" : "fail","message": "E-mail já cadastrado."}), 400
         
         field_missing = missing_fields(user_data=user_data,addr_data=addr_data) # move to address service later? 
         if field_missing:
             print("MISSING FIELD!")
-            return field_missing[1]
+            return jsonify({"query_status" : "fail", "message": f"Campo faltante: {field_missing[1]}"})
         
         #add hash here (CHANGE LATER)
         hashed_password = generate_password_hash(user_data.get("userPassword"))
@@ -155,7 +181,7 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
         is_valid, data = register_adress(Session,addr_data_unv = addr_data)
         if not is_valid: # if it's not valid,data represents a json with the error
             print(f"Is valid? {is_valid}: {data}")
-            return data # the
+            return jsonify({"query_status" : "fail", "message": "Campo enviado malformatado: "})
         print(f"Address Model: {data}")
         #add verification in the fields later
         new_user = UserModel(
@@ -168,8 +194,25 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
             phone=user_data.get("phone"),
             birthDate=user_data.get("birthDate"),
             registrationDate=datetime.utcnow(),
+            cpf = user_data.get("cpf")
             
         )
+        wallet_bzz_coins = WalletModel(
+            lastUpdate = datetime.utcnow(),
+            currentBalance = 2,
+            creationDate = datetime.utcnow(),
+            users = new_user,
+            fkCurrencyIdCurrency = 1
+        )
+
+        wallet_country_coins = WalletModel(
+            lastUpdate = datetime.utcnow(),
+            currentBalance = 500,
+            creationDate = datetime.utcnow(),
+            users = new_user,
+            fkCurrencyIdCurrency = 2
+        )
+
 
         new_user_address = UserAddressModel(
             addresses = data,
@@ -178,10 +221,10 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
         # 4️⃣ Salva no banco
         try:
             print("REGISTRANDO!!")
-            Session.add(new_user,new_user_address)
+            Session.add_all([new_user,new_user_address,wallet_bzz_coins,wallet_country_coins])
             Session.commit()
             token = generate_token(user_data.get("email"))
-            confirm_url = f"{url_for("auth_pages.confirm_email")}/{token}"
+            confirm_url = f"http://127.0.0.1:5000{url_for('auth_pages.confirm_email',token = token)}"
 
             html = f"""
             <h3>Confirme sua conta</h3>
@@ -190,13 +233,13 @@ def register_user(user_data: dict,addr_data:dict) -> int | dict:
             """
 
             send_email(user_data.get("email"), "Confirmação da Conta", html)
-            return jsonify({"message": f"Usuário registrado com sucesso! Email de autenticação enviado para: {user_data.get("email")}"}), 201
+            return jsonify({"query_status" : "success", "message": f"Cadastro realziado com sucesso! Um email de autenticação será enviado para: {user_data.get("email")}"})
         except IntegrityError as e:
             print(e)
-            return jsonify({"error": f"Erro when registering user (duplicate?). {e}" }), 400
+            return jsonify({"query_status" : "fail","message": f"Erro no registro de usuárior: Integrity Error" })
         except Exception as e:
             print(e)
-            return jsonify({"error": str(e)}), 500 
+            return jsonify({"query_status" : "fail","message": f"Erro desconhecido ao registrar usuário" })
         
 
 def get_user_settings(user_id):
@@ -217,43 +260,51 @@ def get_user_settings(user_id):
 )
 
         result = Session.execute(stm).mappings().one_or_none()
-        print(result)
         return dict(result) if result else None
 
     
 def get_full_address_data(user_id: int):
-        with DB_SESSION() as session:
+    with DB_SESSION() as session:
 
-            query = (
-                select(UserAddressModel)
-                .options(
-                    joinedload("addresses")
-                        .joinedload("city")
-                        .joinedload("state")
-                        .joinedload("country")
-                )
-                .where(UserAddressModel.idUser == user_id)
+        query = (
+            select(UserAddressModel)
+            .options(
+                joinedload(UserAddressModel.addresses)
+                .joinedload(AddressModel.cities)
+                .joinedload(CityModel.states)
+                .joinedload(StateModel.countries)
             )
+            .where(UserAddressModel.fkUserIdUser == user_id)
+        )
 
-            result = session.execute(query).scalars().all()
+        result = session.execute(query).scalars().all()
+        ua = result[0]
+        if ua:
+            cpt_address_data = {
+                "street": ua.addresses.street,
+                "district": ua.addresses.district,
+                "numberAddress": ua.addresses.numberAddress,
+                "zipCode": ua.addresses.zipCode,
+                "complement":ua.addresses.complement,
+                # City
+                "nameCity": ua.addresses.cities.nameCity,
 
-            if not result:
-                return None
+                # State
+                "stateName":  ua.addresses.cities.states.stateName,
 
+                # Country
+                "nameCountry": ua.addresses.cities.states.countries.nameCountry,
+            }
+        
+            print(cpt_address_data)
+        if not result:
+            print("NAO RETORNOU NADA")
+            return None
+        print(result[0].__dict__.keys())
+    
 
-            addresses = []
-            for ua in result:
-                addr = ua.addresses
-                addresses.append({
-                    "street": addr.street,
-                    "district": addr.district,
-                    "number": addr.number,
-                    "city": addr.city.name,
-                    "state": addr.city.state.name,
-                    "country": addr.city.state.country.name,
-                })
+        return cpt_address_data
 
-            return addresses
     
 
 def change_password(email,new_password):
@@ -263,4 +314,3 @@ def change_password(email,new_password):
             
             current_user.userPassword = generate_password_hash(new_password)
             db.session.commit()
-

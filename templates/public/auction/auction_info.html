@@ -1,33 +1,17 @@
-<!DOCTYPE html>
+{% extends "layouts/base.html" %}
 <html lang="pt-br">
+{% block title %}
+Detalhes do Leilão - SNES com 20 Jogos
+{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Leilão - SNES com 20 Jogos</title>
-
+{% block css %}
     <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/auction/auction_info_style.css')}}">
-
+{% endblock %}
+{% block js %}
     <script src="{{url_for('static',filename = 'js/public/auction/auction_info.js')}}" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body>
-    <header>
-        <div class="header-left">
-            <div class="logo-placeholder"></div>
-            <p> Maradindiduns </p>
-        </div>
-        <div class="header-right">
-            <ul>
-                <li><a href="#">Início</a></li>
-                <li><a class="active" href="#">Leilões</a></li>
-                <li><a href="#">Entrar</a></li>
-                <li><a href="#">Cadastrar-se</a></li>
-            </ul>
-        </div>
-    </header>
-
+{% endblock %}
+{% block content %}
     <main class="auction-details-main">
 
         <div class="details-container">
@@ -150,15 +134,4 @@
         </div>
     </main>
 
-    <footer>
-        <div class="footer-cellphone">
-            <p> Telefone: (11) 97321-0013 </p>
-        </div>
-        <div class="footer-copyright">
-            <p> @Copyright 2025 </p>
-        </div>
-        <div class="footer-empty-space"></div>
-    </footer>
-</body>
-
-</html>
+{% endblock %}

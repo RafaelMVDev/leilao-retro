@@ -1,0 +1,10 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Email Confirmado - Maradindiduns {% endblock %}
+
+{% block content %}
+<div class="confirm-container">
+    <h2>Email confirmado com sucesso!</h2>
+    <a href="{{ url_for('auth_pages.login_page') }}">Ir para login</a>
+</div>
+{% endblock %}

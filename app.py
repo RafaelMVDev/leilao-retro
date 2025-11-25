@@ -1,4 +1,8 @@
-from flask import Flask,request,render_template
+from flask import Flask,request,redirect,url_for,render_template
+import flask_login
+
+
+
 from setup.db_configs import * # here is the instance of the db created with sqlalchemy ( please read the docstring of the database.py file ) 
 from setup.loaders.database import init_db
 from setup.loaders.load_controllers import load_controllers
@@ -6,7 +10,7 @@ from setup.loaders.load_models import load_models
 from setup.loaders.load_services import load_services
 from setup.login_manager import login_manager
 from flask_wtf.csrf import CSRFProtect,CSRFError
-from setup.init_socket import init_socket
+
 csrf = CSRFProtect()
 def create_app():
     app = Flask(__name__)
@@ -16,13 +20,12 @@ def create_app():
     #initalizing flask - login
    
     with app.app_context():
-    # inicializando em ordem!
+    # Initializing in order!
         init_db(app)
         load_models("src.models")
         load_services("src.services")
         login_manager.init_app(app)
         csrf.init_app(app)
-        init_socket(app)
         load_controllers(app,"src.controllers")
 
     return app
