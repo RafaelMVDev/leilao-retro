@@ -1,29 +1,46 @@
 from src.models import ProductModel, CategoryModel, CategoryProductModel
 from setup.loaders.database import db, DB_SESSION
 
-def create_product(data: dict, categories: list[int] = None):
-    with DB_SESSION() as Session:
-        """
-        data = { name, description, price }
-        categories = [1,2,3]
-        """
+from src.models.ProductModel import ProductModel 
+from src.models.ProductImageModel import ProductImageModel
+from setup.loaders.database import DB_SESSION
+from services.ImageService import save_product_image
+
+def create_product(data, image_files):
+    with DB_SESSION() as session:
+        
         product = ProductModel(
-            name=data["name"],
+            name=data.get("name"),
             description=data.get("description"),
-            price=data.get("price", 0)
+            category=data.get("category"),
+            type=data.get("productType"),
+            manufacturer=data.get("manufacturer"),
+            width=data.get("width"),
+            height=data.get("height"),
+            weight=data.get("weight"),
+            activationKey=data.get("activationKey"),
+            downloadUrl=data.get("downloadUrl"),
+            downloadValidity=data.get("downloadValidity")
         )
-        Session.add(product)
-        Session.commit()
 
-        if categories:
-            for cid in categories:
-                link = CategoryProductModel(category_id=cid, product_id=product.id)
-                Session.add(link)
+        session.add(product)
+        session.commit()  # importante pra pegar product.id
 
-            Session.commit()
+        # Salvar imagens
+        for index, file in enumerate(image_files):
+            image_id, path = save_product_image(file, product.idProduct)
+
+            link = ProductImageModel(
+                fkProductIdProduct=product.idProduct,
+                fkImageIdImage=image_id,
+                displayOrder=index
+            )
+
+            session.add(link)
+
+        session.commit()
 
         return product
-
 
 def get_product(product_id: int):
     return ProductModel.query.get(product_id)

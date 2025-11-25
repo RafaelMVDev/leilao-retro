@@ -5,10 +5,11 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table,Column,select
 
 
-class ProductModel(db.Model):
+class ProductImageModel(db.Model):
 
-    __table__ = Table("product",DB_METADATA,autoload_with=db.engine)
-    lot = db.relationship("LotModel", back_populates="products")
-    product_images = db.relationship("ProductImageModel",back_populates = "products")
+    __table__ = Table("productimage",DB_METADATA,autoload_with=db.engine)
+    products = db.relationship("ProductModel", back_populates="product_images")
+    images = db.relationship("ImageModel", back_populates="product_images")
+
 
     

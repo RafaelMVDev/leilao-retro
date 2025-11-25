@@ -6,13 +6,13 @@ from src.models.ProductModel import ProductModel
 from src.models.BidModel import BidModel
 from datetime import datetime
 
-def create_auction_with_lot(title, description, start_date, end_date, owner_id, initial_price=0.0):
+def create_auction_with_lot(auction_data,start_date,end_date, lot_data,owner_id):
     auction = AuctionModel(
-        title=title,
-        descriptionAuction=description,
+        title=auction_data.get("title"),
+        descriptionAuction=auction_data.get("description"),
         startDate=start_date,
         endDate=end_date,
-        statusAuction="ACTIVE" if start_date and start_date <= datetime.utcnow() else "CREATED",
+        statusAuction="ACTIVE" if auction_data.get("start_date") and auction_data.get("start_date") <= datetime.utcnow() else "CREATED",
         fkUserIdUser=owner_id
     )
     db.session.add(auction)
@@ -20,10 +20,11 @@ def create_auction_with_lot(title, description, start_date, end_date, owner_id, 
 
     # cria lote inicial
     lot = LotModel(
-        minimumIncrement=1.0,
-        minimumBid=initial_price,
-        lotNumber=1,
-        currentBidValue=initial_price,
+        minimumIncrement= lot_data.get("minimum_increment") or 0,
+        minimumBid=lot_data.get("minimum_bid"),
+        registrationDate = 0,
+        lotNumber=lot_data.get("lot_number"),
+        currentBidValue=lot_data.get("minimum_bid"),
         fkAuctionIdAuction=auction.idAuction
     )
     db.session.add(lot)
