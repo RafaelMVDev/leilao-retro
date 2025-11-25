@@ -1,4 +1,16 @@
 /* ============================================================
+   File: 11_queries_relatorios.sql
+   Author(s): Calixto, Júlia; Henrique, Luis; Morales, Rafael; Moreira, Rafael
+   Project: Marauction
+   Class: 213
+   DBMS: MySQL 8.0.41
+   OBJECTIVE: Provide analytical and reporting queries
+   EXPECTED PERFORMANCE:
+        - Queries with JOINs, aggregations, and business metrics
+        - Generate analytical reports (ranking, performance, auction summaries)
+========================================================== */
+
+/* ============================================================
    REPORT 1
    PRODUCTS IN AUCTION
    OBJECTIVE: Show how many product are there in each auction
