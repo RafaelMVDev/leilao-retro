@@ -29,3 +29,4 @@ def save_product_image(file, product_id):
         session.commit()
 
         return image.idImage, relative_path
+ 

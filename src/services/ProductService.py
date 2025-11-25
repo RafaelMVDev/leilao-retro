@@ -4,23 +4,25 @@ from setup.loaders.database import db, DB_SESSION
 from src.models.ProductModel import ProductModel 
 from src.models.ProductImageModel import ProductImageModel
 from setup.loaders.database import DB_SESSION
-from services.ImageService import save_product_image
+from src.services.ImageService import save_product_image
 
-def create_product(data, image_files):
+def create_product(data,lot_id, image_files):
     with DB_SESSION() as session:
         
         product = ProductModel(
-            name=data.get("name"),
-            description=data.get("description"),
-            category=data.get("category"),
-            type=data.get("productType"),
+            productName=data.get("name"),
+            descriptionProduct=data.get("descriptionProduct"),
+            #category=data.get("category"),
+            productType=data.get("productType"),
             manufacturer=data.get("manufacturer"),
             width=data.get("width"),
             height=data.get("height"),
             weight=data.get("weight"),
+            depth = data.get("depth"),
             activationKey=data.get("activationKey"),
             downloadUrl=data.get("downloadUrl"),
-            downloadValidity=data.get("downloadValidity")
+            downloadValidity=data.get("downloadValidity"),
+            fkLotIdLot= lot_id
         )
 
         session.add(product)

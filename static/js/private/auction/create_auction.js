@@ -6,6 +6,57 @@ document.addEventListener("DOMContentLoaded", () => {
   const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   let products = [];
+  const previewTitle = document.getElementById("previewTitle");
+  const previewDescription = document.getElementById("previewDescription");
+  const previewLotNum = document.getElementById("previewLotNum");
+  const previewMinBid = document.getElementById("previewMinBid");
+  const previewIncrement = document.getElementById("previewIncrement");
+  const previewProductsList = document.getElementById("previewProductsList");
+
+  const titleInput = form.querySelector("[name='title']");
+  const descriptionInput = form.querySelector("[name='description']");
+  const lotNumberInput = form.querySelector("[name='lot_number']");
+  const minimumBidInput = form.querySelector("[name='minimum_bid']");
+  const minimumIncrementInput = form.querySelector("[name='minimum_increment']");
+  function updateAuctionPreview() {
+
+    previewTitle.innerText = titleInput.value || "—";
+    previewDescription.innerText = descriptionInput.value || "—";
+    previewLotNum.innerText = lotNumberInput.value || "—";
+
+    previewMinBid.innerText = minimumBidInput.value 
+      ? parseFloat(minimumBidInput.value).toFixed(2)
+      : "0.00";
+
+    previewIncrement.innerText = minimumIncrementInput.value 
+      ? parseFloat(minimumIncrementInput.value).toFixed(2)
+      : "0.00";
+
+    // ========= Atualizar Produtos =========
+    previewProductsList.innerHTML = "";
+
+    const productForms = document.querySelectorAll(".product-form");
+
+    productForms.forEach((productDiv, index) => {
+
+      const name = productDiv.querySelector(".p-name").value;
+      const category = productDiv.querySelector(".p-category").value;
+      const type = productDiv.querySelector(".p-type").value;
+
+      const li = document.createElement("li");
+
+      li.innerText = `${name || "Produto sem nome"} 
+      (${category || "sem categoria"} | ${type || "tipo indefinido"})`;
+
+      previewProductsList.appendChild(li);
+    });
+  }
+ 
+  titleInput.addEventListener("input", updateAuctionPreview);
+  descriptionInput.addEventListener("input", updateAuctionPreview);
+  lotNumberInput.addEventListener("input", updateAuctionPreview);
+  minimumBidInput.addEventListener("input", updateAuctionPreview);
+  minimumIncrementInput.addEventListener("input", updateAuctionPreview);
 
   function createProductBlock(index) {
 
@@ -89,12 +140,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Remover produto
+    
     wrapper.querySelector(".remove-product").addEventListener("click", () => {
       wrapper.remove();
+      updateAuctionPreview();
     });
 
-    // Preview imagens
+
     const fileInput = wrapper.querySelector(".p-images");
     const previewBox = wrapper.querySelector(".product-image-previews");
 
@@ -119,12 +171,18 @@ document.addEventListener("DOMContentLoaded", () => {
     return wrapper;
   }
 
-  // Botão adicionar produto
   addProductBtn.addEventListener("click", () => {
     const index = productsSection.children.length;
     const productBlock = createProductBlock(index);
     productsSection.appendChild(productBlock);
+
+    updateAuctionPreview(); // atualiza ao criar produto
+
+    // Atualizar sempre que editar produto
+    productBlock.addEventListener("input", updateAuctionPreview);
+    productBlock.addEventListener("change", updateAuctionPreview);
   });
+
 
   // SUBMIT
   form.addEventListener("submit", async (e) => {

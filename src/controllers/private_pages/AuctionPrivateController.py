@@ -41,7 +41,7 @@ def create_auction():
         start_date = start,
         end_date = end,
         lot_data=lot_data,
-        owner_id= login_manager.current_user.idUser
+        owner_id= current_user.idUser
     )
 
     products = []
@@ -57,33 +57,18 @@ def create_auction():
     created_products = []
 
     for index, product in enumerate(products):
-
+        images_key = f"product_images_{index}"
+        if images_key in request.files:
+            images = request.files.getlist(images_key)
         created_product = create_product(
-            productName=product.get("productName"),
-            descriptionProduct=product.get("descriptionProduct"),
-            category=product.get("category"),
-            productType=product.get("productType"),
-            manufacturer=product.get("manufacturer"),
-            weight=product.get("weight"),
-            width=product.get("width"),
-            height=product.get("height"),
-            depth=product.get("depth"),
-            downloadUrl=product.get("downloadUrl"),
-            activationKey=product.get("activationKey"),
-            downloadValidity=product.get("downloadValidity"),
-            lotId=lot.idLot
+            product,
+            lot_id=lot.idLot,
+            image_files = images
         )
 
         created_products.append(created_product)
 
-        images_key = f"product_images_{index}"
-
-        if images_key in request.files:
-            images = request.files.getlist(images_key)
-
-            for image in images:
-                if image.filename != "":
-                    save_product_image(image, created_product.idProduct)
+       
 
     return jsonify({
         "success": True,

@@ -7,28 +7,33 @@ from src.models.BidModel import BidModel
 from datetime import datetime
 
 def create_auction_with_lot(auction_data,start_date,end_date, lot_data,owner_id):
-    auction = AuctionModel(
-        title=auction_data.get("title"),
-        descriptionAuction=auction_data.get("description"),
-        startDate=start_date,
-        endDate=end_date,
-        statusAuction="ACTIVE" if auction_data.get("start_date") and auction_data.get("start_date") <= datetime.utcnow() else "CREATED",
-        fkUserIdUser=owner_id
-    )
-    db.session.add(auction)
-    db.session.flush()  # garante idAuction
+    try:
 
-    # cria lote inicial
-    lot = LotModel(
-        minimumIncrement= lot_data.get("minimum_increment") or 0,
-        minimumBid=lot_data.get("minimum_bid"),
-        registrationDate = 0,
-        lotNumber=lot_data.get("lot_number"),
-        currentBidValue=lot_data.get("minimum_bid"),
-        fkAuctionIdAuction=auction.idAuction
-    )
-    db.session.add(lot)
-    db.session.commit()
+        auction = AuctionModel(
+            title=auction_data.get("title"),
+            description=auction_data.get("description"),
+            startDate=start_date,
+            endDate=end_date,
+            status="Open" if start_date and start_date <= datetime.utcnow() else "Scheduled",
+            fkUserIdUser=owner_id
+        )
+        db.session.add(auction)
+        db.session.flush()  # garante idAuction
+
+        # cria lote inicial
+        lot = LotModel(
+            minimumIncrement= lot_data.get("minimum_increment") or 0,
+            minimumBid=lot_data.get("minimum_bid"),
+            registrationDate = start_date,
+            lotNumber=lot_data.get("lot_number"),
+            currentBidValue=lot_data.get("minimum_bid"),
+            fkAuctionIdAuction=auction.idAuction
+        )
+        db.session.add(lot)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        return None,None
     return auction, lot
 
 def add_product_to_lot(lot_id, product_data):

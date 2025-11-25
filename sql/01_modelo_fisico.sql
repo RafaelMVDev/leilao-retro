@@ -305,3 +305,24 @@ ADD COLUMN isAuthenticated BOOLEAN;
 
 ALTER TABLE user
 ADD COLUMN cpf char(11);
+
+
+ALTER TABLE ProductImage 
+ADD PRIMARY KEY (fkProductIdProduct, fkImageIdImage);
+
+
+ALTER TABLE ProductImage 
+MODIFY COLUMN fkProductIdProduct INT AUTO_INCREMENT;
+
+ALTER TABLE ProductImage 
+MODIFY COLUMN fkImageIdImage INT AUTO_INCREMENT;
+
+ALTER TABLE ProductImage ADD CONSTRAINT fkProductImage1
+	FOREIGN KEY (fkProductIdProduct)
+	REFERENCES Product (idProduct)
+	ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE ProductImage ADD CONSTRAINT fkProductImage2
+	FOREIGN KEY (fkImageIdImage)
+	REFERENCES Image (idImage)
+	ON DELETE CASCADE ON UPDATE CASCADE;
