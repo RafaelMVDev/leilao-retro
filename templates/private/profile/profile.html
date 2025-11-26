@@ -1,10 +1,10 @@
 {% extends "layouts/base.html" %}
 
-{% block title %}Maradindiduns - Seu Perfil{% endblock %}
+{% block title %} Seu Perfil - Maradindiduns {% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{{url_for('static',filename = 'css/private/profile/profile_style.css')}}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 {% endblock %}
 
 {% block js %}
@@ -12,376 +12,380 @@
 {% endblock %}
 
 {% block content %}
-    <main class="profile-main">
-        <aside class="profile-sidebar">
-            <div class="profile-info-card">
-                <div class="profile-photo-placeholder">
-                    <i class="fas fa-user-astronaut"></i>
-                </div>
-
-                <h3 id="user_nickname">{{profile_settings.nickname}}</h3>
-
-                <p>Membro desde Fev/2024</p>
+<main class="profile-main">
+    <aside class="profile-sidebar">
+        <div class="profile-info-card">
+            <div class="profile-photo-placeholder">
+                <i class="fas fa-user-astronaut"></i>
             </div>
 
-            <div class="balance-cards">
-                <div class="balance-card">
-                    <span>Saldo (R$)</span>
-                    <strong id="user_balance"
-                        data-balance="{{ wallets_data.wallet_external.currentBalance if wallets_data else 250 }}">
-                    </strong>
+            <h3 id="user_nickname">{{profile_settings.nickname}}</h3>
 
-                    <!--<strong id="user_balance"><i>{{wallets_data.wallet_external.currentBalance if wallets_data else 250}} </i></strong>-->
-                </div>
+            <p>Membro desde Fev/2024</p>
+        </div>
 
-                <div class="balance-card">
-                    <span>BzzCoins</span>
+        <div class="balance-cards">
+            <div class="balance-card">
+                <span>Saldo (R$)</span>
+                <strong id="user_balance"
+                    data-balance="{{ wallets_data.wallet_external.currentBalance if wallets_data else 250 }}">
+                </strong>
 
-                    <strong id="user_coins"
-                        data-coins="{{ wallets_data.wallet_internal.currentBalance if wallets_data else 250 }}">
-                    </strong>
-                    <!--<strong id="user_coins"><i class="fas fa-coins" style="color: gold;">{{wallets_data.wallet_internal.currentBalance if wallets_data else 250}} 250</i></strong>-->
-                </div>
+                <!--<strong id="user_balance"><i>{{wallets_data.wallet_external.currentBalance if wallets_data else 250}} </i></strong>-->
             </div>
 
-            <nav>
-                <ul>
-                    <li><a href="#" id="tab_personal" class="active-tab" data-tab="personal"><i
-                                class="fas fa-user-circle"></i> Dados Pessoais</a></li>
-                    <li><a href="#" id="tab_auction" data-tab="auction"><i class="fas fa-gavel"></i> Meus Leilões
-                            (Ativos)</a></li>
-                    <li><a href="#" id="tab_history" data-tab="history"><i class="fas fa-history"></i> Histórico de
-                            Lances</a></li>
-                    <li><a href="#" id="tab_achievements" data-tab="achievements"><i class="fas fa-trophy"></i> Minhas
-                            Conquistas</a></li>
-                    <li><a href="#" id="tab_settings" data-tab="settings"><i class="fas fa-cog"></i>
-                            Configurações</a></li>
-                </ul>
-            </nav>
-            <form action="{{ url_for('profile_pages.submit_logout') }}" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="balance-card">
+                <span>BzzCoins</span>
 
-                <input type="submit" value="SAIR" data-acao="sair">
+                <strong id="user_coins"
+                    data-coins="{{ wallets_data.wallet_internal.currentBalance if wallets_data else 250 }}">
+                </strong>
+                <!--<strong id="user_coins"><i class="fas fa-coins" style="color: gold;">{{wallets_data.wallet_internal.currentBalance if wallets_data else 250}} 250</i></strong>-->
+            </div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#" id="tab_personal" class="active-tab" data-tab="personal"><i
+                            class="fas fa-user-circle"></i> Dados Pessoais</a></li>
+                <li><a href="#" id="tab_auction" data-tab="auction"><i class="fas fa-gavel"></i> Meus Leilões
+                        (Ativos)</a></li>
+                <li><a href="#" id="tab_history" data-tab="history"><i class="fas fa-history"></i> Histórico de
+                        Lances</a></li>
+                <li><a href="#" id="tab_achievements" data-tab="achievements"><i class="fas fa-trophy"></i> Minhas
+                        Conquistas</a></li>
+                <li><a href="#" id="tab_settings" data-tab="settings"><i class="fas fa-cog"></i>
+                        Configurações</a></li>
+            </ul>
+        </nav>
+        <form action="{{ url_for('profile_pages.submit_logout') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            <button type="submit" value="SAIR" data-acao="sair" class="btn-l"> SAIR </button>
+        </form>
+    </aside>
+
+    <section class="profile-content">
+        <div id="content_personal" class="content-tab active">
+            <div class="content-header">
+                <h2>Dados Pessoais</h2>
+
+                <button id="edit_save_btn" style="background: linear-gradient(90deg, #fa8806, #f8a201)">
+
+                    <i class="fas fa-edit"></i> Editar Dados
+
+                </button>
+            </div>
+
+            <form id="profile_form" class="form-card" style="padding: 20px; background: #2b2b2b;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+                <h3 style="color: var(--highlight-color); margin-bottom: 15px;">Informações de Contato e Acesso</h3>
+
+                <div class="line" style="margin-bottom: 15px;">
+                    <input type="text" placeholder="Nome Completo" name="nome" id="input_nome"
+                        value="{{profile_settings.get(" firstName")}} {{profile_settings.get("lastName")}}" readonly
+                        required minlength="3">
+
+                    <input type="text" placeholder="Nickname" name="nickname" id="input_nickname"
+                        value="{{profile_settings.get(" nickname")}}" readonly required minlength="3" maxlength="30">
+                </div>
+
+                <div class="line" style="margin-bottom: 15px;">
+                    <input type="tel" placeholder="Telefone" name="telefone" id="input_phoneNumber"
+                        value="(11) 97321-0013" readonly required minlength="9" maxlength="14">
+
+                    <input type="text" placeholder="CPF" name=""
+                </div>
+
+                <input type="password" placeholder="Nova Senha (Opcional)" name="new_password" id="input_new_password"
+                    style="display: none;" minlength="6">
+
+                <input type="password" placeholder="Confirmar Nova Senha" name="confirm_password"
+                    id="input_confirm_password" style="display: none;" minlength="6">
+
+                <h3 style="color: var(--highlight-color); margin-bottom: 15px; margin-top: 25px;">Endereço Principal
+                </h3>
+
+                <div class="line" style="margin-bottom: 15px;">
+                    <input type="text" placeholder="CEP" name="zipCode" id="input_zipCode" value="{{address_data.get("
+                        zipCode")}}" readonly maxlength="9">
+
+                    <input type="text" placeholder="País" name="country" id="input_country" value="{{address_data.get("
+                        nameCountry")}}" readonly required maxlength="90">
+                </div>
+
+                <input type="text" placeholder="Rua / Logradouro" name="street" id="input_street"
+                    value="{{address_data.get(" street")}}" readonly required maxlength="50">
+
+                <input type="text" placeholder="Bairro" name="district" id="input_district" value="{{address_data.get("
+                    district")}}" readonly required maxlength="50">
+
+                <div class="line" style="margin-bottom: 15px;">
+                    <input type="number" placeholder="Número" name="numberAdress" id="input_numberAdress"
+                        value="{{address_data.get(" numberAddress")}}" readonly required maxlength="10">
+
+                    <input type="number" placeholder="Complemento ( Opcional )" name="complement" id="input_complement"
+                        value="{{address_data.get(" complement")}}" readonly maxlength="35">
+                </div>
+
+                <div class="line">
+                    <input type="text" placeholder="Cidade" name="city" id="input_city" value="{{address_data.get("
+                        nameCity")}}" readonly required maxlength="60">
+
+                    <input type="text" placeholder="Estado (UF)" name="state" id="input_state"
+                        value="{{address_data.get(" stateName")}}" readonly required minlength="2" maxlength="3">
+                </div>
+
+                <div id="save_cancel_group" class="button-group" style="display: none;">
+                    <button type="button" id="cancel_edit_btn" style="background-color: #dc3545;">Cancelar</button>
+
+                    <button type="submit" id="save_data_btn" style="background-color: #28a745;">Salvar
+                        Alterações</button>
+                </div>
             </form>
-        </aside>
+        </div>
 
-        <section class="profile-content">
-            <div id="content_personal" class="content-tab active">
-                <div class="content-header">
-                    <h2>Dados Pessoais</h2>
-
-                    <button id="edit_save_btn" style="background: linear-gradient(90deg, #8b3dff, #c55eff);">
-
-                        <i class="fas fa-edit"></i> Editar Dados
-
-                    </button>
-                </div>
-
-                <form id="profile_form" class="form-card" style="padding: 20px; background: #2b2b2b;">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/> 
-
-                    <h3 style="color: var(--highlight-color); margin-bottom: 15px;">Informações de Contato e Acesso</h3>
-
-                    <div class="line" style="margin-bottom: 15px;">
-                        <input type="text" placeholder="Nome Completo" name="nome" id="input_nome"
-                        value="{{profile_settings.get("firstName")}} {{profile_settings.get("lastName")}}" readonly required minlength="3">
-
-                        <input type="text" placeholder="Nickname" name="nickname" id="input_nickname"
-                            value="{{profile_settings.get("nickname")}}" readonly required minlength="3" maxlength="30">
-                    </div>
-                    
-                    <div class="line" style="margin-bottom: 15px;">
-                        <input type="tel" placeholder="Telefone" name="telefone" id="input_phoneNumber" value="(11) 97321-0013"
-                            readonly required minlength="9" maxlength="14">
-                    </div>
-
-                    <input type="password" placeholder="Nova Senha (Opcional)" name="new_password"
-                        id="input_new_password" style="display: none;" minlength="6">
-
-                    <input type="password" placeholder="Confirmar Nova Senha" name="confirm_password"
-                        id="input_confirm_password" style="display: none;" minlength="6">
-
-                    <h3 style="color: var(--highlight-color); margin-bottom: 15px; margin-top: 25px;">Endereço Principal
-                    </h3>
-
-                    <div class="line" style="margin-bottom: 15px;">
-                        <input type="text" placeholder="CEP" name="zipCode" id="input_zipCode" value="{{address_data.get("zipCode")}}" 
-                        readonly maxlength="9">
-
-                        <input type="text" placeholder="País" name="country" id="input_country" value="{{address_data.get("nameCountry")}}" readonly
-                            required maxlength="90">
-                    </div>
-
-                    <input type="text" placeholder="Rua / Logradouro" name="street" id="input_street"
-                        value="{{address_data.get("street")}}" readonly required maxlength="50">
-
-                        <input type="text" placeholder="Bairro" name="district" id="input_district" value="{{address_data.get("district")}}"
-                            readonly required maxlength="50">
-
-                    <div class="line" style="margin-bottom: 15px;">
-                        <input type="number" placeholder="Número" name="numberAdress" id="input_numberAdress" value="{{address_data.get("numberAddress")}}"
-                            readonly required maxlength="10">
-
-                        <input type="number" placeholder="Complemento ( Opcional )" name="complement" id="input_complement" value="{{address_data.get("complement")}}"
-                            readonly maxlength="35">
-                    </div>
-
-                    <div class="line">
-                        <input type="text" placeholder="Cidade" name="city" id="input_city" value="{{address_data.get("nameCity")}}" readonly
-                            required maxlength="60">
-
-                        <input type="text" placeholder="Estado (UF)" name="state" id="input_state" value="{{address_data.get("stateName")}}" readonly
-                            required minlength="2" maxlength="3">
-                    </div>
-
-                    <div id="save_cancel_group" class="button-group" style="display: none;">
-                        <button type="button" id="cancel_edit_btn" style="background-color: #dc3545;">Cancelar</button>
-
-                        <button type="submit" id="save_data_btn" style="background-color: #28a745;">Salvar
-                            Alterações</button>
-                    </div>
-                </form>
+        <div id="content_auction" class="content-tab ">
+            <div class="content-header">
+                <h2>Meus Leilões (Ativos)</h2>
             </div>
 
-            <div id="content_auction" class="content-tab ">
-                <div class="content-header">
-                    <h2>Meus Leilões (Ativos)</h2>
+            <div class="auction-list">
+                <div class="auction-item-profile">
+                    <div class="auction-thumb-placeholder"><i class="fas fa-gamepad"></i></div>
+                    <div class="auction-details">
+                        <h4>Super Nintendo Completo (Edição Japonesa)</h4>
+
+                        <p>Seu lance atual: <strong>R$ 1.550,00</strong></p>
+
+                        <p>Tempo restante: <strong>1h 45m 12s</strong></p>
+                    </div>
+
+                    <span class="item-status status-activate">Ativo</span>
+
+                    <button style="margin-left: 20px; background: linear-gradient(90deg, #fa8806, #f8a201);">Aumentar
+                        Lance</button>
                 </div>
 
-                <div class="auction-list">
-                    <div class="auction-item-profile">
-                        <div class="auction-thumb-placeholder"><i class="fas fa-gamepad"></i></div>
-                        <div class="auction-details">
-                            <h4>Super Nintendo Completo (Edição Japonesa)</h4>
+                <div class="auction-item-profile">
+                    <div class="auction-thumb-placeholder"><i class="fas fa-gem"></i></div>
+                    <div class="auction-details">
+                        <h4>Carta Holográfica Rara (Jogo XYZ)</h4>
 
-                            <p>Seu lance atual: <strong>R$ 1.550,00</strong></p>
+                        <p>Seu lance atual: <strong>R$ 80,00</strong></p>
 
-                            <p>Tempo restante: <strong>1h 45m 12s</strong></p>
-                        </div>
-
-                        <span class="item-status status-activate">Ativo</span>
-
-                        <button style="margin-left: 20px; background: #9c3dff;">Aumentar Lance</button>
+                        <p>Tempo restante: <strong>3d 05h 30m</strong></p>
                     </div>
 
-                    <div class="auction-item-profile">
-                        <div class="auction-thumb-placeholder"><i class="fas fa-gem"></i></div>
-                        <div class="auction-details">
-                            <h4>Carta Holográfica Rara (Jogo XYZ)</h4>
+                    <span class="item-status status-activate">Ativo</span>
 
-                            <p>Seu lance atual: <strong>R$ 80,00</strong></p>
+                    <button style="margin-left: 20px; background: linear-gradient(90deg, #fa8806, #f8a201)">Aumentar
+                        Lance</button>
+                </div>
 
-                            <p>Tempo restante: <strong>3d 05h 30m</strong></p>
-                        </div>
+                <div class="auction-item-profile" style="opacity: 0.6;">
+                    <div class="auction-thumb-placeholder"><i class="fas fa-laptop-code"></i></div>
+                    <div class="auction-details">
+                        <h4>PC Gamer Customizado - Lote 5</h4>
 
-                        <span class="item-status status-activate">Ativo</span>
+                        <p>Seu lance atual: <strong>R$ 6.100,00</strong></p>
 
-                        <button style="margin-left: 20px; background: #9c3dff;">Aumentar Lance</button>
+                        <p>Você foi superado. Último lance: R$ 6.200,00</p>
                     </div>
 
-                    <div class="auction-item-profile" style="opacity: 0.6;">
-                        <div class="auction-thumb-placeholder"><i class="fas fa-laptop-code"></i></div>
-                        <div class="auction-details">
-                            <h4>PC Gamer Customizado - Lote 5</h4>
+                    <span class="item-status status-lost">Superado</span>
 
-                            <p>Seu lance atual: <strong>R$ 6.100,00</strong></p>
-
-                            <p>Você foi superado. Último lance: R$ 6.200,00</p>
-                        </div>
-
-                        <span class="item-status status-lost">Superado</span>
-
-                        <button style="margin-left: 20px; background: #dc3545;">Dar um Lance!</button>
-                    </div>
+                    <button style="margin-left: 20px; background: #dc3545;">Dar um Lance!</button>
                 </div>
             </div>
+        </div>
 
-            <div id="content_history" class="content-tab">
-                <div class="content-header">
-                    <h2>Histórico de Lances</h2>
-                </div>
-
-                <div class="auction-list">
-                    <div class="auction-item-profile">
-                        <div class="auction-thumb-placeholder"><i class="fas fa-trophy"></i></div>
-                        <div class="auction-details">
-                            <h4>Console PlayStation 2 Clássico</h4>
-
-                            <p>Seu lance vencedor: <strong>R$ 550,00</strong></p>
-
-                            <p>Data de conclusão: 15/05/2025</p>
-                        </div>
-
-                        <span class="item-status status-passed">Vencido</span>
-
-                        <button style="margin-left: 20px; background: #28a745;">Ver Detalhes</button>
-                    </div>
-
-                    <div class="auction-item-profile">
-                        <div class="auction-thumb-placeholder"><i class="fas fa-times-circle"></i></div>
-                        <div class="auction-details">
-                            <h4>Coleção Completa de Jogos XBox</h4>
-
-                            <p>Seu último lance: <strong>R$ 2.000,00</strong></p>
-
-                            <p>Vencedor: user123 (R$ 2.100,00)</p>
-                        </div>
-
-                        <span class="item-status status-lost">Perdido</span>
-
-                        <button style="margin-left: 20px; background: #6c757d;">Ver Detalhes</button>
-                    </div>
-
-                    <div class="auction-item-profile">
-                        <div class="auction-thumb-placeholder"><i class="fas fa-gamepad"></i></div>
-
-                        <div class="auction-details">
-                            <h4>Miniatura Rara de Personagem (Lote 1)</h4>
-
-                            <p>Seu lance final: <strong>R$ 125,00</strong></p>
-
-                            <p>Vencedor: Coleciona_Tudo (R$ 130,00)</p>
-                        </div>
-
-                        <span class="item-status status-lost">Perdido</span>
-
-                        <button style="margin-left: 20px; background: #6c757d;">Ver Detalhes</button>
-                    </div>
-                </div>
+        <div id="content_history" class="content-tab">
+            <div class="content-header">
+                <h2>Histórico de Lances</h2>
             </div>
 
-            <div id="content_settings" class="content-tab">
-                <div class="content-header">
-                    <h2>Configurações</h2>
+            <div class="auction-list">
+                <div class="auction-item-profile">
+                    <div class="auction-thumb-placeholder"><i class="fas fa-trophy"></i></div>
+                    <div class="auction-details">
+                        <h4>Console PlayStation 2 Clássico</h4>
+
+                        <p>Seu lance vencedor: <strong>R$ 550,00</strong></p>
+
+                        <p>Data de conclusão: 15/05/2025</p>
+                    </div>
+
+                    <span class="item-status status-passed">Vencido</span>
+
+                    <button style="margin-left: 20px; background: #28a745;">Ver Detalhes</button>
                 </div>
 
-                <div class="form-card" style="padding: 20px; background: #2b2b2b;">
+                <div class="auction-item-profile">
+                    <div class="auction-thumb-placeholder"><i class="fas fa-times-circle"></i></div>
+                    <div class="auction-details">
+                        <h4>Coleção Completa de Jogos XBox</h4>
 
-                    <h3 style="color: var(--highlight-color); margin-bottom: 20px;">Preferências de Notificação</h3>
+                        <p>Seu último lance: <strong>R$ 2.000,00</strong></p>
 
-                    <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 15px;">
-                        <input type="checkbox" id="notif_email" checked style="width: auto;">
-
-                        <label for="notif_email">Receber notificações por e-mail</label>
+                        <p>Vencedor: user123 (R$ 2.100,00)</p>
                     </div>
 
-                    <div style="margin-bottom: 30px; display: flex; align-items: center; gap: 15px;">
+                    <span class="item-status status-lost">Perdido</span>
 
-                        <input type="checkbox" id="notif_auction" style="width: auto;">
+                    <button style="margin-left: 20px; background: #6c757d;">Ver Detalhes</button>
+                </div>
 
-                        <label for="notif_auction">Alertar quando meu lance for superado</label>
+                <div class="auction-item-profile">
+                    <div class="auction-thumb-placeholder"><i class="fas fa-gamepad"></i></div>
+
+                    <div class="auction-details">
+                        <h4>Miniatura Rara de Personagem (Lote 1)</h4>
+
+                        <p>Seu lance final: <strong>R$ 125,00</strong></p>
+
+                        <p>Vencedor: Coleciona_Tudo (R$ 130,00)</p>
                     </div>
 
-                    <h3 style="color: var(--highlight-color); margin-bottom: 20px;">Opções de Segurança</h3>
+                    <span class="item-status status-lost">Perdido</span>
 
-                    <div style="margin-bottom: 30px; display: flex; align-items: center; gap: 15px;">
-                        <input type="checkbox" id="auth_two_factor" style="width: auto;">
-
-                        <label for="auth_two_factor">Habilitar Autenticação de Dois Fatores (2FA)</label>
-                    </div>
-
-                    <div style="text-align: right;">
-                        <button style="background-color: #28a745;">Salvar Preferências</button>
-                    </div>
+                    <button style="margin-left: 20px; background: #6c757d;">Ver Detalhes</button>
                 </div>
             </div>
-            
-            <div id="content_achievements" class="content-tab">
+        </div>
 
-                <div class="content-header">
-                    <h2>Galeria de Conquistas</h2>
+        <div id="content_settings" class="content-tab">
+            <div class="content-header">
+                <h2>Configurações</h2>
+            </div>
 
-                    <p style="color: #ccc; font-size: 1rem;">Total Desbloqueadas: 4/10</p>
+            <div class="form-card" style="padding: 20px; background: #2b2b2b;">
+
+                <h3 style="color: var(--highlight-color); margin-bottom: 20px;">Preferências de Notificação</h3>
+
+                <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 15px;">
+                    <input type="checkbox" id="notif_email" checked style="width: auto;">
+
+                    <label for="notif_email">Receber notificações por e-mail</label>
                 </div>
 
-                <div class="achievement-grid">
-                    <div class="achievement-card unlocked">
-                        <div class="achievement-icon"><i class="fas fa-crown"></i></div>
+                <div style="margin-bottom: 30px; display: flex; align-items: center; gap: 15px;">
 
-                        <h4>Ganhador</h4>
+                    <input type="checkbox" id="notif_auction" style="width: auto;">
 
-                        <p>Vença 5 leilões (você venceu 5).</p>
-                    </div>
-
-                    <div class="achievement-card unlocked">
-
-                        <div class="achievement-icon"><i class="fas fa-money-bill-wave"></i></div>
-
-                        <h4>Investidor Inicial</h4>
-
-                        <p>Realize seu primeiro lance.</p>
-                    </div>
-
-                    <div class="achievement-card unlocked">
-
-                        <div class="achievement-icon"><i class="fas fa-fire"></i></div>
-
-                        <h4>Fúria dos Lances</h4>
-
-                        <p>Faça 50 lances em 24h.</p>
-                    </div>
-
-                    <div class="achievement-card unlocked">
-
-                        <div class="achievement-icon"><i class="fas fa-ghost"></i></div>
-
-                        <h4>Nintendista Clássico</h4>
-
-                        <p>Arremate um item do console Nintendo 64.</p>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon"><i class="fas fa-gem"></i></div>
-
-                        <h4>Mestre da Moeda</h4>
-
-                        <p>Troque 10.000 moedas por dinheiro (0/10.000).</p>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon"><i class="fas fa-star"></i></div>
-
-                        <h4>Colecionador Lendário</h4>
-
-                        <p>Arremate 10 itens lendários.</p>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon"><i class="fas fa-trophy"></i></div>
-
-                        <h4>O Maioral</h4>
-
-                        <p>Tenha o maior saldo de moedas do site.</p>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon"><i class="fas fa-gamepad"></i></div>
-
-                        <h4>Sega Fanático</h4>
-
-                        <p>Arremate 3 itens de consoles da Sega.</p>
-                    </div>
-
-                    <div class="achievement-card">
-                        <div class="achievement-icon"><i class="fas fa-skull-crossbones"></i></div>
-
-                        <h4>Noite da Oferta</h4>
-
-                        <p>Faça um lance entre 00:00h e 06:00h.</p>
-                    </div>
-
-                    <div class="achievement-card">
-
-                        <div class="achievement-icon"><i class="fas fa-heart"></i></div>
-
-                        <h4>Apoiador</h4>
-
-                        <p>Dê um like em 5 leilões diferentes.</p>
-                    </div>
+                    <label for="notif_auction">Alertar quando meu lance for superado</label>
                 </div>
-            </div>   
-        </section>
 
-    </main>
+                <h3 style="color: var(--highlight-color); margin-bottom: 20px;">Opções de Segurança</h3>
+
+                <div style="margin-bottom: 30px; display: flex; align-items: center; gap: 15px;">
+                    <input type="checkbox" id="auth_two_factor" style="width: auto;">
+
+                    <label for="auth_two_factor">Habilitar Autenticação de Dois Fatores (2FA)</label>
+                </div>
+
+                <div style="text-align: right;">
+                    <button style="background-color: #28a745;">Salvar Preferências</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="content_achievements" class="content-tab">
+
+            <div class="content-header">
+                <h2>Galeria de Conquistas</h2>
+
+                <p style="color: #ccc; font-size: 1rem;">Total Desbloqueadas: 4/10</p>
+            </div>
+
+            <div class="achievement-grid">
+                <div class="achievement-card unlocked">
+                    <div class="achievement-icon"><i class="fas fa-crown"></i></div>
+
+                    <h4>Ganhador</h4>
+
+                    <p>Vença 5 leilões (você venceu 5).</p>
+                </div>
+
+                <div class="achievement-card unlocked">
+
+                    <div class="achievement-icon"><i class="fas fa-money-bill-wave"></i></div>
+
+                    <h4>Investidor Inicial</h4>
+
+                    <p>Realize seu primeiro lance.</p>
+                </div>
+
+                <div class="achievement-card unlocked">
+
+                    <div class="achievement-icon"><i class="fas fa-fire"></i></div>
+
+                    <h4>Fúria dos Lances</h4>
+
+                    <p>Faça 50 lances em 24h.</p>
+                </div>
+
+                <div class="achievement-card unlocked">
+
+                    <div class="achievement-icon"><i class="fas fa-ghost"></i></div>
+
+                    <h4>Nintendista Clássico</h4>
+
+                    <p>Arremate um item do console Nintendo 64.</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-gem"></i></div>
+
+                    <h4>Mestre da Moeda</h4>
+
+                    <p>Troque 10.000 moedas por dinheiro (0/10.000).</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-star"></i></div>
+
+                    <h4>Colecionador Lendário</h4>
+
+                    <p>Arremate 10 itens lendários.</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-trophy"></i></div>
+
+                    <h4>O Maioral</h4>
+
+                    <p>Tenha o maior saldo de moedas do site.</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-gamepad"></i></div>
+
+                    <h4>Sega Fanático</h4>
+
+                    <p>Arremate 3 itens de consoles da Sega.</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon"><i class="fas fa-skull-crossbones"></i></div>
+
+                    <h4>Noite da Oferta</h4>
+
+                    <p>Faça um lance entre 00:00h e 06:00h.</p>
+                </div>
+
+                <div class="achievement-card">
+
+                    <div class="achievement-icon"><i class="fas fa-heart"></i></div>
+
+                    <h4>Apoiador</h4>
+
+                    <p>Dê um like em 5 leilões diferentes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
 {% endblock %}
-
