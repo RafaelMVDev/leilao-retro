@@ -8,6 +8,6 @@ from sqlalchemy import Table,Column,select
 class AuctionModel(db.Model):
     __table__ = Table("auction",DB_METADATA,autoload_with=db.engine)
     lots = db.relationship("LotModel", back_populates="auction", cascade="all, delete-orphan")
-
+    users = db.relationship("UserModel", back_populates = "user_auctions")
 
     

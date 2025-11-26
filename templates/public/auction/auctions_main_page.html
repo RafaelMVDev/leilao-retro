@@ -2,361 +2,94 @@
 {% block title %} Maradindiduns - Leilões {% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/auction/auctions_main_Page_style.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/public/auction/auctions_main_page_style.css') }}">
 {% endblock %}
+
 {% block js %}
-    <script src="{{url_for('static',filename = 'js/public/auction/auctions_main_page.js')}}" defer></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+<script>
+    // Injeta os dados vindos do backend para o JS (cliente)
+    window.AUCTIONS = {{ auctions_list | tojson | safe }};
+    window.TOTAL_PAGES = {{ total_pages | default(1) }};
+</script>
+<script src="{{ url_for('static', filename='js/public/auction/auction_main_page.js') }}" defer></script>
+<script src="https://cdn.tailwindcss.com"></script>
 {% endblock %}
+
 {% block content %}
-    <main class="main-leiloes-page">
-        <div class="leiloes-layout-container">
+<main class="main-leiloes-page">
+    <div class="leiloes-layout-container">
 
-            <aside class="filtros-sidebar">
-                <h4>Filtros Ativos</h4>
+        <aside class="filtros-sidebar" id="sidebar-filtros">
+            <h4>Filtros Ativos</h4>
 
-                <div class="filtro-grupo">
-                    <h5 class="filtro-titulo">Categorias</h5>
-                    <div class="filtro-grupo-conteudo">
-                        <label> Consoles <input type="checkbox" checked></label>
-                        <label> Jogos <input type="checkbox"></label>
-                        <label> Acessórios <input type="checkbox"></label>
-                        <label> Memorabilia <input type="checkbox"></label>
-                    </div>
-                </div>
-
-                <div class="filtro-grupo">
-                    <h5 class="filtro-titulo">Faixa de Preço</h5>
-                    <div class="filtro-grupo-conteudo">
-                        <input type="range" min="0" max="5000" step="50" value="2500" class="slider" id="price-slider">
-                        <div class="preco-label">
-                            <span>R$ 0,00</span>
-                            <span id="current-max-price">R$ 5000,00+</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="filtro-grupo">
-                    <h5 class="filtro-titulo">Localização</h5>
-                    <div class="filtro-grupo-conteudo">
-                        <label> São Paulo <input type="checkbox"></label>
-                        <label> Rio de Janeiro <input type="checkbox"></label>
-                        <label> Minas Gerais <input type="checkbox"></label>
-                        <label> Outros Estados <input type="checkbox"></label>
-                    </div>
-                </div>
-
-                <button class="aplicar-filtros-btn">Aplicar Filtros</button>
-            </aside>
-
-            <section class="leiloes-content">
-                <div class="leilao-search-bar">
-                    <input type="text" placeholder="O que você está procurando?">
-                    <select name="ordenar">
-                        <option value="recente">Mais Recentes</option>
-                        <option value="terminando">Terminando em Breve</option>
-                        <option value="maior-lance">Maior Lance</option>
-                        <option value="menor-lance">Menor Lance</option>
+            <div class="filtro-grupo">
+                <h5 class="filtro-titulo">Categoria</h5>
+                <div class="filtro-grupo-conteudo">
+                    <!-- categorias serão geradas pelo JS a partir de window.AUCTIONS -->
+                    <select id="filter-category" aria-label="Filtrar por categoria">
+                        <option value="ALL">Todas as categorias</option>
                     </select>
                 </div>
+            </div>
 
-                <div class="leilao-grid">
-                    <div class="leilao-card">
-                        <div class="leilao-imagem-placeholder">
-                            <span class="tag-desconto">Raro</span>
-                            <span class="tag-local">SP</span>
-                            <p class="text-xs">Console Retrô</p>
-                        </div>
-                        <div class="leilao-conteudo">
-                            <div class="leilao-visitas">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                    <path
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                </svg>
-                                82 visitas
-                            </div>
-
-                            <h3 class="leilao-titulo">Super Nintendo (SNES) com 20 Jogos</h3>
-                            <span class="leilao-status status-andamento">EM ANDAMENTO</span>
-
-                            <div class="leilao-info">
-                                <div class="leilao-valor">
-                                    <span>Valor Atual</span>
-                                    <strong>R$ 450,00</strong>
-                                </div>
-                                <div class="leilao-lances">
-                                    <span>Lances</span>
-                                    <strong>15</strong>
-                                </div>
-                                <div class="leilao-tempo">
-                                    <span>Termina em</span>
-                                    <strong>00:15:32</strong>
-                                </div>
-                            </div>
-
-                            <div class="leilao-vendedor">
-                                Vendedor: <span>RafaMorales</span>
-                            </div>
-
-                            <button class="lance-btn">Dar Lance</button>
-                        </div>
-                    </div>
-      
-                    <div class="leilao-card">
-                        <div class="leilao-imagem-placeholder">
-                            <span class="tag-local">MG</span>
-                            <p class="text-xs">Item de Colecionador</p>
-                        </div>
-                        <div class="leilao-conteudo">
-                            <div class="leilao-visitas">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                    <path
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                </svg>
-                                244 visitas
-                            </div>
-                            <h3 class="leilao-titulo">Telescópio antigo (item de colecionador)</h3>
-                            <span class="leilao-status status-encerrado">ENCERRADO</span>
-                            <div class="leilao-info">
-                                <div class="leilao-valor">
-                                    <span>Vendido por</span>
-                                    <strong>R$ 1.800,00</strong>
-                                </div>
-                                <div class="leilao-lances">
-                                    <span>Lances</span>
-                                    <strong>42</strong>
-                                </div>
-                                <div class="leilao-tempo">
-                                    <span>Vencedor</span>
-                                    <strong>JúliaCalixto</strong>
-                                </div>
-                            </div>
-                            <div class="leilao-vendedor">
-                                Vendedor: <span>LuisHenrique</span>
-                            </div>
-                            <button class="lance-btn" disabled>Ver Detalhes</button>
-                        </div>
-                    </div>
-
-                    <div class="leilao-card">
-                        <div class="leilao-imagem-placeholder">
-                            <span class="tag-local">RJ</span>
-                            <p class="text-xs">Console Raro</p>
-                        </div>
-                        <div class="leilao-conteudo">
-                            <div class="leilao-visitas">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                    <path
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                </svg>
-                                12 visitas
-                            </div>
-                            <h3 class="leilao-titulo">Sega Dreamcast Edição Especial</h3>
-                            <span class="leilao-status status-em-breve">EM BREVE</span>
-                            <div class="leilao-info">
-                                <div class="leilao-valor">
-                                    <span>Lance Inicial</span>
-                                    <strong>R$ 700,00</strong>
-                                </div>
-                                <div class="leilao-lances">
-                                    <span>Lances</span>
-                                    <strong>0</strong>
-                                </div>
-                                <div class="leilao-tempo">
-                                    <span>Inicia em</span>
-                                    <strong>2d 10h 05m</strong>
-                                </div>
-                            </div>
-                            <div class="leilao-vendedor">
-                                Vendedor: <span>GamerBR</span>
-                            </div>
-                            <button class="lance-btn" disabled>Aguarde</button>
-                        </div>
-                    </div>
-
-                    <div class="leilao-card">
-                        <div class="leilao-imagem-placeholder">
-                            <span class="tag-desconto">Novo</span>
-                            <span class="tag-local">PR</span>
-                            <p class="text-xs">Jogo Raro</p>
-                        </div>
-                        <div class="leilao-conteudo">
-                            <div class="leilao-visitas">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                    <path
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                </svg>
-                                147 visitas
-                            </div>
-
-                            <h3 class="leilao-titulo">The Legend of Zelda Ocarina of Time (N64)</h3>
-                            <span class="leilao-status status-andamento">EM ANDAMENTO</span>
-
-                            <div class="leilao-info">
-                                <div class="leilao-valor">
-                                    <span>Valor Atual</span>
-                                    <strong>R$ 850,00</strong>
-                                </div>
-                                <div class="leilao-lances">
-                                    <span>Lances</span>
-                                    <strong>23</strong>
-                                </div>
-                                <div class="leilao-tempo">
-                                    <span>Termina em</span>
-                                    <strong>01:45:00</strong>
-                                </div>
-                            </div>
-
-                            <div class="leilao-vendedor">
-                                Vendedor: <span>OldSchoolGames</span>
-                            </div>
-
-                            <button class="lance-btn">Dar Lance</button>
-                        </div>
-                    </div>
-
-                    <div class="leilao-card">
-                        <div class="leilao-imagem-placeholder">
-                            <span class="tag-local">SP</span>
-                            <p class="text-xs">Memorabilia</p>
-                        </div>
-                        <div class="leilao-conteudo">
-                            <div class="leilao-visitas">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                    <path
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                </svg>
-                                65 visitas
-                            </div>
-                            <h3 class="leilao-titulo">Boneco Mário 12 polegadas (1990)</h3>
-                            <span class="leilao-status status-andamento">EM ANDAMENTO</span>
-                            <div class="leilao-info">
-                                <div class="leilao-valor">
-                                    <span>Valor Atual</span>
-                                    <strong>R$ 320,00</strong>
-                                </div>
-                                <div class="leilao-lances">
-                                    <span>Lances</span>
-                                    <strong>7</strong>
-                                </div>
-                                <div class="leilao-tempo">
-                                    <span>Termina em</span>
-                                    <strong>05:22:10</strong>
-                                </div>
-                            </div>
-                            <div class="leilao-vendedor">
-                                Vendedor: <span>ColecionadorZ</span>
-                            </div>
-                            <button class="lance-btn">Dar Lance</button>
-                        </div>
-                    </div>
-
-                    <div class="leilao-card">
-                        <div class="leilao-imagem-placeholder">
-                            <span class="tag-desconto">Oferta</span>
-                            <span class="tag-local">SC</span>
-                            <p class="text-xs">Jogo Clássico</p>
-                        </div>
-                        <div class="leilao-conteudo">
-                            <div class="leilao-visitas">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                    <path
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                </svg>
-                                98 visitas
-                            </div>
-                            <h3 class="leilao-titulo">The Last of Us Part I (PS3) - Novo</h3>
-                            <span class="leilao-status status-encerrado">ENCERRADO</span>
-                            <div class="leilao-info">
-                                <div class="leilao-valor">
-                                    <span>Vendido por</span>
-                                    <strong>R$ 150,00</strong>
-                                </div>
-                                <div class="leilao-lances">
-                                    <span>Lances</span>
-                                    <strong>28</strong>
-                                </div>
-                                <div class="leilao-tempo">
-                                    <span>Vencedor</span>
-                                    <strong>PedroG</strong>
-                                </div>
-                            </div>
-                            <div class="leilao-vendedor">
-                                Vendedor: <span>LojaSC</span>
-                            </div>
-                            <button class="lance-btn" disabled>Ver Detalhes</button>
-                        </div>
-                    </div>
-
-                    <div class="leilao-card">
-                        <div class="leilao-imagem-placeholder">
-                            <span class="tag-desconto">Raro</span>
-                            <span class="tag-local">BA</span>
-                            <p class="text-xs">Controle</p>
-                        </div>
-                        <div class="leilao-conteudo">
-                            <div class="leilao-visitas">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                    <path
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                </svg>
-                                19 visitas
-                            </div>
-                            <h3 class="leilao-titulo">Controle Original do Atari 2600</h3>
-                            <span class="leilao-status status-em-breve">EM BREVE</span>
-                            <div class="leilao-info">
-                                <div class="leilao-valor">
-                                    <span>Lance Inicial</span>
-                                    <strong>R$ 90,00</strong>
-                                </div>
-                                <div class="leilao-lances">
-                                    <span>Lances</span>
-                                    <strong>0</strong>
-                                </div>
-                                <div class="leilao-tempo">
-                                    <span>Inicia em</span>
-                                    <strong>4h 30m</strong>
-                                </div>
-                            </div>
-                            <div class="leilao-vendedor">
-                                Vendedor: <span>NostalgiaBA</span>
-                            </div>
-                            <button class="lance-btn" disabled>Aguarde</button>
-                        </div>
-                    </div>
-
+            <div class="filtro-grupo">
+                <h5 class="filtro-titulo">Ordenar por</h5>
+                <div class="filtro-grupo-conteudo">
+                    <select id="ordenar" aria-label="Ordenar leilões">
+                        <option value="recente">Mais Recentes</option>
+                        <option value="menor-valor">Menor Valor</option>
+                        <option value="maior-valor">Maior Valor</option>
+                        <option value="mais-lances">Mais Lances</option>
+                    </select>
                 </div>
+            </div>
 
-            </section>
-        </div>
+            <div class="filtro-grupo">
+                <h5 class="filtro-titulo">Faixa de Preço (máx)</h5>
+                <div class="filtro-grupo-conteudo">
+                    <input type="range" min="0" max="10000" step="10" value="10000" class="slider" id="price-slider">
+                    <div class="preco-label">
+                        <span>R$ 0,00</span>
+                        <span id="current-max-price">R$ 10.000,00+</span>
+                    </div>
+                </div>
+            </div>
 
-        <nav class="pagination">
-            <a href="#" class="disabled">&lt;&lt;</a>
-            <a href="#" class="disabled">&lt;</a>
-            <a href="#" class="ativo">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <span class="ellipsis">...</span>
-            <a href="#">26</a>
-            <a href="#">&gt;</a>
-            <a href="#">&gt;&gt;</a>
-        </nav>
-    </main>
+            <div class="filtro-grupo">
+                <h5 class="filtro-titulo">Busca</h5>
+                <div class="filtro-grupo-conteudo">
+                    <input id="search-input" type="search" placeholder="Procurar por título..." aria-label="Buscar leilões">
+                </div>
+            </div>
 
+            <button class="aplicar-filtros-btn" id="apply-filters">Aplicar Filtros</button>
+
+            <!-- mobile: botão para fechar/abrir filtros (JS controla) -->
+            <button id="toggle-filters-mobile" style="display:none; margin-top:10px;">Filtros</button>
+        </aside>
+
+        <section class="leiloes-content">
+            <div class="leilao-search-bar">
+                <input id="search-input-top" type="text" placeholder="O que você está procurando?">
+                <select id="ordenar-top" aria-label="Ordenar leilões topo">
+                    <option value="recente">Mais Recentes</option>
+                    <option value="menor-valor">Menor Valor</option>
+                    <option value="maior-valor">Maior Valor</option>
+                    <option value="mais-lances">Mais Lances</option>
+                </select>
+            </div>
+
+            <div class="leilao-grid" id="auctions-grid">
+                <!-- os cards serão renderizados pelo JS -->
+            </div>
+
+            <nav class="pagination" id="pagination" data-total-pages="{{ total_pages }}"></nav>
+        </section>
+
+    </div>
+</main>
 {% endblock %}
+
+<!--
+
+-->

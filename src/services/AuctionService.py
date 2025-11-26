@@ -4,9 +4,14 @@ from src.models.AuctionModel import AuctionModel
 from src.models.LotModel import LotModel
 from src.models.ProductModel import ProductModel
 from src.models.BidModel import BidModel
+from src.models.ProductImageModel import ProductImageModel
+from src.models.ImageModel import ImageModel
 from setup.loaders.database import DB_SESSION
 from datetime import datetime,timedelta,timezone
 from setup.scheduler import scheduler
+from sqlalchemy import select
+from sqlalchemy import func
+
 import pytz
 local_tz = pytz.timezone("America/Sao_Paulo")
 
@@ -158,12 +163,99 @@ def place_bid(lot_id, user_id, bid_value):
     return bid
 
 
+def get_auctions_info(page=1, per_page=10):
+    """Retorna uma lista de dicionários com informações de cada leilão para a página principal"""
+    with DB_SESSION() as Session:
+        offset = (page - 1) * per_page
+        auctions_query = Session.query(AuctionModel).order_by(AuctionModel.startDate.desc()).offset(offset).limit(per_page)
+        auctions_list = []
+
+        for auction in auctions_query:
+            status = auction.status
+            now = datetime.utcnow()
+
+            # Tempo restante
+            if status == 'Open':
+                remaining = auction.endDate - now
+            elif status == 'Scheduled':
+                remaining = auction.startDate - now
+            else:
+                remaining = None
+
+            # Formata o tempo restante
+            if remaining:
+                days = remaining.days
+                hours, rem = divmod(remaining.seconds, 3600)
+                minutes, seconds = divmod(rem, 60)
+                if days > 0:
+                    remaining_str = f"{days}d {hours}h {minutes}m"
+                else:
+                    remaining_str = f"{hours:02}:{minutes:02}:{seconds:02}"
+            else:
+                remaining_str = ""
+
+            auctions_list.append({
+                "id": auction.idAuction,
+                "title": auction.title,
+                "owner": auction.users.nickname,  # Ajuste conforme relacionamento
+                #"category": auction.category.name if auction.category else "",
+                #"location": auction.location or "",
+                #"tag": auction.tag or "",
+                "status": status,
+                "status_display": status.upper(),
+                "current_bid": f"R$ {auction.lots[0].currentBidValue:.2f}" if auction.lots[0].currentBidValue else f"R$ {auction.minimumBid:.2f}",
+                "bids_count": count_bids_by_auction(auction.idAuction),
+                "end_date": auction.endDate,
+                "remaining_time": remaining_str,
+                "winner": auction.lots[0].currentWinnerId if auction.lots[0].currentWinnerId else "",
+                "cover_image": get_auction_cover_image(auction.idAuction)
+            })
+
+        # Obtem total de páginas
+        total_auctions = Session.query(AuctionModel).count()
+        total_pages = (total_auctions + per_page - 1) // per_page
+
+        return (auctions_list, total_pages)
+
+def get_auction_cover_image(auction_id):
+    with DB_SESSION() as session:
+
+        image = (
+             session.query(ImageModel.fileName)
+            .join(ProductImageModel, ProductImageModel.fkImageIdImage == ImageModel.idImage)
+            .join(ProductModel, ProductImageModel.fkProductIdProduct == ProductModel.idProduct)
+            .join(LotModel, ProductModel.fkLotIdLot == LotModel.idLot)
+            .join(AuctionModel, LotModel.fkAuctionIdAuction == AuctionModel.idAuction)
+            .filter(AuctionModel.idAuction == auction_id)
+            .order_by(ProductImageModel.displayOrder.asc())
+            .first()
+        )
+
+        if image:
+            return image[0]  # pois estamos buscando só o fileName
+
+        return "default.png"
+
+
+
+def count_bids_by_auction(auction_id):
+    with DB_SESSION() as session:
+        total = (
+            session.query(func.count(BidModel.idBid))
+            .join(LotModel, BidModel.fkLotIdLot == LotModel.idLot)
+            .filter(LotModel.fkAuctionIdAuction == auction_id)
+            .scalar()
+        )
+
+        return total or 0
+    
 def close_auction_job(auction_id):
     from app import app
     print(f"CLOSING AUCTION {auction_id} with job ")
     with app.app_context():
         with DB_SESSION() as Session:
-            auction = AuctionModel.query.get(auction_id)
+            stm = select(AuctionModel).where(idAuction = auction_id)
+            auction = db.session.execute(stm).mappings().first()
 
             if not auction:
                 print("Leilão não encontrado")
@@ -180,14 +272,16 @@ def open_auction_job(auction_id):
     from app import app
     with app.app_context():
         with DB_SESSION() as Session:
-            auction = AuctionModel.query.get(auction_id)
+            stm = select(AuctionModel).where(idAuction = auction_id)
+            auction = db.session.execute(stm).mappings().first()
             if auction:
+                print("Found auction, settings status:")
                 auction.status = "Open"
                 Session.commit()
 
 
 def main_page_auctions():
-    
+    pass
 
 
 
