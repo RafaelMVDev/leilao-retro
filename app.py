@@ -1,5 +1,6 @@
 from flask import Flask,request,redirect,url_for,render_template
 import flask_login
+from setup.scheduler import scheduler
 
 
 
@@ -16,6 +17,9 @@ def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = TRACK_MODIFICATIONS
+    app.config["SCHEDULER_API_ENABLED"] = True
+    app.config["SCHEDULER_TIMEZONE"] = "UTC"
+    
     app.secret_key = b'_5#y2L"F4Q8z\n\xec]/' # Replace with a strong, randomly generated key
     #initalizing flask - login
    
@@ -24,6 +28,8 @@ def create_app():
         init_db(app)
         load_models("src.models")
         load_services("src.services")
+        if not scheduler.running:
+            scheduler.start()
         login_manager.init_app(app)
         csrf.init_app(app)
         load_controllers(app,"src.controllers")

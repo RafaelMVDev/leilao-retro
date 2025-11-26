@@ -4,36 +4,126 @@ from src.models.AuctionModel import AuctionModel
 from src.models.LotModel import LotModel
 from src.models.ProductModel import ProductModel
 from src.models.BidModel import BidModel
-from datetime import datetime
+from src.models.ProductImageModel import ProductImageModel
+from src.models.ImageModel import ImageModel
+from setup.loaders.database import DB_SESSION
+from datetime import datetime,timedelta,timezone
+from setup.scheduler import scheduler
+from sqlalchemy import select
+from sqlalchemy import func
 
-def create_auction_with_lot(auction_data,start_date,end_date, lot_data,owner_id):
+import pytz
+local_tz = pytz.timezone("America/Sao_Paulo")
+
+def convert_local_to_utc(date_str):
+    """
+    Converte uma data local vinda do front para UTC.
+    """
+    local_dt = datetime.fromisoformat(date_str)
+    
+   
+    if local_dt.tzinfo is None:
+        local_dt = local_tz.localize(local_dt)
+
+    utc_dt = local_dt.astimezone(pytz.utc)
+
+ 
+    return utc_dt
+
+def create_auction_with_lot(auction_data,start_date:datetime,end_date:datetime, lot_data,owner_id):
     try:
+        with DB_SESSION() as Session:
+            print(type(start_date))
+            now = datetime.now(timezone.utc)
+            utc_start = convert_local_to_utc(start_date.isoformat())
+            utc_end= convert_local_to_utc(end_date.isoformat())
+            print("UTC: ",now)
+            print("UTC_START: ",utc_start)
+            print("UTC_END: ",utc_end)
+            start_diff = abs(now - utc_start)
+            end_diff = abs(now - utc_end)
+    
+            if not utc_start or not utc_end:
+                raise ValueError("start_date e end_date são obrigatórios")
 
-        auction = AuctionModel(
-            title=auction_data.get("title"),
-            description=auction_data.get("description"),
-            startDate=start_date,
-            endDate=end_date,
-            status="Open" if start_date and start_date <= datetime.utcnow() else "Scheduled",
-            fkUserIdUser=owner_id
-        )
-        db.session.add(auction)
-        db.session.flush()  # garante idAuction
+            # End não pode ser antes do start
+            if utc_end <= utc_start:
+                raise ValueError("A data final deve ser maior que a data inicial")
 
-        # cria lote inicial
-        lot = LotModel(
-            minimumIncrement= lot_data.get("minimum_increment") or 0,
-            minimumBid=lot_data.get("minimum_bid"),
-            registrationDate = start_date,
-            lotNumber=lot_data.get("lot_number"),
-            currentBidValue=lot_data.get("minimum_bid"),
-            fkAuctionIdAuction=auction.idAuction
-        )
-        db.session.add(lot)
-        db.session.commit()
+            # Start no passado: tolerância de 10 minutos
+            allowed_diff = timedelta(minutes=5)
+
+            if utc_start < now and (now - utc_start) > allowed_diff:
+                raise ValueError("Start date muito antiga. Máximo permitido: 10 minutos atrás")
+
+            # End date nunca pode estar no passado
+            if utc_end <= now:
+                raise ValueError("End date não pode estar no passado")
+
+            # Leilão máximo de 5 dias
+            max_duration = timedelta(days=5)
+            if (utc_end - utc_start) > max_duration:
+                raise ValueError("O leilão não pode durar mais que 5 dias")
+            
+            auction = AuctionModel(
+                title=auction_data.get("title"),
+                description=auction_data.get("description"),
+                startDate=utc_start,
+                endDate=utc_end,
+                status="Open" if utc_start and utc_start<= now else "Scheduled",
+                fkUserIdUser=owner_id
+            )
+            db.session.add(auction)
+            db.session.flush()  
+
+            # creating initial lot
+            lot = LotModel(
+                minimumIncrement= lot_data.get("minimum_increment") or 0,
+                minimumBid=lot_data.get("minimum_bid"),
+                registrationDate = now,
+                lotNumber=lot_data.get("lot_number"),
+                currentBidValue=lot_data.get("minimum_bid"),
+                fkAuctionIdAuction=auction.idAuction
+            )
+            db.session.add(lot)
+            db.session.commit()
+
+            #Creating job scheduler
+            job_id = f"close_auction_{auction.idAuction}"
+
+            if utc_start > now:
+                open_job_id = f"open_auction_{auction.idAuction}"
+
+                if scheduler.get_job(open_job_id):
+                    scheduler.remove_job(open_job_id)
+
+                scheduler.add_job(
+                    id=open_job_id,
+                    func=open_auction_job,
+                    trigger="date",
+                    run_date=utc_start,
+                    args=[auction.idAuction],
+                    replace_existing=True
+                )
+
+            if scheduler.get_job(job_id):
+                scheduler.remove_job(job_id)
+
+            scheduler.add_job(
+                id=job_id,
+                func=close_auction_job,
+                trigger="date",
+                run_date=utc_end,
+                args=[auction.idAuction],
+                replace_existing=True
+            )
+            
+
     except Exception as e:
-        print(e)
-        return None,None
+        print("Erro ao criar leilão:", e)
+        db.session.rollback()
+        return None, None
+
     return auction, lot
 
 def add_product_to_lot(lot_id, product_data):
@@ -65,22 +155,133 @@ def place_bid(lot_id, user_id, bid_value):
     )
     db.session.add(bid)
 
-    # atualiza lot
+ 
     lot.currentBidValue = bid_value
-    # atualize currentWinner com nome do user (ou user id)
-    # aqui suponho que você queira o nickname: busque user se desejar
+
     lot.currentWinner = str(user_id)
     db.session.commit()
     return bid
 
 
+def get_auctions_info(page=1, per_page=10):
+    """Retorna uma lista de dicionários com informações de cada leilão para a página principal"""
+    with DB_SESSION() as Session:
+        offset = (page - 1) * per_page
+        auctions_query = Session.query(AuctionModel).order_by(AuctionModel.startDate.desc()).offset(offset).limit(per_page)
+        auctions_list = []
+
+        for auction in auctions_query:
+            status = auction.status
+            now = datetime.utcnow()
+
+            # Tempo restante
+            if status == 'Open':
+                remaining = auction.endDate - now
+            elif status == 'Scheduled':
+                remaining = auction.startDate - now
+            else:
+                remaining = None
+
+            # Formata o tempo restante
+            if remaining:
+                days = remaining.days
+                hours, rem = divmod(remaining.seconds, 3600)
+                minutes, seconds = divmod(rem, 60)
+                if days > 0:
+                    remaining_str = f"{days}d {hours}h {minutes}m"
+                else:
+                    remaining_str = f"{hours:02}:{minutes:02}:{seconds:02}"
+            else:
+                remaining_str = ""
+
+            auctions_list.append({
+                "id": auction.idAuction,
+                "title": auction.title,
+                "owner": auction.users.nickname,  # Ajuste conforme relacionamento
+                #"category": auction.category.name if auction.category else "",
+                #"location": auction.location or "",
+                #"tag": auction.tag or "",
+                "status": status,
+                "status_display": status.upper(),
+                "current_bid": f"R$ {auction.lots[0].currentBidValue:.2f}" if auction.lots[0].currentBidValue else f"R$ {auction.minimumBid:.2f}",
+                "bids_count": count_bids_by_auction(auction.idAuction),
+                "end_date": auction.endDate,
+                "remaining_time": remaining_str,
+                "winner": auction.lots[0].currentWinnerId if auction.lots[0].currentWinnerId else "",
+                "cover_image": get_auction_cover_image(auction.idAuction)
+            })
+
+        # Obtem total de páginas
+        total_auctions = Session.query(AuctionModel).count()
+        total_pages = (total_auctions + per_page - 1) // per_page
+
+        return (auctions_list, total_pages)
+
+def get_auction_cover_image(auction_id):
+    with DB_SESSION() as session:
+
+        image = (
+             session.query(ImageModel.fileName)
+            .join(ProductImageModel, ProductImageModel.fkImageIdImage == ImageModel.idImage)
+            .join(ProductModel, ProductImageModel.fkProductIdProduct == ProductModel.idProduct)
+            .join(LotModel, ProductModel.fkLotIdLot == LotModel.idLot)
+            .join(AuctionModel, LotModel.fkAuctionIdAuction == AuctionModel.idAuction)
+            .filter(AuctionModel.idAuction == auction_id)
+            .order_by(ProductImageModel.displayOrder.asc())
+            .first()
+        )
+
+        if image:
+            return image[0]  # pois estamos buscando só o fileName
+
+        return "default.png"
 
 
 
+def count_bids_by_auction(auction_id):
+    with DB_SESSION() as session:
+        total = (
+            session.query(func.count(BidModel.idBid))
+            .join(LotModel, BidModel.fkLotIdLot == LotModel.idLot)
+            .filter(LotModel.fkAuctionIdAuction == auction_id)
+            .scalar()
+        )
+
+        return total or 0
+    
+def close_auction_job(auction_id):
+    from app import app
+    print(f"CLOSING AUCTION {auction_id} with job ")
+    with app.app_context():
+        with DB_SESSION() as Session:
+            stm = select(AuctionModel).where(idAuction = auction_id)
+            auction = db.session.execute(stm).mappings().first()
+
+            if not auction:
+                print("Leilão não encontrado")
+                return
+
+            auction.status = "Finished"
+            Session.commit()
+
+        print(f"Leilão {auction_id} encerrado com sucesso.")
 
 
+def open_auction_job(auction_id):
+    print(f"OPENING AUCTION {auction_id} with job ")
+    from app import app
+    with app.app_context():
+        with DB_SESSION() as Session:
+            stm = select(AuctionModel).where(idAuction = auction_id)
+            auction = db.session.execute(stm).mappings().first()
+            if auction:
+                print("Found auction, settings status:")
+                auction.status = "Open"
+                Session.commit()
 
 
+def main_page_auctions():
+    pass
 
 
 

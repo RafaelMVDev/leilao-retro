@@ -1,17 +1,17 @@
+/*
+/* --- Reset and Height Configuration --- */
 /* --- Reset and Height Configuration --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* Ensures font-family inheritance for all elements */
 }
 
-html,
-body {
+html, body {
     height: 100%;
 }
 
-/* --- Base Styles --- */
+/* Base colors are defined in base.css (:root) - keep consistency */
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--dark-purple);
@@ -21,21 +21,7 @@ body {
     flex-direction: column;
 }
 
-/* --- Links --- */
-a {
-    color: var(--highlight-color);
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-a:hover {
-    color: #ffe08a;
-    /* Slightly lighter yellow on hover */
-}
-
-/* --- Standard Buttons (Yellow) and Inputs --- */
-
-/* Standard site buttons (generally yellow, unless overridden) */
+/* Buttons */
 button,
 .aplicar-filtros-btn,
 .lance-btn {
@@ -53,13 +39,10 @@ button,
 }
 
 button:hover:not(:disabled) {
-    transform: none;
-    /* Resetting transform if standard */
     background-color: #ffe08a;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
 }
 
-/* Style for text and select inputs */
+/* Inputs and selects */
 input:not([type="checkbox"], [type="radio"]), select {
     padding: 12px;
     border-radius: 6px;
@@ -68,119 +51,13 @@ input:not([type="checkbox"], [type="radio"]), select {
     color: #111;
     font-size: 16px;
     width: 100%;
-    /* Default: occupies the full width of the container */
-    margin: 0;
-    /* Removing default margin */
 }
 
-/* --- HEADER --- */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background-color: var(--dark-purple);
-    /* Using variable */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.header-esquerda,
-.header-direita ul {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.header-esquerda p {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--highlight-color);
-}
-
-.header-direita a {
-    padding: 8px 15px;
-    border-radius: 6px;
-    color: var(--text-color);
-}
-
-.header-direita a:hover,
-.header-direita a.ativo {
-    background-color: var(--medium-purple);
-    color: var(--highlight-color);
-}
-
-.logo-img-placeholder {
-    width: 40px;
-    height: 40px;
-    background-color: var(--highlight-color);
-    border-radius: 50%;
-}
-
-
-/* --- FOOTER --- */
-footer {
-    margin-top: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background-color: var(--dark-purple);
-    /* Using variable */
-    color: var(--text-color);
-    font-size: 0.9rem;
-    border-top: 1px solid #ffffff1a;
-}
-
-/* --- Main Content (Default for centering, to be overridden if necessary) --- */
-main {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-
-/* --- Global Responsiveness (Header/Footer) --- */
-@media (max-width: 768px) {
-
-    header,
-    footer {
-        flex-direction: column;
-        align-items: center;
-        padding: 15px 20px;
-        text-align: center;
-    }
-
-    .header-direita ul {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 15px;
-    }
-
-    .header-esquerda {
-        margin-bottom: 10px;
-    }
-
-    footer {
-        flex-direction: column;
-        align-items: center;
-        padding: 15px 20px;
-        gap: 10px;
-    }
-}
-
-
-/* --- Gallery and Filters Specific Styles --- */
-
-/* --- Main Auction Page Layout --- */
-
+/* Layout */
 .main-leiloes-page {
-    /* Overrides the 'align-items: center' rule from base.css to allow content to start at the top */
     align-items: flex-start !important;
     justify-content: center !important;
     padding: 0;
-    /* Internal margin will be given by leiloes-layout-container */
     width: 100%;
 }
 
@@ -191,11 +68,10 @@ main {
     width: 100%;
     max-width: 1600px;
     margin: 40px auto;
-    /* Adding top and bottom margin */
     padding: 0 20px;
 }
 
-/* --- Filters Sidebar --- */
+/* Sidebar filtros */
 .filtros-sidebar {
     flex: 0 0 280px;
     background: var(--medium-purple);
@@ -204,7 +80,6 @@ main {
     box-shadow: var(--simple-shadow);
     height: fit-content;
     position: sticky;
-    /* Keeps the sidebar visible when scrolling */
     top: 20px;
 }
 
@@ -215,34 +90,7 @@ main {
     border-bottom: 2px solid var(--highlight-color);
 }
 
-.filtro-titulo {
-    font-size: 1.15rem;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: var(--text-color);
-}
-
-.filtro-grupo-conteudo label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 0.95rem;
-    cursor: pointer;
-}
-
-.aplicar-filtros-btn {
-    width: 100%;
-    margin-top: 30px;
-    /* Uses the purple gradient, specific for highlight/action buttons */
-    background: var(--purple-gradient);
-    color: white;
-}
-
-.aplicar-filtros-btn:hover {
-    background: linear-gradient(90deg, #fa8806, #f8a201);
-}
-
-/* --- Gallery Content Area --- */
+/* Content */
 .leiloes-content {
     flex-grow: 1;
 }
@@ -258,17 +106,13 @@ main {
     margin: 0;
 }
 
-.leilao-search-bar select {
-    min-width: 180px;
-}
-
 .leilao-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 25px;
 }
 
-/* --- AUCTION CARD --- */
+/* Card */
 .leilao-card {
     background: var(--medium-purple);
     border-radius: 6px;
@@ -277,19 +121,15 @@ main {
     display: flex;
     flex-direction: column;
     transition: transform 0.3s, box-shadow 0.3s;
-    /* Subtle neon glow, using variables */
     box-shadow:
-        0 0 8px var(--neon-glow-color-subtle),
-        0 0 15px var(--neon-glow-color-subtle),
+        0 0 8px rgba(255,201,60,0.08),
         0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .leilao-card:hover {
     transform: translateY(-5px);
-    /* Increases glow and shadow on hover */
     box-shadow:
-        0 0 10px var(--neon-glow-color-hover),
-        0 0 20px var(--neon-glow-color-hover),
+        0 0 10px rgba(255,201,60,0.12),
         0 8px 15px rgba(0, 0, 0, 0.5);
 }
 
@@ -301,7 +141,13 @@ main {
     align-items: center;
     color: #ccc;
     position: relative;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.leilao-imagem-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .leilao-conteudo {
@@ -312,18 +158,14 @@ main {
 }
 
 .leilao-titulo {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
 }
 
 .leilao-vendedor {
     font-size: 0.85rem;
     color: var(--highlight-color);
-    margin-bottom: 15px;
-}
-
-.leilao-vendedor span {
-    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .leilao-status {
@@ -332,12 +174,12 @@ main {
     padding: 5px 10px;
     border-radius: 4px;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     text-transform: uppercase;
     align-self: flex-start;
 }
 
-/* Value and Time Information */
+/* Info grid */
 .leilao-info {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -353,19 +195,8 @@ main {
     font-size: 1.1em;
 }
 
-.leilao-valor strong {
-    color: var(--highlight-color);
-}
-
-.leilao-tempo strong {
-    color: #ff8f8f;
-    /* Soft red/pink color for time */
-}
-
-.leilao-info span {
-    font-size: 0.85rem;
-    color: #e0e0e0;
-}
+.leilao-valor strong { color: var(--highlight-color); }
+.leilao-tempo strong { color: #ff8f8f; }
 
 .preco-label {
     display: flex;
@@ -374,40 +205,23 @@ main {
     font-size: 0.9rem;
 }
 
-/* --- Bid Button (Purple Gradient) --- */
+/* Buttons */
 .lance-btn {
-    background: var(--purple-gradient);
+    background: var(--purple-gradient, linear-gradient(90deg, #fa8806, #f8a201));
     color: white;
     margin-top: auto;
     width: 100%;
 }
 
-.lance-btn:hover {
-    background: linear-gradient(90deg, #fa8806, #f8a201);
-}
+.lance-btn[disabled] { opacity: 0.6; cursor: default; }
 
-/* --- Status Colors --- */
-.status-andamento {
-    background-color: #28a745;
-    /* Green */
-    color: white;
-}
+/* Status colors */
+.status-andamento { background-color: #28a745; color: white; }
+.status-encerrado { background-color: #6c757d; color: white; }
+.status-em-breve { background-color: #ffaa00; color: #333; }
 
-.status-encerrado {
-    background-color: #6c757d;
-    /* Gray */
-    color: white;
-}
-
-.status-em-breve {
-    background-color: #ffaa00;
-    /* Orange/Yellow */
-    color: #333;
-}
-
-/* --- Image Tags (Tags in the Image Placeholder) --- */
-.tag-desconto,
-.tag-local {
+/* Tags */
+.tag-desconto, .tag-local {
     position: absolute;
     font-size: 0.75rem;
     padding: 3px 8px;
@@ -417,13 +231,6 @@ main {
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.tag-desconto {
-    top: 10px;
-    left: 10px;
-    background-color: var(--highlight-color);
-    color: #111;
-}
-
 .tag-local {
     top: 10px;
     right: 10px;
@@ -431,13 +238,14 @@ main {
     color: var(--medium-purple);
 }
 
-/* --- Pagination --- */
+/* Pagination */
 .pagination {
     display: flex;
     justify-content: center;
     margin: 40px 0;
     gap: 5px;
     padding: 10px;
+    flex-wrap: wrap;
 }
 
 .pagination a,
@@ -448,56 +256,26 @@ main {
     color: var(--text-color);
     border: 1px solid #4a456e;
     transition: background-color 0.2s;
+    text-decoration: none;
 }
 
-.pagination a:hover:not(.ativo, .disabled) {
-    background-color: #4a456e;
-}
+.pagination a:hover:not(.ativo, .disabled) { background-color: #4a456e; }
+.pagination a.ativo { background-color: var(--highlight-color); color: #111; font-weight: bold; }
+.pagination a.disabled { opacity: 0.5; pointer-events: none; }
 
-.pagination a.ativo {
-    background-color: var(--highlight-color);
-    color: #111;
-    font-weight: bold;
-    border-color: var(--highlight-color);
-}
-
-.pagination a.disabled {
-    opacity: 0.5;
-    cursor: default;
-}
-
-
-/* --- Gallery Specific Responsiveness --- */
+/* Responsive */
 @media (max-width: 900px) {
     .leiloes-layout-container {
         flex-direction: column;
         margin: 20px auto;
     }
-
-    .filtros-sidebar {
-        flex-basis: auto;
-        width: 100%;
-        position: static;
-        /* Disables sticky on mobile */
-        top: auto;
-    }
-
-    .leilao-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
+    .filtros-sidebar { width: 100%; position: static; top: auto; }
+    .leilao-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 }
 
 @media (max-width: 550px) {
-    .leilao-search-bar {
-        flex-direction: column;
-    }
-
-    .leilao-info {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .leilao-tempo {
-        grid-column: 1 / -1;
-        text-align: center;
-    }
+    .leilao-search-bar { flex-direction: column; }
+    .leilao-info { grid-template-columns: 1fr 1fr; }
+    .leilao-tempo { grid-column: 1 / -1; text-align: center; }
+    #toggle-filters-mobile { display:block; }
 }

@@ -1,6 +1,10 @@
 
 from dotenv import load_dotenv
 import os
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+
+
 
 load_dotenv()  # loads the dotenv
 
@@ -14,3 +18,12 @@ project_settings = {
     "LOCALE": "pt"
     
 }
+
+#Scheduler settings
+jobstores = {
+    'default': SQLAlchemyJobStore(
+        url='mysql+pymysql://usuario:senha@localhost/leilao_retro'
+    )
+}
+
+scheduler = BackgroundScheduler(jobstores=jobstores)
