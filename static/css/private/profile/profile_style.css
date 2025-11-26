@@ -49,12 +49,12 @@ main.profile-main {
 }
 
 .profile-sidebar nav ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--dark-purple); /* Usando o dark-purple para hover, ou um rgba sutil */
 }
 
 .profile-sidebar nav ul li a.active-tab {
-    /* Using base colors. If there is a variable for the button purple, use it. Using dark purple as fallback here. */
-    background-color: #3d0078;
+    /* Cor de destaque para o item ativo, usando uma cor mais escura ou o medium-purple */
+    background-color: var(--dark-purple);
     color: var(--highlight-color);
     font-weight: bold;
 }
@@ -74,7 +74,7 @@ main.profile-main {
 .profile-photo-placeholder {
     width: 100px;
     height: 100px;
-    background: #111111;
+    background: var(--dark-purple); /* Usando Dark Purple */
     border-radius: 50%;
     border: 3px solid var(--highlight-color);
     margin-bottom: 10px;
@@ -108,12 +108,11 @@ main.profile-main {
 
 .balance-card {
     flex: 1;
-    background: #2b2b2b;
-    /* Internal card color, if no specific variable exists */
+    background: var(--dark-purple); /* Cor de card interna, mais escura */
     padding: 15px;
     border-radius: 10px;
     text-align: center;
-    border: 1px solid #444;
+    border: 1px solid #4a456e; /* Cor da borda do input, para consistência */
 }
 
 .balance-card span {
@@ -141,7 +140,6 @@ main.profile-main {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
-    /* Assuming '--medium-purple' is the dark or medium purple color for the line */
     border-bottom: 2px solid var(--medium-purple);
     padding-bottom: 10px;
 }
@@ -164,7 +162,7 @@ main.profile-main {
 
 .profile-content form input:read-only {
     /* Highlights fields that cannot be edited (or are in view mode) */
-    background-color: #1a1a1a !important;
+    background-color: #1e1b30 !important; /* Dark Purple para campos read-only */
     color: #ccc !important;
     cursor: default;
     opacity: 1 !important;
@@ -188,10 +186,14 @@ main.profile-main {
 
 .button-group button {
     min-width: 120px;
-    /* Default button styles (yellow) come from base.css. For specific action buttons, override is necessary: */
-    /* Example: If it's a 'Save' button (purple) */
-    /* background: var(--purple-gradient); color: white; */
+    /* Botões padrão (amarelo) vêm de base.css. Adicionando o hover transform: */
+    transition: transform 0.2s;
 }
+
+.button-group button:hover:not(:disabled) {
+    transform: scale(1.02); /* Efeito de aumento (Zoom) */
+}
+
 
 /* --- Auction Cards (Bids/History) --- */
 
@@ -205,15 +207,15 @@ main.profile-main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #2b2b2b;
+    background: var(--medium-purple); /* Cor de card */
     padding: 15px;
     border-radius: 10px;
-    border: 1px solid #444;
+    border: 1px solid #4a456e; /* Borda sutil */
     transition: background-color 0.2s;
 }
 
 .auction-item-profile:hover {
-    background-color: #383838;
+    background-color: #383857; /* Um tom ligeiramente mais escuro que medium-purple */
 }
 
 /* 1. Icon/Placeholder */
@@ -221,7 +223,7 @@ main.profile-main {
     order: 1;
     width: 80px;
     height: 80px;
-    background-color: #111;
+    background-color: var(--dark-purple);
     border-radius: 6px;
     margin-right: 15px;
     display: flex;
@@ -270,7 +272,12 @@ main.profile-main {
 .auction-item-profile button {
     order: 4;
     min-width: 120px;
-    /* Button style (default yellow) comes from base.css */
+    /* Botão padrão (amarelo) vem de base.css */
+    transition: transform 0.2s;
+}
+
+.auction-item-profile button:hover:not(:disabled) {
+    transform: scale(1.02); /* Efeito de aumento (Zoom) */
 }
 
 /* Status colors */
@@ -297,7 +304,7 @@ main.profile-main {
 }
 
 .achievement-card {
-    background: #2b2b2b;
+    background: var(--medium-purple); /* Cor de card */
     padding: 20px;
     border-radius: 12px;
     display: flex;
@@ -311,7 +318,7 @@ main.profile-main {
 
 .achievement-card.unlocked {
     border-color: var(--highlight-color);
-    background: #333333;
+    background: #383857; /* Um pouco mais escuro/diferente para desbloqueado */
 }
 
 .achievement-card:hover {
@@ -327,7 +334,7 @@ main.profile-main {
 
 .achievement-card.unlocked .achievement-icon {
     color: var(--highlight-color);
-    text-shadow: 0 0 10px rgba(255, 206, 102, 0.7);
+    text-shadow: 0 0 10px var(--neon-glow-subtle);
 }
 
 .achievement-card h4 {
@@ -357,7 +364,7 @@ main.profile-main {
 }
 
 .custom-modal-content {
-    background-color: var(--medium-purple);
+    background-color: var(--medium-purple); /* Cor do card */
     color: var(--text-color);
     padding: 30px;
     border-radius: 12px;
@@ -374,14 +381,32 @@ main.profile-main {
 
 .custom-modal-content button {
     margin-top: 20px;
-    /* Using action purple for the modal button */
-    background: #8b3dff;
+    background-color: var(--highlight-color);
+    color: linear-gradient(90deg, #fa8806, #f8a201);
     width: 100%;
-    color: white;
-    /* Overrides default text color if necessary */
+    /* Adicionando o efeito de hover/zoom */
+    transition: transform 0.2s;
+}
+
+.custom-modal-content button:hover:not(:disabled) {
+    transform: scale(1.02); /* Efeito de aumento (Zoom) */
 }
 
 
+.btn-l {
+    width: 100%;
+    background: linear-gradient(90deg, #fa8806, #f8a201);  
+    color: white; 
+    /* Adiciona a transição para que a mudança de cor e o zoom sejam suaves */
+    transition: all 0.2s ease; 
+    transform: none;
+}
+
+.btn-l:hover {
+    /* Aplica o zoom ao passar o mouse */
+    transform: scale(1.02);
+    color: black;
+}
 /* --- Media Queries for Responsiveness --- */
 
 @media (max-width: 900px) {
