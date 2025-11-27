@@ -1,11 +1,11 @@
-const BACKEND_ADMIN_URL = '/api/admin/auctions'; 
+const BACKEND_ADMIN_URL = '/api/admin/auctions';
 
-// Dados mockados para simular uma lista de leilões no lado do administrador
+// Dados mockados (Mantidos)
 let mockAuctionsData = [
     {
         id: 101,
         title: "Console Raro Super Nintendo + Jogos",
-        status: "open", 
+        status: "open",
         currentBid: 450.00,
         currentWinner: "AnaC",
         endDate: "2025-11-26T23:59:59Z",
@@ -13,8 +13,8 @@ let mockAuctionsData = [
     },
     {
         id: 102,
-        title: "Pintura a Óleo: Mar Adentro",
-        status: "scheduled", 
+        title: "Pintura a Óleo: Mar Adentro, uma obra de arte que se estende para o infinito",
+        status: "scheduled",
         currentBid: 0.00,
         currentWinner: null,
         endDate: "2025-12-05T15:00:00Z",
@@ -23,7 +23,7 @@ let mockAuctionsData = [
     {
         id: 103,
         title: "Relógio Suíço Antigo de Bolso",
-        status: "open", 
+        status: "open",
         currentBid: 1250.00,
         currentWinner: "ColecionadorX",
         endDate: "2025-11-28T10:00:00Z",
@@ -32,7 +32,7 @@ let mockAuctionsData = [
     {
         id: 104,
         title: "Coleção Completa de Mangás Dragon Ball Z",
-        status: "finished", 
+        status: "finished",
         currentBid: 320.00,
         currentWinner: "GokuFan",
         endDate: "2025-11-20T20:00:00Z",
@@ -41,7 +41,7 @@ let mockAuctionsData = [
     {
         id: 105,
         title: "Placa de Vídeo RTX 4090",
-        status: "canceled", 
+        status: "canceled",
         currentBid: 5500.00,
         currentWinner: "TechGuy",
         endDate: "2025-12-10T12:00:00Z",
@@ -50,28 +50,23 @@ let mockAuctionsData = [
 ];
 
 function formatCurrency(value) {
-    return new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    }).format(value);
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 }
 
 function formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toLocaleString('pt-BR', { 
-        day: '2-digit', 
-        month: '2-digit', 
-        year: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit' 
+    return date.toLocaleString('pt-BR', {
+        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
     });
 }
 
 function displayAdminMessage(message, type) {
     const box = document.getElementById('admin-message-box');
-    box.textContent = message;
+
+    // Remove 'hidden' e adiciona 'active' para iniciar a animação e reserva de espaço
     box.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800', 'bg-blue-100', 'text-blue-800');
-    
+    box.classList.add('active', 'p-3');
+
     if (type === 'success') {
         box.classList.add('bg-green-100', 'text-green-800');
     } else if (type === 'error') {
@@ -80,8 +75,15 @@ function displayAdminMessage(message, type) {
         box.classList.add('bg-blue-100', 'text-blue-800');
     }
 
+    box.textContent = message;
+
     setTimeout(() => {
-        box.classList.add('hidden');
+        box.classList.remove('active');
+        setTimeout(() => {
+            box.textContent = '';
+            box.classList.add('hidden');
+            box.classList.remove('p-3');
+        }, 300); // 300ms é a duração da transição
     }, 5000);
 }
 
@@ -93,10 +95,7 @@ function handleFinalize(auctionId) {
     }
 
     if (mockAuctionsData[auctionIndex].status === 'open' || mockAuctionsData[auctionIndex].status === 'scheduled') {
-        console.log(`[API CALL SIMULATED] POST ${BACKEND_ADMIN_URL}/finalize/${auctionId}`);
-        
         mockAuctionsData[auctionIndex].status = 'finished';
-        
         renderAuctionsTable();
         displayAdminMessage(`Leilão ID ${auctionId} finalizado com sucesso! O vencedor foi ${mockAuctionsData[auctionIndex].currentWinner || 'N/A'}.`, 'success');
     } else {
@@ -109,11 +108,7 @@ function handleCancel(auctionId) {
     if (auctionIndex === -1) return;
 
     if (mockAuctionsData[auctionIndex].status !== 'finished' && mockAuctionsData[auctionIndex].status !== 'canceled') {
- 
-        console.log(`[API CALL SIMULATED] POST ${BACKEND_ADMIN_URL}/cancel/${auctionId}`);
-
         mockAuctionsData[auctionIndex].status = 'canceled';
-        
         renderAuctionsTable();
         displayAdminMessage(`Leilão ID ${auctionId} cancelado com sucesso.`, 'info');
     } else {
@@ -122,16 +117,15 @@ function handleCancel(auctionId) {
 }
 
 function handleEdit(auctionId) {
-    displayAdminMessage(`Simulando redirecionamento para a edição do Leilão ID ${auctionId}...`, 'info');
-    console.log(`Admin action: Edit Auction ID ${auctionId}`);
-    // Em um ambiente real, seria um window.location.href para a rota de edição.
+    // CORREÇÃO DE FUNCIONALIDADE: Informa que a edição é simulada.
+    displayAdminMessage(`Ação de Edição: O botão está funcional, mas esta é uma função SIMULADA. Você precisa construir a rota de formulário para editar o Leilão ID ${auctionId}.`, 'info');
 }
 
 function renderAuctionsTable() {
     const tbody = document.getElementById('auctions-table-body');
     if (!tbody) return;
 
-    tbody.innerHTML = ''; 
+    tbody.innerHTML = '';
 
     const statusMap = {
         'open': 'Aberto',
@@ -142,23 +136,24 @@ function renderAuctionsTable() {
 
     mockAuctionsData.forEach(auction => {
         const row = document.createElement('tr');
-        row.className = 'hover:bg-gray-100 transition duration-150';
-        
-        const statusText = statusMap[auction.status] || 'Desconhecido';
-        const statusCell = `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-${auction.status.toLowerCase()}">${statusText}</span>`;
+        row.className = 'hover:bg-gray-100 transition duration-150 border-b';
 
+        const statusText = statusMap[auction.status] || 'Desconhecido';
+        const statusCell = `<span class="status-badge status-${auction.status.toLowerCase()}">${statusText}</span>`;
+
+        // CORREÇÃO DE RESPONSIVIDADE: Removido 'whitespace-nowrap' do Título e adicionado 'break-words'.
         row.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${auction.id}</td>
-            <td class="px-6 py-4 max-w-xs truncate text-sm text-gray-500">${auction.title}</td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-900">${auction.id}</td>
+            <td class="px-6 py-4 text-sm text-gray-500 break-words">${auction.title}</td> 
             <td class="px-6 py-4 whitespace-nowrap">${statusCell}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatCurrency(auction.currentBid)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDate(auction.endDate)}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button onclick="handleEdit(${auction.id})" class="text-indigo-600 hover:text-indigo-900 mr-3">Editar</button>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-2">
+                <button onclick="handleEdit(${auction.id})" class="text-indigo-600 hover:text-indigo-900">Editar</button>
                 ${auction.status === 'open' || auction.status === 'scheduled' ?
-                    `<button onclick="handleFinalize(${auction.id})" class="text-green-600 hover:text-green-900 mr-3">Finalizar</button>` : ''}
+                `<button onclick="handleFinalize(${auction.id})" class="text-green-600 hover:text-green-900">Finalizar</button>` : ''}
                 ${auction.status !== 'canceled' && auction.status !== 'finished' ?
-                    `<button onclick="handleCancel(${auction.id})" class="text-red-600 hover:text-red-900">Cancelar</button>` : ''}
+                `<button onclick="handleCancel(${auction.id})" class="text-red-600 hover:text-red-900">Cancelar</button>` : ''}
             </td>
         `;
 
@@ -166,7 +161,6 @@ function renderAuctionsTable() {
     });
 }
 
-window.onload = function() {
+window.onload = function () {
     renderAuctionsTable();
-    console.log('Painel de Administração carregado.');
 };

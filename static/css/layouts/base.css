@@ -240,3 +240,21 @@ main {
         margin-left: 0;
     }
 }
+
+/* --- CORREÇÃO DE CONFLITO COM BASE.CSS --- */
+/*
+   O base.css estava forçando 'main' para o centro com display: flex.
+   Aqui, forçamos o main a se comportar como um container de bloco
+   normal (para o layout fluir) e removemos o background-color roxo.
+*/
+main {
+    display: block !important;
+    justify-content: unset !important;
+    align-items: unset !important;
+    padding: 0 !important; /* Tailwind já gerencia o padding no HTML */
+}
+
+/* Remove a cor roxa do body para que o Tailwind bg-gray-50 no <main> funcione */
+body {
+    background-color: #f3f4f6 !important; /* Cor cinza claro do Tailwind (bg-gray-50) */
+}
