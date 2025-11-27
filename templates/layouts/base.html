@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1280">
-    
+
     <title>{% block title %}Maradindiduns{% endblock %}</title>
 
     <!-- CSS global -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/base.css') }}">
-    <link rel="icon" type="image/png" href="{{url_for('static', filename='media/MarAuction_logo.webp')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/profile_style.css') }}">
+    <link rel=" icon" type="image/png" href="{{url_for('static', filename='media/MarAuction_logo.webp')}}">
     {% block css %}{% endblock %}
 
     <!-- CSRF fixo -->
@@ -18,44 +19,37 @@
 
 <body>
 
-<header>
-    <div class="header-left">
-        <div class="logo-img-placeholder"></div>
-        <p>MarAuction</p>
-    </div>
+    <header>
+        <div class="header-left">
+            <img src="{{ url_for('static', filename='media/logo.jpeg') }}" alt="Logo MarAuction" class="logo-img">
+            <p>MarAuction</p>
+        </div>
 
-    <div class="header-right">
-        <ul>
-            <li>
-                <a href="{{ url_for('public_pages.homepage') }}">Início</a>
-            </li>
+        <div class="header-right">
+            <ul>
+                <li>
+                    <a href="{{ url_for('public_pages.homepage') }}">Início</a>
+                </li>
 
-            <li>
-                <a href="{{ url_for('auction_public_pages.get_auctions_main_page') }}">Leilões</a>
-            </li>
+                <li>
+                    <a href="{{ url_for('auction_public_pages.get_auctions_main_page') }}">Leilões</a>
+                </li>
 
-            {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated %}
 
                 <li class="profile-area">
                     <a href="{{ url_for('profile_pages.get_profile_page') }}" class="profile-link">
                         {% if current_user.profile_image%}
-                            <img 
-                                src="{{ current_user.profile_image or url_for('static', filename='img/default_user.png') }}"
-                                class="profile-img" 
-                                alt="Foto de perfil">
+                        <img src="{{ current_user.profile_image or url_for('static', filename='img/default_user.png') }}"
+                            class="profile-img" alt="Foto de perfil">
 
+                        {% endif %}
+                        <span>Perfil</span>
+                        <form action="{{ url_for('profile_pages.submit_logout') }}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 
-                         {% else %}
-                              <div class="profile-icon">
-                                <i class="fas fa-user-astronaut"></i>
-                              </div>
-                         {% endif %}
-                         <span>Perfil</span>
-                         <form action="{{ url_for('profile_pages.submit_logout') }}" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-
-                <input type="submit" value="SAIR" data-acao="sair">
-            </form>
+                            <button type="submit" value="SAIR" data-acao="sair" class="btn-l"> SAIR </button>
+                        </form>
                     </a>
                 </li>
                 <!--
@@ -63,7 +57,7 @@
                     <a href="{{ url_for('profile_pages.submit_logout') }}">Sair</a>
                 </li>
                 -->
-            {% else %}
+                {% else %}
 
                 <li>
                     <a href="{{ url_for('auth_pages.login_page') }}">Entrar</a>
@@ -73,28 +67,29 @@
                     <a href="{{ url_for('auth_pages.register_page') }}">Cadastrar-se</a>
                 </li>
 
-            {% endif %}
-        </ul>
-    </div>
-</header>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
 
-{% block content %}
+    {% block content %}
 
-{% endblock %}
+    {% endblock %}
 
-<footer>
-    <div class="footer-cellphone">
-        <p>Telefone: (11) 97321-0013</p>
-    </div>
-    <div class="footer-copyright">
-        <p>© 2025 Maradindiduns</p>
-    </div>
-    <div class="footer-empty-space"></div>
-</footer>
+    <footer>
+        <div class="footer-cellphone">
+            <p>Telefone: (11) 97321-0013</p>
+        </div>
+        <div class="footer-copyright">
+            <p>© 2025 Maradindiduns</p>
+        </div>
+        <div class="footer-empty-space"></div>
+    </footer>
 
-{% block js %}
+    {% block js %}
 
-{% endblock %}
+    {% endblock %}
 
 </body>
+
 </html>

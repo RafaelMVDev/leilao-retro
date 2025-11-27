@@ -49,11 +49,12 @@ main.profile-main {
 }
 
 .profile-sidebar nav ul li a:hover {
-    background-color: var(--dark-purple); /* Usando o dark-purple para hover, ou um rgba sutil */
+    background-color: var(--dark-purple);
+    /* Using dark-purple for hover, or a subtle rgba */
 }
 
 .profile-sidebar nav ul li a.active-tab {
-    /* Cor de destaque para o item ativo, usando uma cor mais escura ou o medium-purple */
+    /* Highlight color for the active item, using a darker color or medium-purple */
     background-color: var(--dark-purple);
     color: var(--highlight-color);
     font-weight: bold;
@@ -74,7 +75,8 @@ main.profile-main {
 .profile-photo-placeholder {
     width: 100px;
     height: 100px;
-    background: var(--dark-purple); /* Usando Dark Purple */
+    background: var(--dark-purple);
+    /* Using Dark Purple */
     border-radius: 50%;
     border: 3px solid var(--highlight-color);
     margin-bottom: 10px;
@@ -108,11 +110,13 @@ main.profile-main {
 
 .balance-card {
     flex: 1;
-    background: var(--dark-purple); /* Cor de card interna, mais escura */
+    background: var(--dark-purple);
+    /* Internal card color, darker */
     padding: 15px;
     border-radius: 10px;
     text-align: center;
-    border: 1px solid #4a456e; /* Cor da borda do input, para consistência */
+    border: 1px solid #4a456e;
+    /* Input border color, for consistency */
 }
 
 .balance-card span {
@@ -162,7 +166,8 @@ main.profile-main {
 
 .profile-content form input:read-only {
     /* Highlights fields that cannot be edited (or are in view mode) */
-    background-color: #1e1b30 !important; /* Dark Purple para campos read-only */
+    background-color: #1e1b30 !important;
+    /* Dark Purple for read-only fields */
     color: #ccc !important;
     cursor: default;
     opacity: 1 !important;
@@ -186,12 +191,13 @@ main.profile-main {
 
 .button-group button {
     min-width: 120px;
-    /* Botões padrão (amarelo) vêm de base.css. Adicionando o hover transform: */
+    /* Default buttons (yellow) come from base.css. Adding the hover transform: */
     transition: transform 0.2s;
 }
 
 .button-group button:hover:not(:disabled) {
-    transform: scale(1.02); /* Efeito de aumento (Zoom) */
+    transform: scale(1.02);
+    /* Zoom effect */
 }
 
 
@@ -207,15 +213,18 @@ main.profile-main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--medium-purple); /* Cor de card */
+    background: var(--medium-purple);
+    /* Card color */
     padding: 15px;
     border-radius: 10px;
-    border: 1px solid #4a456e; /* Borda sutil */
+    border: 1px solid #4a456e;
+    /* Subtle border */
     transition: background-color 0.2s;
 }
 
 .auction-item-profile:hover {
-    background-color: #383857; /* Um tom ligeiramente mais escuro que medium-purple */
+    background-color: #383857;
+    /* A slightly darker shade than medium-purple */
 }
 
 /* 1. Icon/Placeholder */
@@ -272,12 +281,13 @@ main.profile-main {
 .auction-item-profile button {
     order: 4;
     min-width: 120px;
-    /* Botão padrão (amarelo) vem de base.css */
+    /* Default button (yellow) comes from base.css */
     transition: transform 0.2s;
 }
 
 .auction-item-profile button:hover:not(:disabled) {
-    transform: scale(1.02); /* Efeito de aumento (Zoom) */
+    transform: scale(1.02);
+    /* Zoom effect */
 }
 
 /* Status colors */
@@ -304,7 +314,8 @@ main.profile-main {
 }
 
 .achievement-card {
-    background: var(--medium-purple); /* Cor de card */
+    background: var(--medium-purple);
+    /* Card color */
     padding: 20px;
     border-radius: 12px;
     display: flex;
@@ -318,7 +329,8 @@ main.profile-main {
 
 .achievement-card.unlocked {
     border-color: var(--highlight-color);
-    background: #383857; /* Um pouco mais escuro/diferente para desbloqueado */
+    background: #383857;
+    /* Slightly darker/different for unlocked */
 }
 
 .achievement-card:hover {
@@ -364,7 +376,8 @@ main.profile-main {
 }
 
 .custom-modal-content {
-    background-color: var(--medium-purple); /* Cor do card */
+    background-color: var(--medium-purple);
+    /* Card color */
     color: var(--text-color);
     padding: 30px;
     border-radius: 12px;
@@ -384,29 +397,31 @@ main.profile-main {
     background-color: var(--highlight-color);
     color: linear-gradient(90deg, #fa8806, #f8a201);
     width: 100%;
-    /* Adicionando o efeito de hover/zoom */
+    /* Adding the hover/zoom effect */
     transition: transform 0.2s;
 }
 
 .custom-modal-content button:hover:not(:disabled) {
-    transform: scale(1.02); /* Efeito de aumento (Zoom) */
+    transform: scale(1.02);
+    /* Zoom effect */
 }
 
 
 .btn-l {
     width: 100%;
-    background: linear-gradient(90deg, #fa8806, #f8a201);  
-    color: white; 
-    /* Adiciona a transição para que a mudança de cor e o zoom sejam suaves */
-    transition: all 0.2s ease; 
+    background: linear-gradient(90deg, #fa8806, #f8a201);
+    color: white;
+    /* Adds the transition so color change and zoom are smooth */
+    transition: all 0.2s ease;
     transform: none;
 }
 
 .btn-l:hover {
-    /* Aplica o zoom ao passar o mouse */
+    /* Applies zoom on hover */
     transform: scale(1.02);
     color: black;
 }
+
 /* --- Media Queries for Responsiveness --- */
 
 @media (max-width: 900px) {
@@ -432,6 +447,41 @@ main.profile-main {
     .profile-sidebar nav ul li a {
         padding: 8px 12px;
     }
+}
+
+/* --- ADDITIONAL STYLES FOR BzzCoin ICON --- */
+
+.balance-card1 {
+    font-size: 0.8rem;
+    color: var(--highlight-color);
+    margin-bottom: 5px;
+    font-weight: 600;
+    /* Flexbox styles to align Image and Text side-by-side */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+.balance-card .coin-label {
+    /* Reuses original span properties */
+    font-size: 0.8rem;
+    color: var(--highlight-color);
+    margin-bottom: 5px;
+    font-weight: 600;
+    /* Flexbox styles to align Image and Text side-by-side */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Centers the image and text inside the card */
+}
+
+/* Defines the size of the BzzCoin image */
+.balance-card .bzzcoin-icon {
+    width: 50px;
+    /* Adjust this value to the desired size (e.g., 18px or 24px) */
+    height: 50px;
+    object-fit: contain;
+    /* Ensures the image is not distorted */
 }
 
 @media (max-width: 600px) {
