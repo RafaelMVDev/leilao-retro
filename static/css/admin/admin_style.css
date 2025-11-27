@@ -1,3 +1,4 @@
+/* --- Estilos de Status (Mantidos) --- */
 .status-badge {
     display: inline-flex;
     padding-left: 0.75rem;
@@ -31,22 +32,37 @@
     color: #991b1b;
 }
 
+
+/* --- CORREÇÃO DE CONFLITO COM BASE.CSS (RESOLVE O BUG DE LAYOUT) --- */
+/* Estas regras forçam a página a usar o layout de bloco normal (do Tailwind) */
+
+body {
+    /* Garante que o fundo seja o cinza claro, não o roxo do base.css */
+    background-color: #f9fafb !important;
+    /* Cor cinza claro (bg-gray-50) */
+    /* Remove o display: flex/column perigoso */
+    display: block !important;
+}
+
+main {
+    /* Remove o display: flex, o alinhamento centralizado e o padding forçado do base.css */
+    display: block !important;
+    justify-content: unset !important;
+    align-items: unset !important;
+    padding: 0 !important;
+}
+
+/* --- FIX DE MOVIMENTO DE TELA (RESOLVE O BUG DO TEXTO "GERENCIE...") --- */
 #admin-message-box {
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
+    /* CHAVE DO FIX: Reserva o espaço da caixa de mensagem mesmo quando vazia */
+    min-height: 2.5rem;
+    /* Altura suficiente para acomodar o conteúdo com padding (p-3) */
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 #admin-message-box.active {
     opacity: 1;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--dark-purple);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }

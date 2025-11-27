@@ -20,29 +20,29 @@
                 </div>
 
                 <h3 id="user_nickname">{{profile_settings.nickname}}</h3>
-            </div>
 
-            
-            <div class="balance-card">
+            </div>
+        
+            <div class="balance-cards">
+                <div class="balance-card">
                     <span>Saldo (R$)</span>
                     <strong id="user_balance"
                         data-balance="{{ wallets_data.wallet_external.currentBalance if wallets_data else 250 }}">
                     </strong>
                 </div>
-                
+
                 <div class="balance-card">
-                    <span>BzzCoin</span>
                     <span class="coin-label">
                         <img src="{{ url_for('static', filename='media/bzzcoin_icon.jpeg') }}" 
                              alt="BzzCoin Icon" 
                              class="bzzcoin-icon">
-                        
+                        BzzCoins
                     </span>
 
                     <strong id="user_coins"
                         data-coins="{{ wallets_data.wallet_internal.currentBalance if wallets_data else 250 }}">
                     </strong>
-                    </div>
+                </div>
             </div>
 
             <nav>
@@ -55,8 +55,10 @@
                             Lances</a></li>
                     <li><a href="#" id="tab_achievements" data-tab="achievements"><i class="fas fa-trophy"></i> Minhas
                             Conquistas</a></li>
-                    <li><a href="#" id="tab_settings" data-tab="settings"><i class="fas fa-cog"></i>
-                            Configurações</a></li>
+                            <!--
+                            <li><a href="#" id="tab_settings" data-tab="settings"><i class="fas fa-cog"></i>
+                            Configurações</a></li>-->
+                        
                 </ul>
             </nav>
             <form action="{{ url_for('profile_pages.submit_logout') }}" method="POST">
@@ -71,7 +73,6 @@
                 <div class="content-header">
                     <h2>Dados Pessoais</h2>
 
-                <!---->
                     <button id="edit_save_btn" style="background: linear-gradient(90deg, #fa8806, #f8a201);">
 
                         <i class="fas fa-edit"></i> Editar Dados
@@ -88,16 +89,16 @@
                         <input type="text" placeholder="Nome Completo" name="nome" id="input_nome"
                         value="{{profile_settings.get("firstName")}} {{profile_settings.get("lastName")}}" readonly required minlength="3">
 
-                    <input type="text" placeholder="Nickname" name="nickname" id="input_nickname"
-                        value="{{profile_settings.get("nickname")}}" readonly required minlength="3" maxlength="30">
-                </div>
+                        <input type="text" placeholder="Nickname" name="nickname" id="input_nickname"
+                            value="{{profile_settings.get("nickname")}}" readonly required minlength="3" maxlength="30">
+                    </div>
+                    
+                    <div class="line" style="margin-bottom: 15px;">
+                        <input type="tel" placeholder="Telefone" name="telefone" id="input_phoneNumber" 
+                            value={{profile_settings.get("phone")}} readonly required minlength="9" maxlength="14">
 
-                <div class="line" style="margin-bottom: 15px;">
-                    <input type="tel" placeholder="Telefone" name="telefone" id="input_phoneNumber"
-                        value={{profile_settings.get("phone")}} readonly required minlength="9" maxlength="14">
-
-                    <input type="text" placeholder="CPF" name="cpf" value={{profile_settings.get("cpf")}}>
-                </div>
+                        <input type="text" placeholder="CPF" name="cpf" value={{profile_settings.get("cpf")}}>
+                    </div>
 
                     <input type="password" placeholder="Nova Senha (Opcional)" name="new_password"
                         id="input_new_password" style="display: none;" minlength="6">
@@ -133,8 +134,6 @@
                     <div class="line">
                         <input type="text" placeholder="Cidade" name="city" id="input_city" value="{{address_data.get("nameCity")}}" readonly
                             required maxlength="60">
-                <div class="line">
-                    <input type="text" placeholder="Cidade" name="city" id="input_city" value="{{address_data.get("nameCity")}}" readonly required maxlength="60">
 
                         <input type="text" placeholder="Estado (UF)" name="state" id="input_state" value="{{address_data.get("stateName")}}" readonly
                             required minlength="2" maxlength="3">
@@ -256,6 +255,7 @@
                 </div>
             </div>
 
+            <!-- 
             <div id="content_settings" class="content-tab">
                 <div class="content-header">
                     <h2>Configurações</h2>
@@ -291,7 +291,7 @@
                     </div>
                 </div>
             </div>
-            
+            -->
             <div id="content_achievements" class="content-tab">
 
                 <div class="content-header">
