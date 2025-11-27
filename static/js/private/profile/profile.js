@@ -87,7 +87,7 @@ function loadUserData() {
     // Updates Sidebar Card
     document.getElementById('user_nickname').textContent = CURRENT_DATA.nickname;
     document.getElementById('user_balance').textContent = CURRENT_DATA.currentBalance;
-    document.getElementById('user_coins').innerHTML = `${CURRENT_DATA.bzzCoins} <i class="fas fa-coins" style="color: gold;"></i>`;
+    document.getElementById('user_coins').innerHTML = `${CURRENT_DATA.bzzCoins} <i class="fbzzcoin-icon"></i>`;
 }
 
 /**

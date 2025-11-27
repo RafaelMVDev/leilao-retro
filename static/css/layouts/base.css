@@ -80,7 +80,6 @@ input:not([type="file"]) {
     margin: 8px 0;
 }
 
-
 /* --- HEADER --- */
 header {
     width: 100%;
@@ -97,6 +96,13 @@ header {
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+/* Estilo para a imagem do logo */
+.header-left .logo-img {
+    height: 50px; /* Ajuste o tamanho conforme necessário */
+    width: 50px;
+    margin-right: 10px; /* Espaçamento entre o logo e o texto "MarAuction" */
 }
 
 .header-left p {
