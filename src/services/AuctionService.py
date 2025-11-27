@@ -6,9 +6,12 @@ from src.models.ProductModel import ProductModel
 from src.models.BidModel import BidModel
 from src.models.ProductImageModel import ProductImageModel
 from src.models.ImageModel import ImageModel
+from src.models.UserModel import UserModel
+from src.models.WalletModel import WalletModel
 from setup.loaders.database import DB_SESSION
 from datetime import datetime,timedelta,timezone
 from setup.scheduler import scheduler
+from src.models.CategoryProductModel import CategoryProductModel
 from sqlalchemy import select
 from sqlalchemy import func
 
@@ -17,7 +20,7 @@ local_tz = pytz.timezone("America/Sao_Paulo")
 
 def convert_local_to_utc(date_str):
     """
-    Converte uma data local vinda do front para UTC.
+    Converts local date str to utc
     """
     local_dt = datetime.fromisoformat(date_str)
     
@@ -190,20 +193,17 @@ def get_auctions_info(page=1, per_page=10):
             else:
                 remaining = None
 
-            # Se remaining existir, usa total_seconds pra decidir se expirou
             if remaining is None:
                 remaining_str = ""
             else:
                 secs = remaining.total_seconds()
                 if secs <= 0:
-                    # já expirou (<= 0)
                     remaining_str = "00:00:00"
                   
                     auction.status = 'Finished'
-                    Session.add(auction)  # se estiver usando SQLAlchemy
+                    Session.add(auction)  
                     Session.commit()
                 else:
-                    # Formata dias/hours/mins/seconds corretamente a partir de total_seconds
                     secs_int = int(secs)
                     days, rem = divmod(secs_int, 86400)
                     hours, rem = divmod(rem, 3600)
@@ -218,8 +218,8 @@ def get_auctions_info(page=1, per_page=10):
             auctions_list.append({
                 "id": auction.idAuction,
                 "title": auction.title,
-                "owner": auction.users.nickname,  # Ajuste conforme relacionamento
-                #"category": auction.category.name if auction.category else "",
+                "owner": auction.users.nickname,  
+                "category": auction.category.name if auction.category else "",
                 #"location": auction.location or "",
                 #"tag": auction.tag or "",
                 "status": status,
@@ -232,7 +232,6 @@ def get_auctions_info(page=1, per_page=10):
                 "cover_image": get_auction_cover_image(auction.idAuction)
             })
 
-        # Obtem total de páginas
         total_auctions = Session.query(AuctionModel).count()
         total_pages = (total_auctions + per_page - 1) // per_page
 
@@ -253,7 +252,7 @@ def get_auction_cover_image(auction_id):
         )
 
         if image:
-            return image[0]  # pois estamos buscando só o fileName
+            return image[0]  
 
         return None
 
@@ -287,26 +286,117 @@ def close_auction_job(auction_id):
 
         print(f"Leilão {auction_id} encerrado com sucesso.")
 
+def process_bid(auction_id, user_id, bid_value):
+     with DB_SESSION() as session:
 
+            auction = session.scalars(
+                select(AuctionModel)
+                .where(AuctionModel.idAuction == auction_id)
+            ).first()
+
+            if not auction:
+                return {"success": False, "message": "Leilão não encontrado"}
+
+            if auction.status != "Open":
+                return {"success": False, "message": "Este leilão não está aberto"}
+
+            user = session.scalars(
+                select(UserModel).where(UserModel.idUser == user_id)
+            ).first()
+
+            if not user:
+                return {"success": False, "message": "Usuário não encontrado"}
+
+            lot = auction.lot[0]  # assumindo relacionamento ORM
+
+            # próximo lance mínimo
+            next_min_bid = lot.currentBidValue + lot.minimumIncrement
+
+            if bid_value < next_min_bid:
+                return {
+                    "success": False,
+                    "message": f"Lance mínimo permitido é {next_min_bid}"
+                }
+
+            if user.balance < bid_value:
+                return {
+                    "success": False,
+                    "message": "Saldo insuficiente para efetuar o lance"
+                }
+
+            # criar lance
+            new_bid = BidModel(
+                fkAuctionIdAuction=auction.idAuction,
+                fkUserIdUser=user.idUser,
+                bidValue=bid_value,
+                bidDateTime=datetime.utcnow()
+            )
+
+            session.add(new_bid)
+
+            # atualizar leilão e lote
+            lot.currentBidValue = bid_value
+            lot.currentWinnerId = user.idUser
+
+            # (opcional) atualizar saldo já
+            wallet = session.scalars(
+            select(WalletModel).where(
+                    WalletModel.fkUserIdUser == user.idUser,
+                    WalletModel.currencyType == 2
+                )
+            ).first()
+
+            if not wallet:
+                return {
+                    "success": False,
+                    "message": "Carteira de moeda real não encontrada"
+                }
+
+            if wallet.balance < bid_value:
+                return {
+                    "success": False,
+                    "message": "Saldo insuficiente na carteira real"
+                }
+
+            # desconta da wallet real
+            wallet.currentBalance -= bid_value
+            wallet.lastUpdate = datetime.utcnow()
+
+            session.commit()
+
+            return {
+                "success": True,
+                "new_bid": bid_value,
+                "new_balance": user.balance,
+                "current_winner": user.idUser
+            }
 def open_auction_job(auction_id):
     print(f"OPENING AUCTION {auction_id} with job ")
     from app import app
     with app.app_context():
-        with DB_SESSION() as Session:
-            stm = select(AuctionModel).where(AuctionModel.idAuction == auction_id)
-            auction = db.session.execute(stm).mappings().first()
-            if auction:
-                print("Found auction, settings status:")
-                auction.status = "Open"
-                Session.commit()
+        with DB_SESSION() as session:
+
+            auction = session.scalars(
+                select(AuctionModel).where(AuctionModel.idAuction == auction_id)
+            ).first()
+
+            if not auction:
+                print(f"Auction {auction_id} not found")
+                return
+
+            auction.status = "Open"
+
+            session.commit()
+
+            print(f"AUCTION {auction_id} OPENED")
 
 
 def get_full_auction_data(auction_id):
     with DB_SESSION() as session:
 
-        auction = session.query(AuctionModel).filter(
-            AuctionModel.idAuction == auction_id
-        ).first()
+        auction = session.scalars(
+                select(AuctionModel).where(AuctionModel.idAuction == auction_id)
+            ).first()
 
         if not auction:
             return None

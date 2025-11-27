@@ -75,3 +75,9 @@ def create_auction():
         "auction_id": auction.idAuction,
         "products_created": len(created_products)
     })
+
+
+@bp.route("/auctions/{auction_id}/make_bid", methods=["POST"])
+@authenticated_only
+def make_bid(auction_id):
+    pass

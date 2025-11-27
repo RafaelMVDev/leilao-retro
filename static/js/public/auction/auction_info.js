@@ -1,6 +1,6 @@
 const MOCK_CURRENT_USER = window.CURRENT_USER;
 const AUCTION_ID = window.AUCTION_ID;
-const BACKEND_BID_URL = `/auction/${AUCTION_ID}/bid`;
+const BACKEND_BID_URL = `/auction/${AUCTION_ID}/make_bid`;
 
 let userBalance = window.USER_BALANCE;
 let currentBidValue = null;
@@ -128,7 +128,7 @@ function handleBidSubmission() {
     showConfirmationModal(userBid);
 }
 
-async function confirmBid() {
+async function confirmBid() { 
     hideConfirmationModal();
 
     if (currentBidValue === null) return;
@@ -138,28 +138,33 @@ async function confirmBid() {
     try {
         const response = await fetch(BACKEND_BID_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                auction_id: AUCTION_ID,
-                bid_value: currentBidValue 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                bid_value: currentBidValue
             })
         });
 
         const result = await response.json();
 
-        if (response.ok) {
+        if (response.ok && result.success) {
             userBalance = result.new_balance;
             lot_data.currentBidValue = result.new_bid;
-            lot_data.currentWinnerId = MOCK_CURRENT_USER;
+            lot_data.currentWinnerId = result.current_winner;
 
             bids_data.unshift({
                 bidValue: result.new_bid,
                 bidDateTime: new Date().toISOString(),
-                bidUser: MOCK_CURRENT_USER
+                bidUser: result.current_winner
             });
 
             renderAuctionDetails();
-            displayMessageBox(`Lance de ${formatCurrency(currentBidValue)} aceito!`, 'success');
+
+            displayMessageBox(
+                `Lance de ${formatCurrency(currentBidValue)} aceito!`,
+                'success'
+            );
         } else {
             displayMessageBox(result.message || "Erro ao processar lance.", 'error');
         }
@@ -173,7 +178,7 @@ async function confirmBid() {
 }
 
 function renderAuctionDetails() {
-    const product = product_data[0] || {};
+    console.log(product_data)
     const nextMinBid = getNextMinBid(lot_data.currentBidValue, lot_data.minimumIncrement);
 
     document.getElementById('user-balance').innerHTML = `Seu Saldo: <strong>${formatCurrency(userBalance)}</strong>`;
@@ -204,56 +209,83 @@ function renderAuctionDetails() {
         historyContent.appendChild(item);
     });
     const mainImagePlaceholder = document.getElementById('main-image-placeholder');
-    const thumbnailGallery = document.getElementById('thumbnail-gallery');
-    thumbnailGallery.innerHTML = ''; 
+const thumbnailGallery = document.getElementById('thumbnail-gallery');
+thumbnailGallery.innerHTML = '';
+mainImagePlaceholder.innerHTML = '';
 
+const specsList = document.getElementById('specs-list');
+specsList.innerHTML = '';
+
+
+product_data.forEach((product, productIndex) => {
+
+    // ---- IMAGES ----
     if (product.images && product.images.length > 0) {
-        const mainImage = document.createElement('img');
-        mainImage.src = "static/" + product.images[0];
-        mainImage.alt = product.productName || 'Imagem Principal';
-        mainImagePlaceholder.innerHTML = '';
-        mainImagePlaceholder.appendChild(mainImage);
-        
+        // if it's the first product, defines it as principal
+        if (productIndex === 0) {
+            const mainImage = document.createElement('img');
+            mainImage.src = "/static/" + product.images[0];
+            mainImage.alt = product.productName || 'Imagem Principal';
+            mainImagePlaceholder.appendChild(mainImage);
+        }
+
         product.images.forEach((url, index) => {
             const thumbnailItem = document.createElement('div');
             thumbnailItem.className = 'thumbnail-item';
-            if (index === 0) thumbnailItem.classList.add('active');
-            
+            if (productIndex === 0 && index === 0) thumbnailItem.classList.add('active');
+
             const thumbnailImg = document.createElement('img');
-            thumbnailImg.src = "static/" + url;
-            thumbnailImg.alt = `Miniatura ${index + 1}`;
+            thumbnailImg.src = "/static/" + url;
+            thumbnailImg.alt = `Produto ${productIndex + 1} - Imagem ${index + 1}`;
+
             thumbnailItem.appendChild(thumbnailImg);
 
             thumbnailItem.onclick = () => {
                 document.querySelectorAll('.thumbnail-item').forEach(item => item.classList.remove('active'));
                 thumbnailItem.classList.add('active');
-                mainImage.src = url;
+
+                const mainImg = mainImagePlaceholder.querySelector("img");
+                if (mainImg) {
+                    mainImg.src = "/static/" + url;
+                }
             };
 
             thumbnailGallery.appendChild(thumbnailItem);
         });
-    } else {
-        mainImagePlaceholder.textContent = "[Nenhuma imagem disponível]";
     }
 
-    document.getElementById('details-description').textContent = auction_data.description;
-    
-    const specsList = document.getElementById('specs-list');
-    specsList.innerHTML = ''; 
+    // ---- Product Specifications ----
+    specsList.innerHTML += `
+        <li><strong>Produto ${productIndex + 1}</strong></li>
+        <li><strong>Nome:</strong> ${product.productName || 'N/A'}</li>
+        <li><strong>Tipo:</strong> ${product.productType === 'físico' ? 'Físico' : 'Digital'}</li>
+        <li><strong>Fabricante:</strong> ${product.manufacturer || 'N/A'}</li>
+    `;
 
-    specsList.innerHTML += `<li><strong>Nome do Produto:</strong> ${product.productName || 'N/A'}</li>`;
-    specsList.innerHTML += `<li><strong>Tipo:</strong> ${product.productType === 'físico' ? 'Físico' : 'Digital'}</li>`;
-    specsList.innerHTML += `<li><strong>Fabricante:</strong> ${product.manufacturer || 'N/A'}</li>`;
-    
     if (product.productType === 'físico') {
-        specsList.innerHTML += `<li><strong>Peso:</strong> ${product.weight ? product.weight + ' kg' : 'N/A'}</li>`;
-        specsList.innerHTML += `<li><strong>Dimensões (AxLxP):</strong> ${product.height || 'N/A'}cm x ${product.width || 'N/A'}cm x ${product.depth || 'N/A'}cm</li>`;
+        specsList.innerHTML += `
+            <li><strong>Peso:</strong> ${product.weight ? product.weight + ' kg' : 'N/A'}</li>
+            <li><strong>Dimensões:</strong> 
+                ${product.height || 'N/A'}cm x 
+                ${product.width || 'N/A'}cm x 
+                ${product.depth || 'N/A'}cm
+            </li>
+        `;
     } else {
-         specsList.innerHTML += `<li><strong>Chave de Ativação:</strong> ${product.activationKey ? 'Incluída' : 'Não Informada'}</li>`;
-         specsList.innerHTML += `<li><strong>Validade Download:</strong> ${product.downloadValidity || 'Permanente'}</li>`;
-         specsList.innerHTML += `<li><strong>URL de Download:</strong> ${product.downloadUrl ? '<a href="#">Link</a>' : 'Disponível após a compra'}</li>`;
+        specsList.innerHTML += `
+            <li><strong>Chave de Ativação:</strong> ${product.activationKey ? 'Incluída' : 'Não Informada'}</li>
+            <li><strong>Validade Download:</strong> ${product.downloadValidity || 'Permanente'}</li>
+            <li><strong>URL de Download:</strong> ${product.downloadUrl ? '<a href="#">Link</a>' : 'Disponível após a compra'}</li>
+        `;
     }
 
+    specsList.innerHTML += `<hr>`;
+});
+
+if (product_data.length === 0) {
+    mainImagePlaceholder.textContent = "[Nenhum produto disponível]";
+    specsList.innerHTML = "<li>Nenhum produto cadastrado neste lote.</li>";
+}
     window.timerInterval = setInterval(updateTimer, 1000);
     updateTimer();
 
