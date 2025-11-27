@@ -1,4 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const STATUS_MAP = {
+        finished: {
+            label: "Finalizado",
+            class: "status-encerrado" // vermelho
+        },
+        open: {
+            label: "Aberto",
+            class: "status-aberto" // verde
+        },
+        canceled: {
+            label: "Cancelado",
+            class: "status-cancelado" // cinza
+        },
+        scheduled: {
+            label: "Agendado",
+            class: "status-em-breve" // amarelo
+        }
+    };
 
     // Fonte dos dados (injetados pelo template)
     let allAuctions = Array.isArray(window.AUCTIONS) ? window.AUCTIONS : [];
@@ -92,8 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const currentBidText = auction.current_bid || "R$ 0,00";
         const bidsCount = ("bids_count" in auction) ? auction.bids_count : 0;
-        const remainingText = auction.remaining_time || computeRemaining(auction.end_date);
-        const imageUrl = auction.cover_image || "/static/img/default_cover.jpg";
+        const statusKey = (auction.status || "open").toLowerCase();
+        const statusData = STATUS_MAP[statusKey] || STATUS_MAP.open;
+
+        const remaining = auction.remaining_time ||computeRemaining(auction.end_date);
+     
+        const imageUrl = auction.cover_image || "media/auction_if_no_image.png";
         const category = auction.category || auction.tag || "Sem categoria";
         const location = auction.location || "—";
 
@@ -102,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         card.innerHTML = `
             <div class="leilao-imagem-placeholder">
-                ${imageUrl ? `<img src="${imageUrl}" alt="${escapeHtml(title)}">` : `<span>Sem imagem</span>`}
+                ${imageUrl ? `<img src="static/${imageUrl}" alt="${escapeHtml(title)}">` : `<span>Sem imagem</span>`}
                 <span class="tag-local">${escapeHtml(location)}</span>
                 <p class="text-xs" style="position:absolute; left:10px; bottom:8px;">${escapeHtml(category)}</p>
             </div>
@@ -115,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <h3 class="leilao-titulo">${escapeHtml(title)}</h3>
 
                 <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
-                    <span class="leilao-status ${statusClassMap}">${escapeHtml(auction.status_display || auction.status || "—")}</span>
+                    <span class="leilao-status ${statusData.class}" id="status-${auction.id}"data-status="${statusKey}">${statusData.label}</span>
                     <div style="font-size:0.85rem; color:#e0e0e0;">Vendedor: <strong style="color:var(--highlight-color);">${escapeHtml(owner)}</strong></div>
                 </div>
 
@@ -132,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     <div class="leilao-tempo">
                         <span>Termina em</span>
-                        <strong id="timer-${auction.id}">${escapeHtml(remainingText)}</strong>
+                        <strong id="timer-${auction.id}">${remaining.text}</strong>
                     </div>
                 </div>
 
@@ -171,43 +193,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Compute remaining time from end_date (ISO or date string)
     function parseISODate(dateStr) {
+        console.log("Recebido:", dateStr);
         if (!dateStr) return null;
-        // If already ends with Z, keep; else add Z to force UTC
+
         try {
-            const s = typeof dateStr === "string" ? (dateStr.endsWith("Z") ? dateStr : dateStr + "Z") : dateStr;
-            const d = new Date(s);
-            if (isNaN(d.getTime())) return null;
+            const d = new Date(dateStr);
+
+            if (isNaN(d.getTime())) {
+                console.error("Data inválida:", dateStr);
+                return null;
+            }
+
             return d;
         } catch (e) {
+            console.error("Erro ao converter data:", e);
             return null;
         }
     }
 
+
     function computeRemaining(endDateStr) {
         const now = new Date();
         const end = parseISODate(endDateStr);
-        if (!end) return "Data inválida";
+
+        if (!end) return { text: "Data inválida", finished: true };
+
         const diff = end.getTime() - now.getTime();
-        if (diff <= 0) return "Encerrado";
+
+        if (diff <= 0) {
+            return { text: "Encerrado", finished: true };
+        }
+
         const totalSeconds = Math.floor(diff / 1000);
         const days = Math.floor(totalSeconds / 86400);
         const hours = Math.floor((totalSeconds % 86400) / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const seconds = totalSeconds % 60;
-        return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        return {
+            text: `${days}d ${hours}h ${minutes}m ${seconds}s`,
+            finished: false,
+            seconds: totalSeconds
+        };
     }
+
 
     // Timers updater
     function startTimers() {
         setInterval(() => {
+
             filteredAuctions.forEach(a => {
-                const el = document.getElementById(`timer-${a.id}`);
-                if (!el) return;
-                const text = a.remaining_time || computeRemaining(a.end_date);
-                el.innerText = text;
+
+            const timerEl = document.getElementById(`timer-${a.id}`);
+            const statusEl = document.getElementById(`status-${a.id}`);
+
+            if (!timerEl || !statusEl) return;
+
+            const remaining = computeRemaining(a.end_date);
+
+            timerEl.innerText = remaining.text;
+
+            // Se acabou e ainda não está finalizado
+            if (remaining.finished && statusEl.dataset.status !== "finished") {
+
+                statusEl.dataset.status = "finished";
+                statusEl.innerText = STATUS_MAP.finished.label;
+
+                // Troca classes
+                statusEl.className = "leilao-status " + STATUS_MAP.finished.class;
+
+                // Atualiza objeto no front
+                a.status = "finished";
+            }
             });
+
         }, 1000);
-    }
+        }
 
     // Escape HTML (basic)
     function escapeHtml(unsafe) {

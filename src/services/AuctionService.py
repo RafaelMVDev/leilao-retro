@@ -46,21 +46,17 @@ def create_auction_with_lot(auction_data,start_date:datetime,end_date:datetime, 
             if not utc_start or not utc_end:
                 raise ValueError("start_date e end_date são obrigatórios")
 
-            # End não pode ser antes do start
             if utc_end <= utc_start:
                 raise ValueError("A data final deve ser maior que a data inicial")
 
-            # Start no passado: tolerância de 10 minutos
             allowed_diff = timedelta(minutes=5)
 
             if utc_start < now and (now - utc_start) > allowed_diff:
                 raise ValueError("Start date muito antiga. Máximo permitido: 10 minutos atrás")
 
-            # End date nunca pode estar no passado
             if utc_end <= now:
                 raise ValueError("End date não pode estar no passado")
 
-            # Leilão máximo de 5 dias
             max_duration = timedelta(days=5)
             if (utc_end - utc_start) > max_duration:
                 raise ValueError("O leilão não pode durar mais que 5 dias")
@@ -143,7 +139,6 @@ def place_bid(lot_id, user_id, bid_value):
     if not lot:
         raise ValueError("Lot not found")
 
-    # validação simples: bid maior que currentBidValue + minimumIncrement
     min_valid = (lot.currentBidValue or lot.minimumBid) + (lot.minimumIncrement or 0)
     if bid_value < min_valid:
         raise ValueError(f"Bid must be at least {min_valid}")
@@ -162,37 +157,63 @@ def place_bid(lot_id, user_id, bid_value):
     db.session.commit()
     return bid
 
+def ensure_utc(dt):
+   
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
 
 def get_auctions_info(page=1, per_page=10):
-    """Retorna uma lista de dicionários com informações de cada leilão para a página principal"""
     with DB_SESSION() as Session:
         offset = (page - 1) * per_page
         auctions_query = Session.query(AuctionModel).order_by(AuctionModel.startDate.desc()).offset(offset).limit(per_page)
         auctions_list = []
 
+        now = datetime.now(timezone.utc)
+
         for auction in auctions_query:
             status = auction.status
-            now = datetime.utcnow()
 
-            # Tempo restante
+            start = ensure_utc(auction.startDate)
+            end = ensure_utc(auction.endDate)
+
+            print(f"StartDate: {start}")
+            print(f"End Date: {end}")
+            print(f"Now: {now}")
+
             if status == 'Open':
-                remaining = auction.endDate - now
+                remaining = end - now if end else None
             elif status == 'Scheduled':
-                remaining = auction.startDate - now
+                remaining = start - now if start else None
             else:
                 remaining = None
 
-            # Formata o tempo restante
-            if remaining:
-                days = remaining.days
-                hours, rem = divmod(remaining.seconds, 3600)
-                minutes, seconds = divmod(rem, 60)
-                if days > 0:
-                    remaining_str = f"{days}d {hours}h {minutes}m"
-                else:
-                    remaining_str = f"{hours:02}:{minutes:02}:{seconds:02}"
-            else:
+            # Se remaining existir, usa total_seconds pra decidir se expirou
+            if remaining is None:
                 remaining_str = ""
+            else:
+                secs = remaining.total_seconds()
+                if secs <= 0:
+                    # já expirou (<= 0)
+                    remaining_str = "00:00:00"
+                  
+                    auction.status = 'Finished'
+                    Session.add(auction)  # se estiver usando SQLAlchemy
+                    Session.commit()
+                else:
+                    # Formata dias/hours/mins/seconds corretamente a partir de total_seconds
+                    secs_int = int(secs)
+                    days, rem = divmod(secs_int, 86400)
+                    hours, rem = divmod(rem, 3600)
+                    minutes, seconds = divmod(rem, 60)
+                    if days > 0:
+                        remaining_str = f"{days}d {hours}h {minutes}m"
+                    else:
+                        remaining_str = f"{hours:02}:{minutes:02}:{seconds:02}"
+
+            print(f"Remaining: {remaining} -> {remaining_str}")
 
             auctions_list.append({
                 "id": auction.idAuction,
@@ -234,7 +255,7 @@ def get_auction_cover_image(auction_id):
         if image:
             return image[0]  # pois estamos buscando só o fileName
 
-        return "default.png"
+        return None
 
 
 
