@@ -16,7 +16,7 @@ def get_profile_page():
     address_data = user_data.get("address_data")
     wallets_data = user_data.get("wallets_data")
     print("testss")
-    print(wallets_data if wallets_data else temporary_wallet_data)
+    print(profile_settings)
     return render_template('private/profile/profile.html',
                            profile_settings = profile_settings,
                            address_data = address_data,

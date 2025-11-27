@@ -84,18 +84,18 @@
 
                 <div class="line" style="margin-bottom: 15px;">
                     <input type="text" placeholder="Nome Completo" name="nome" id="input_nome"
-                        value="{{profile_settings.get(" firstName")}} {{profile_settings.get("lastName")}}" readonly
+                        value="{{profile_settings.get("firstName")}} {{profile_settings.get("lastName")}}" readonly
                         required minlength="3">
 
                     <input type="text" placeholder="Nickname" name="nickname" id="input_nickname"
-                        value="{{profile_settings.get(" nickname")}}" readonly required minlength="3" maxlength="30">
+                        value="{{profile_settings.get("nickname")}}" readonly required minlength="3" maxlength="30">
                 </div>
 
                 <div class="line" style="margin-bottom: 15px;">
                     <input type="tel" placeholder="Telefone" name="telefone" id="input_phoneNumber"
-                        value="(11) 97321-0013" readonly required minlength="9" maxlength="14">
+                        value="{{profile_settings.get("phone")}}" readonly required minlength="9" maxlength="14">
 
-                    <input type="text" placeholder="CPF" name=""
+                    <input type="text" placeholder="CPF" name="cpf"  value="{{profile_settings.get("cpf")}}" readonly required minlength="9" maxlength="14">
                 </div>
 
                 <input type="password" placeholder="Nova Senha (Opcional)" name="new_password" id="input_new_password"
@@ -108,33 +108,29 @@
                 </h3>
 
                 <div class="line" style="margin-bottom: 15px;">
-                    <input type="text" placeholder="CEP" name="zipCode" id="input_zipCode" value="{{address_data.get("
-                        zipCode")}}" readonly maxlength="9">
+                    <input type="text" placeholder="CEP" name="zipCode" id="input_zipCode" value="{{address_data.get("zipCode")}}" readonly maxlength="9">
 
-                    <input type="text" placeholder="País" name="country" id="input_country" value="{{address_data.get("
-                        nameCountry")}}" readonly required maxlength="90">
+                    <input type="text" placeholder="País" name="country" id="input_country" value="{{address_data.get("nameCountry")}}" readonly required maxlength="90">
                 </div>
 
                 <input type="text" placeholder="Rua / Logradouro" name="street" id="input_street"
-                    value="{{address_data.get(" street")}}" readonly required maxlength="50">
+                    value="{{address_data.get("street")}}" readonly required maxlength="50">
 
-                <input type="text" placeholder="Bairro" name="district" id="input_district" value="{{address_data.get("
-                    district")}}" readonly required maxlength="50">
+                <input type="text" placeholder="Bairro" name="district" id="input_district" value="{{address_data.get("district")}}" readonly required maxlength="50">
 
                 <div class="line" style="margin-bottom: 15px;">
                     <input type="number" placeholder="Número" name="numberAdress" id="input_numberAdress"
-                        value="{{address_data.get(" numberAddress")}}" readonly required maxlength="10">
+                        value="{{address_data.get("numberAddress")}}" readonly required maxlength="10">
 
                     <input type="number" placeholder="Complemento ( Opcional )" name="complement" id="input_complement"
-                        value="{{address_data.get(" complement")}}" readonly maxlength="35">
+                        value="{{address_data.get("complement")}}" readonly maxlength="35">
                 </div>
 
                 <div class="line">
-                    <input type="text" placeholder="Cidade" name="city" id="input_city" value="{{address_data.get("
-                        nameCity")}}" readonly required maxlength="60">
+                    <input type="text" placeholder="Cidade" name="city" id="input_city" value="{{address_data.get("nameCity")}}" readonly required maxlength="60">
 
                     <input type="text" placeholder="Estado (UF)" name="state" id="input_state"
-                        value="{{address_data.get(" stateName")}}" readonly required minlength="2" maxlength="3">
+                        value="{{address_data.get("stateName")}}" readonly required minlength="2" maxlength="3">
                 </div>
 
                 <div id="save_cancel_group" class="button-group" style="display: none;">

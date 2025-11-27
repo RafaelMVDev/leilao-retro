@@ -301,14 +301,83 @@ def open_auction_job(auction_id):
                 Session.commit()
 
 
-def main_page_auctions():
-    pass
+def get_full_auction_data(auction_id):
+    with DB_SESSION() as session:
+
+        auction = session.query(AuctionModel).filter(
+            AuctionModel.idAuction == auction_id
+        ).first()
+
+        if not auction:
+            return None
+
+        auction_data = build_auction_data(auction)
+        lot_data = build_lot_data(auction.lots[0]) if auction.lots else None
+        products_data = build_products_data(auction.lots[0].products) if auction.lots else []
+        bids_data = build_bids_data(auction.lots[0].bids) if auction.lots else []
+        auction_id = auction.idAuction
+        user_balance_data = 500
+        return {
+            "auction_data": auction_data,
+            "lot_data": lot_data,
+            "products_data": products_data,
+            "bids_data": bids_data,
+            "auction_id": auction_id,
+            "user_balance_data":user_balance_data
+        }
+def build_bids_data(bids):
+    bids_list = []
+
+    for bid in bids:
+        bids_list.append({
+            "id": bid.idBid,
+            "user": bid.users.nickname if bid.users else "Usuário removido",
+            "value": float(bid.bidValue),
+            "datetime": bid.createdAt.isoformat() if bid.createdAt else None
+        })
+
+    return bids_list
+def build_auction_data(auction):
+    return {
+        "id": auction.idAuction,
+        "title": auction.title,
+        "description": auction.description,
+        "status": auction.status,
+        "owner": auction.users.nickname,
+        "start_date": ensure_utc(auction.startDate).isoformat(),
+        "end_date": ensure_utc(auction.endDate).isoformat(),
+        "cover_image": get_auction_cover_image(auction.idAuction),
+        "created_at": ensure_utc(auction.startDate).strftime("%Y-%m-%d %H:%M:%S"),
+    }
 
 
+def build_lot_data(lot):
+    return {
+        "id": lot.idLot,
+        "lot_number": lot.lotNumber,
+        "minimum_bid": float(lot.minimumBid),
+        "minimum_increment": float(lot.minimumIncrement),
+        "current_bid": float(lot.currentBidValue),
+        "current_winner": lot.currentWinnerId,
+        "registration_date": lot.registrationDate.isoformat()
+    }
 
 
+def build_products_data(products):
+    products_list = []
 
+    for product in products:
+        images = [img.images.fileName for img in product.product_images] if hasattr(product, "product_images") else []
 
+        products_list.append({
+            "id": product.idProduct,
+            "name": product.productName,
+            "description": product.descriptionProduct,
+            #"base_price": float(product.basePrice),
+            "images": images
+        })
+    print(products_list)
+    return products_list
 
 
 
