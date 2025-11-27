@@ -1,58 +1,34 @@
-/* This file must be loaded AFTER base.css */
-
-/* Adjusts 'main' not to center content,
-   allowing the container to take up the width for the gallery */
+/* ============================
+   Main layout adjustment
+============================ */
 main.main-gallery {
-    /* Overrides center alignment from base.css */
     align-items: flex-start;
     justify-content: center;
     padding-top: 40px;
-    /* Ensures space above the content */
 }
 
-/* Main container for the filter bar and the grid */
+/* ============================
+   Main container
+============================ */
 .auction-container {
     width: 100%;
     max-width: 1200px;
-    /* Width limit for content */
     margin: 0 auto;
     padding: 0 20px 50px 20px;
-    /* Adds bottom padding above the footer */
 }
 
-/* --- Filter Bar --- */
-.filter-bar {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-    /* Using dark-purple or a slightly different color */
-    background: var(--medium-purple);
-    padding: 15px;
-    border-radius: 12px;
-}
-
-.filter-bar input[type="text"] {
-    flex: 1;
-    /* Occupies maximum space */
-    margin: 0;
-    /* Resets margin from base.css input rule */
-}
-
-.filter-bar .filter-btn {
-    /* Using the register/bid gradient, overriding the standard yellow button from base.css */
-    background: linear-gradient(90deg, #8b3dff, #c55eff);
-    min-width: 100px;
-}
-
-/* --- Auction Grid --- */
+/* ============================
+   Auction grid
+============================ */
 .auction-grid {
     display: grid;
-    /* Responsive columns: Tries to create columns of at least 300px. */
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 25px;
 }
 
-/* --- Individual Auction Card --- */
+/* ============================
+   Auction card
+============================ */
 .auction-card {
     background: var(--medium-purple);
     border-radius: 12px;
@@ -69,7 +45,6 @@ main.main-gallery {
     box-shadow: 0 10px 20px #000000c9;
 }
 
-/* Item image placeholder */
 .auction-img-placeholder {
     height: 180px;
     background: #111111ef;
@@ -80,7 +55,6 @@ main.main-gallery {
     color: #ccc;
 }
 
-/* Content below the image */
 .auction-content {
     padding: 20px;
     display: flex;
@@ -94,37 +68,9 @@ main.main-gallery {
     min-height: 50px;
 }
 
-/* --- Auction Status (WebSocket) --- */
-.auction-status {
-    font-size: 0.8rem;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 20px;
-    text-align: center;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    align-self: flex-start;
-}
-
-.status-progress {
-    background-color: #28a745;
-    /* Green */
-    color: white;
-}
-
-.status-future {
-    background-color: var(--highlight-color);
-    /* Yellow highlight */
-    color: #111;
-}
-
-.status-closed {
-    background-color: #6c757d;
-    /* Gray */
-    color: white;
-}
-
-/* --- Value and Time Information (WebSocket) --- */
+/* ============================
+   Price & time info
+============================ */
 .auction-info {
     display: flex;
     justify-content: space-between;
@@ -154,27 +100,236 @@ main.main-gallery {
 
 .auction-value strong {
     color: var(--highlight-color);
-    /* Yellow highlight for the price */
 }
 
-/* --- Bid Button --- */
+/* ============================
+   Bid button
+============================ */
 .bid-btn {
-    /* Button with the register gradient */
     background: linear-gradient(90deg, #fa8806, #f8a201);
     margin-top: auto;
-    /* Pushes the button to the bottom of the card */
 }
 
 .bid-btn:disabled {
     background: #aa9090;
-    filter: none;
     cursor: not-allowed;
     opacity: 0.7;
 }
 
-/* --- Gallery Specific Responsiveness --- */
-@media (max-width: 550px) {
-    .filter-bar {
-        flex-direction: column;
+/* ============================
+   Hero section
+============================ */
+.hero {
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(90deg, #2c2941, #1e1b30);
+    border-radius: 12px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 20px #00000080;
+    overflow: hidden;
+}
+
+.hero-content {
+    text-align: center;
+    background: #00000080;
+    padding: 25px 35px;
+    border-radius: 12px;
+}
+
+.hero h1 {
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #e5e5e5;
+    margin-bottom: 20px;
+}
+
+.hero-btn {
+    background: linear-gradient(90deg, #fa8806, #f8a201);
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    color: #f3f0f0;
+    display: inline-block;
+}
+
+.hero-btn:hover {
+    color: #2c2941;
+}
+
+/* ============================
+   Benefits section
+============================ */
+.benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.benefit {
+    background: var(--medium-purple);
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px #00000070;
+}
+
+.benefit h3 {
+    margin-bottom: 10px;
+}
+
+/* Main container */
+.fade-carousel {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    /* fixed banner height */
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 12px #00000070;
+}
+
+/* Wrapper holding all slides */
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Individual slide */
+.carousel-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+/* Visible slide */
+.carousel-slide.active {
+    opacity: 1;
+    position: absolute;
+}
+
+/* Image inside slide */
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* keeps the banner style */
+}
+
+/* ============================
+   Text overlay on slides
+   ============================ */
+.slide-text {
+    position: absolute;
+    top: 50%;
+    left: 60px;
+    transform: translateY(-50%);
+    color: white;
+    max-width: 50%;
+    text-shadow: 0 2px 8px #000;
+}
+
+.slide-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.slide-text p {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* ============================
+   Carousel Buttons
+   ============================ */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #00000080;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    font-size: 22px;
+    cursor: pointer;
+    border-radius: 8px;
+    z-index: 20;
+}
+
+.carousel-btn:hover {
+    background: #000000cc;
+}
+
+.carousel-btn.prev {
+    margin-top: 240px;
+    left: 85px;
+}
+
+.carousel-btn.next {
+    margin-top: 240px;
+    right: 85px;
+}
+
+/* ============================
+   Indicators
+   ============================ */
+.carousel-indicators {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    background: #ffffff60;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.indicator.active {
+    background: #ffffff;
+}
+
+/* ============================
+   Responsive
+   ============================ */
+@media (max-width: 650px) {
+    .fade-carousel {
+        height: 200px;
+        /* smaller banners for mobile */
+    }
+
+    .carousel-btn {
+        padding: 6px 10px;
+        font-size: 18px;
+    }
+
+    .indicator {
+        width: 10px;
+        height: 10px;
+    }
+
+    .slide-text {
+        left: 20px;
+        max-width: 70%;
+    }
+
+    .slide-text h2 {
+        font-size: 1.3rem;
     }
 }

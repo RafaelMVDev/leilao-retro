@@ -3,95 +3,93 @@
 {% block title %} Início - Maradindiduns {% endblock %}
 
 {% block css %}
- <link rel="stylesheet" href="{{ url_for('static', filename='css/public/homepage/homepage_style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/public/homepage/homepage_style.css') }}">
+<script src="{{url_for('static',filename='js/public/homepage/homepage.js')}}" defer></script>
 {% endblock %}
 
 {% block content %}
 
-    </header>
+<main class="main-gallery">
 
-    <main class="main-gallery">
-        
-        <div class="auction-container">
-            
-            <div class="filter-bar">
-                <input type="text" placeholder="Pesquise por um console, jogo ou item...">
+    <div class="auction-container">
+        <!-- CAROUSEL -->
+
+        <section class="carousel fade-carousel">
+
+            <button class="carousel-btn prev">&#10094;</button>
+
+            <div class="carousel-wrapper">
+
+                <!-- Slide 1 -->
+                <div class="carousel-slide active">
+                    <img src="{{ url_for('static', filename='media/MarAuction_logoBW.png') }}" alt="Banner 1">
+
+                    <div class="slide-text">
+                        <h2>Já conhece nosso amigo Didy?</h2>
+                        <p>Ele te auxilia e guiará no que precisar.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-slide">
+                    <img src="{{ url_for('static', filename='media/yoshi.png') }}" alt="Banner 2">
+
+                    <div class="slide-text">
+                        <h2>Já fez o desafio semanal?</h2>
+                        <p>Adivinhe o personagem de hoje e ganhe 10 BzzCoins.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="carousel-slide">
+                    <img src="{{ url_for('static', filename='media/controle.png') }}" alt="Banner 3">
+                    <div class="slide-text">
+                        <h2>Conheça um console novo hoje mesmo.</h2>
+                        <p>Por que não experimentar um clássico? Dê um lance já!</p>
+                    </div>
+                </div>
+
+                <button class="carousel-btn next">&#10095;</button>
+
             </div>
 
-            <div class="auction-grid">
-
-                <div class="auction-card">
-                    <div class="auction-img-placeholder">
-                        <p>Imagem do Item</p>
-                    </div>
-                    <div class="auction-content">
-                        <h3 class="auction-title">Super Nintendo (SNES) com 20 Jogos</h3>
-                        
-                        <span class="auction-status status-progress">EM ANDAMENTO</span>
-                        
-                        <div class="auction-info">
-                            <div class="auction-value">
-                                <span>Valor Atual</span>
-                                <strong id="valor-leilao-1">R$ 450,00</strong>
-                            </div>
-                            <div class="auction-time">
-                                <span>Tempo Restante</span>
-                                <strong id="time-auction-1">00:15:32</strong>
-                            </div>
-                        </div>
-                        
-                        <button class="bid-btn">Dar Lance</button>
-                    </div>
-                </div>
-
-                <div class="auction-card">
-                    <div class="auction-img-placeholder"><p>Imagem do Item</p></div>
-                    <div class="auction-content">
-                        <h3 class="auction-title">Sega Dreamcast Edição Especial</h3>
-                        
-                        <span class="auction-status status-future">EM BREVE</span>
-                        
-                        <div class="auction-info">
-                            <div class="auction-value">
-                                <span>Lance Inicial</span>
-                                <strong>R$ 700,00</strong>
-                            </div>
-                            <div class="auction-time">
-                                <span>Inicia em</span>
-                                <strong>2d 10h 05m</strong>
-                            </div>
-                        </div>
-                        
-                        <button class="bid-btn" disabled>Aguarde</button>
-                    </div>
-                </div>
-
-                <div class="auction-card">
-                    <div class="auction-img-placeholder"><p>Imagem do Item</p></div>
-                    <div class="auction-content">
-                        <h3 class="auction-title">Lote de Cartuchos de N64</h3>
-                        
-                        <span class="auction-status status-closed">ENCERRADO</span>
-                        
-                        <div class="auction-info">
-                            <div class="auction-value">
-                                <span>Vendido Por</span>
-                                <strong>R$ 1.250,00</strong>
-                            </div>
-                            <div class="auction-time">
-                                <span>Vencedor</span>
-                                <strong>RafaMorales</strong>
-                            </div>
-                        </div>
-                        
-                        <button class="bid-btn" disabled>Ver Detalhes</button>
-                    </div>
-                </div>
-
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                <span class="indicator active" data-slide="0"></span>
+                <span class="indicator" data-slide="1"></span>
+                <span class="indicator" data-slide="2"></span>
             </div>
-        </div>
 
-    </main>
+        </section>
 
+
+        <!-- Benefits -->
+        <section class="benefits">
+            <div class="benefit">
+                <h3>Um mascote especial</h3>
+                <p>Didy protege seus leilões dos males alheios.</p>
+            </div>
+            <div class="benefit">
+                <h3>Funções Modernas</h3>
+                <p>Uma conversão de moeda com sabor de mel.</p>
+            </div>
+            <div class="benefit">
+                <h3>Conquistas</h3>
+                <p>Faça leilões, dê lances, se aventure e conquiste o pódio</p>
+            </div>
+        </section>
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Os melhores leilões de consoles e jogos retrô</h1>
+                <p>Dispute itens raros, descubra colecionáveis e obtenha peças únicas.</p>
+                <a href="{{ url_for('auction_public_pages.get_auctions_main_page') }}" class="hero-btn">Explorar
+                    Leilões</a>
+            </div>
+        </section>
+    </div>
+
+</main>
 
 {% endblock %}

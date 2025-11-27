@@ -1,5 +1,3 @@
-// --- MOCKED DATA (Database/API Simulation) - Removed after database integration ---
-
 CURRENT_DATA = {
    
 };
@@ -28,7 +26,6 @@ const complementInput = document.getElementById("input_complement")
 const DistrictInput = document.getElementById('input_district');
 const CityInput = document.getElementById('input_city');
 const StateInput = document.getElementById('input_state');
-console.log(StreetInput)
 // CONVENIENCE VARIABLES (for compatibility with fetchAddressByCep)
 const ruaInput = StreetInput;
 const bairroInput = DistrictInput;
