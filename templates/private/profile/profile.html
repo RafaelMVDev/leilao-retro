@@ -94,9 +94,9 @@
 
                 <div class="line" style="margin-bottom: 15px;">
                     <input type="tel" placeholder="Telefone" name="telefone" id="input_phoneNumber"
-                        value="(11) 97321-0013" readonly required minlength="9" maxlength="14">
+                        value={{profile_settings.get("phone")}} readonly required minlength="9" maxlength="14">
 
-                    <input type="text" placeholder="CPF" name=""
+                    <input type="text" placeholder="CPF" name="cpf" value={{profile_settings.get("cpf")}}>
                 </div>
 
                     <input type="password" placeholder="Nova Senha (Opcional)" name="new_password"

@@ -275,7 +275,7 @@ def close_auction_job(auction_id):
     print(f"CLOSING AUCTION {auction_id} with job ")
     with app.app_context():
         with DB_SESSION() as Session:
-            stm = select(AuctionModel).where(idAuction = auction_id)
+            stm = select(AuctionModel).where(AuctionModel.idAuction == auction_id)
             auction = db.session.execute(stm).mappings().first()
 
             if not auction:
@@ -293,7 +293,7 @@ def open_auction_job(auction_id):
     from app import app
     with app.app_context():
         with DB_SESSION() as Session:
-            stm = select(AuctionModel).where(idAuction = auction_id)
+            stm = select(AuctionModel).where(AuctionModel.idAuction == auction_id)
             auction = db.session.execute(stm).mappings().first()
             if auction:
                 print("Found auction, settings status:")
