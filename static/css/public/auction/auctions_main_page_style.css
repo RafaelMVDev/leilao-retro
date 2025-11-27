@@ -10,6 +10,25 @@
 html, body {
     height: 100%;
 }
+.status-aberto {
+  background: #198754; /* verde */
+  color: white;
+}
+
+.status-encerrado {
+  background: #dc3545; /* vermelho */
+  color: white;
+}
+
+.status-cancelado {
+  background: #6c757d; /* cinza */
+  color: white;
+}
+
+.status-em-breve {
+  background: #ffc107; /* amarelo */
+  color: black;
+}
 
 /* Base colors are defined in base.css (:root) - keep consistency */
 body {

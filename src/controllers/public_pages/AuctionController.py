@@ -10,9 +10,14 @@ bp = Blueprint('auction_public_pages', __name__)
 
 @bp.route('/auctions', methods=['GET'])
 
-def get_auctions_main_page(): # concertar aqui
+def get_auctions_main_page(): # fix here
     auction_list,total_pages = get_auctions_info()
+    print(auction_list)
     return render_template("public/auction/auctions_main_page.html",auctions_list = auction_list,total_pages = total_pages)
+
+@bp.route('/auction/<id>', methods=['GET'])
+def get_auction_page(id):
+    return render_template('public/auction/auction_info.html')
 """
 @bp.route("/auctions", methods=["GET"])
 def list_auctions_page():
