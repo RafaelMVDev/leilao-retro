@@ -1,6 +1,7 @@
 const MOCK_CURRENT_USER = window.CURRENT_USER;
 const AUCTION_ID = window.AUCTION_ID;
-const BACKEND_BID_URL = `/auction/${AUCTION_ID}/make_bid`;
+const BACKEND_BID_URL = `/auctions/${AUCTION_ID}/make_bid`;
+const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 let userBalance = window.USER_BALANCE;
 let currentBidValue = null;
@@ -58,19 +59,27 @@ function updateTimer() {
 function formatBidTime(dateString) {
     const date = new Date(dateString);
     const now = new Date();
-    const diffMs = now - date;
 
-    if (diffMs < 60000) return 'Há instantes';
-    if (diffMs < 3600000) return `Há ${Math.floor(diffMs / 60000)} minutos`;
-    if (diffMs < 86400000) return `Há ${Math.floor(diffMs / 3600000)} horas`;
-    
-    return date.toLocaleString('pt-BR', { 
-        day: '2-digit', 
-        month: '2-digit', 
-        year: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit' 
-    });
+
+    let diff = Math.floor(Math.abs((now - date) / 1000)); // diferença em segundos
+    console.log(now)
+    console.log(date)
+    console.log(diff)
+    if (diff < 0) diff = 0;
+
+    const hours = Math.floor(diff / 3600);
+    diff %= 3600;
+
+    const minutes = Math.floor(diff / 60);
+    const seconds = diff % 60;
+
+    let parts = [];
+
+    if (hours > 0) parts.push(`${hours}h`);
+    if (minutes > 0) parts.push(`${minutes}min`);
+    if (seconds > 0 || parts.length === 0) parts.push(`${seconds}s`);
+
+    return `Há ${parts.join(" ")}`;
 }
 
 function displayMessageBox(message, type) {
@@ -105,7 +114,7 @@ function handleBidSubmission() {
     
     const nextMinBid = getNextMinBid(lot_data.currentBidValue, lot_data.minimumIncrement);
 
-    if (auction_data.status !== 'open') {
+    if (auction_data.status !== 'Open') {
         displayMessageBox("O leilão não está aberto para lances.", 'error');
         return;
     }
@@ -139,7 +148,8 @@ async function confirmBid() {
         const response = await fetch(BACKEND_BID_URL, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "X-CSRFToken": csrf 
             },
             body: JSON.stringify({
                 bid_value: currentBidValue
@@ -149,14 +159,15 @@ async function confirmBid() {
         const result = await response.json();
 
         if (response.ok && result.success) {
+            console.log(result)
             userBalance = result.new_balance;
-            lot_data.currentBidValue = result.new_bid;
+            lot_data.current_bid = result.new_bid;
             lot_data.currentWinnerId = result.current_winner;
 
             bids_data.unshift({
-                bidValue: result.new_bid,
-                bidDateTime: new Date().toISOString(),
-                bidUser: result.current_winner
+                value: result.new_bid,
+                datetime: new Date().toISOString(),
+                user: result.current_winner
             });
 
             renderAuctionDetails();
@@ -186,7 +197,7 @@ function renderAuctionDetails() {
     document.getElementById('auction-seller').innerHTML = `Vendido por: <strong>${auction_data.owner}</strong>`;
     document.getElementById('current-bid-value').textContent = formatCurrency(lot_data.current_bid);
     document.getElementById('total-bids-count').textContent = bids_data.length;
-
+    document.getElementById('details-description').textContent = auction_data.description;
     const bidInput = document.getElementById('bid-input');
     bidInput.value = nextMinBid.toFixed(2);
     bidInput.min = nextMinBid;
@@ -201,9 +212,9 @@ function renderAuctionDetails() {
         item.className = 'bid-history-item';
 
         item.innerHTML = `
-            <span class="bid-user">Usuário: <strong>${bid.bidUser}</strong>${bid.bidUser === lot_data.currentWinnerId ? ' (Vencedor Atual)' : ''}</span>
-            <span class="bid-value-history">Valor: <strong>${formatCurrency(bid.bidValue)}</strong></span>
-            <span class="bid-time-history">${formatBidTime(bid.bidDateTime)}</span>
+            <span class="bid-user">Usuário: <strong>${bid.user}</strong>${bid.user === lot_data.currentWinnerId ? ' (Vencedor Atual)' : ''}</span>
+            <span class="bid-value-history">Valor: <strong>${formatCurrency(bid.value)}</strong></span>
+            
         `;
 
         historyContent.appendChild(item);

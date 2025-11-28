@@ -77,7 +77,10 @@ def create_auction():
     })
 
 
-@bp.route("/auctions/{auction_id}/make_bid", methods=["POST"])
+@bp.route("/auctions/<auction_id>/make_bid", methods=["POST"])
 @authenticated_only
 def make_bid(auction_id):
-    pass
+    data = request.get_json()
+
+    result = process_bid(auction_id=auction_id,bid_value=data.get("bid_value"),user_id=current_user.idUser)
+    return result

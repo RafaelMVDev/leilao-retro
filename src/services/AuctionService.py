@@ -1,7 +1,9 @@
 # src/services/auction_service.py
 from setup.loaders.database import db
+from src.services import WalletService 
 from src.models.AuctionModel import AuctionModel
 from src.models.LotModel import LotModel
+from setup.login_manager import *
 from src.models.ProductModel import ProductModel
 from src.models.BidModel import BidModel
 from src.models.ProductImageModel import ProductImageModel
@@ -219,7 +221,7 @@ def get_auctions_info(page=1, per_page=10):
                 "id": auction.idAuction,
                 "title": auction.title,
                 "owner": auction.users.nickname,  
-                "category": auction.category.name if auction.category else "",
+                "category": "Games & Mídia Física",
                 #"location": auction.location or "",
                 #"tag": auction.tag or "",
                 "status": status,
@@ -307,42 +309,14 @@ def process_bid(auction_id, user_id, bid_value):
             if not user:
                 return {"success": False, "message": "Usuário não encontrado"}
 
-            lot = auction.lot[0]  # assumindo relacionamento ORM
+            lot = auction.lots[0] 
 
-            # próximo lance mínimo
+       
             next_min_bid = lot.currentBidValue + lot.minimumIncrement
-
-            if bid_value < next_min_bid:
-                return {
-                    "success": False,
-                    "message": f"Lance mínimo permitido é {next_min_bid}"
-                }
-
-            if user.balance < bid_value:
-                return {
-                    "success": False,
-                    "message": "Saldo insuficiente para efetuar o lance"
-                }
-
-            # criar lance
-            new_bid = BidModel(
-                fkAuctionIdAuction=auction.idAuction,
-                fkUserIdUser=user.idUser,
-                bidValue=bid_value,
-                bidDateTime=datetime.utcnow()
-            )
-
-            session.add(new_bid)
-
-            # atualizar leilão e lote
-            lot.currentBidValue = bid_value
-            lot.currentWinnerId = user.idUser
-
-            # (opcional) atualizar saldo já
             wallet = session.scalars(
             select(WalletModel).where(
                     WalletModel.fkUserIdUser == user.idUser,
-                    WalletModel.currencyType == 2
+                    WalletModel.fkCurrencyIdCurrency == 2
                 )
             ).first()
 
@@ -352,13 +326,41 @@ def process_bid(auction_id, user_id, bid_value):
                     "message": "Carteira de moeda real não encontrada"
                 }
 
-            if wallet.balance < bid_value:
+            if wallet.currentBalance < bid_value:
                 return {
                     "success": False,
                     "message": "Saldo insuficiente na carteira real"
                 }
 
-            # desconta da wallet real
+
+            if bid_value < next_min_bid:
+                return {
+                    "success": False,
+                    "message": f"Lance mínimo permitido é {next_min_bid}"
+                }
+
+            if wallet.currentBalance < bid_value:
+                return {
+                    "success": False,
+                    "message": "Saldo insuficiente para efetuar o lance"
+                }
+
+            # creats bid
+            new_bid = BidModel(
+                fkLotIdLot=lot.idLot,
+                fkUserIdUser=user.idUser,
+                bidValue=bid_value,
+                bidDateTime=datetime.utcnow()
+            )
+
+            session.add(new_bid)
+
+           
+            lot.currentBidValue = bid_value
+            lot.currentWinnerId = user.idUser
+
+          
+            
             wallet.currentBalance -= bid_value
             wallet.lastUpdate = datetime.utcnow()
 
@@ -367,7 +369,7 @@ def process_bid(auction_id, user_id, bid_value):
             return {
                 "success": True,
                 "new_bid": bid_value,
-                "new_balance": user.balance,
+                "new_balance": wallet.currentBalance,
                 "current_winner": user.idUser
             }
 def open_auction_job(auction_id):
@@ -406,7 +408,14 @@ def get_full_auction_data(auction_id):
         products_data = build_products_data(auction.lots[0].products) if auction.lots else []
         bids_data = build_bids_data(auction.lots[0].bids) if auction.lots else []
         auction_id = auction.idAuction
-        user_balance_data = 500
+        id = current_user.idUser
+        wallet = session.scalars(
+            select(WalletModel).where(
+                    WalletModel.fkUserIdUser == id,
+                    WalletModel.fkCurrencyIdCurrency == 2
+                )
+            ).first()
+        user_balance_data = wallet.currentBalance
         return {
             "auction_data": auction_data,
             "lot_data": lot_data,
@@ -417,16 +426,22 @@ def get_full_auction_data(auction_id):
         }
 def build_bids_data(bids):
     bids_list = []
-
-    for bid in bids:
-        bids_list.append({
-            "id": bid.idBid,
-            "user": bid.users.nickname if bid.users else "Usuário removido",
-            "value": float(bid.bidValue),
-            "datetime": bid.createdAt.isoformat() if bid.createdAt else None
-        })
-
+    with DB_SESSION() as Session:
+        for bid in bids:
+            user = Session.execute(
+            select(UserModel).where(UserModel.idUser == bid.fkUserIdUser)
+            ).scalar_one_or_none()
+            nickname = user.nickname if user else "Anônimo"
+            bids_list.append({
+                "id": bid.idBid,
+                "user": nickname,
+                "value": float(bid.bidValue),
+                "datetime": bid.bidDateTime.isoformat() if bid.bidDateTime else None
+            })
+    print(bids_list)
     return bids_list
+
+
 def build_auction_data(auction):
     return {
         "id": auction.idAuction,
@@ -463,6 +478,7 @@ def build_products_data(products):
             "id": product.idProduct,
             "name": product.productName,
             "description": product.descriptionProduct,
+            "manufacturer":product.manufacturer,
             #"base_price": float(product.basePrice),
             "images": images
         })
