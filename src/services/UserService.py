@@ -254,6 +254,7 @@ def get_user_settings(user_id):
         UserModel.lastName,
         UserModel.profilePhoto,
         UserModel.birthDate,
+        UserModel.cpf,
         UserModel.registrationDate
     )
     .where(UserModel.idUser == user_id)

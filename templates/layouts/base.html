@@ -9,7 +9,7 @@
 
     <!-- CSS global -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/profile_style.css') }}">
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='css/layouts/profile_style.css') }}">-->
     <link rel=" icon" type="image/png" href="{{url_for('static', filename='media/MarAuction_logo.webp')}}">
     {% block css %}{% endblock %}
 
@@ -35,6 +35,10 @@
                     <a href="{{ url_for('auction_public_pages.get_auctions_main_page') }}">Leilões</a>
                 </li>
 
+                <li>
+                    <a href="{{ url_for('auction_private_pages.create_auction_form') }}"> Leiloar </a>
+                </li>
+
                 {% if current_user.is_authenticated %}
 
                 <li class="profile-area">
@@ -47,8 +51,6 @@
                         <span>Perfil</span>
                         <form action="{{ url_for('profile_pages.submit_logout') }}" method="POST">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-
-                            <button type="submit" value="SAIR" data-acao="sair" class="btn-l2"> SAIR </button>
                         </form>
                     </a>
                 </li>

@@ -5,6 +5,16 @@
     <link rel="stylesheet" href="{{url_for('static',filename = 'css/public/auction/auction_info_style.css')}}">
 {% endblock %}
 {% block js %}
+    <script>
+        window.AUCTION_DATA = {{ auction_data | tojson }};
+        window.PRODUCT_DATA = {{ product_data | tojson }};
+        window.LOT_DATA = {{ lot_data | tojson }};
+        window.BIDS_DATA = {{ bids_data | tojson }};
+        window.CURRENT_USER = "{{ current_user }}";
+        window.USER_BALANCE = {{ user_balance }};
+        window.AUCTION_ID = {{ auction_id }};
+    </script>
+
     <script src="{{url_for('static',filename = 'js/public/auction/auction_info.js')}}" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
 {% endblock %}

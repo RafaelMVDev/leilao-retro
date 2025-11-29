@@ -73,7 +73,12 @@ document.addEventListener("DOMContentLoaded", () => {
         <option value="">Categoria *</option>
         <option value="games">Games</option>
         <option value="consoles">Consoles</option>
-        <option value="customized">Customized</option>
+        <option value="customized">Impressos</option>
+        <option value="customized">Colecionavéis</option>
+        <option value="customized">Action Figures</option>
+        <option value="customized">Raridades</option>
+        <option value="customized">Cultura Pop</option>
+        <option value="customized">Outros</option>
     </select>
 
     <select name="productType" class="p-type" required>

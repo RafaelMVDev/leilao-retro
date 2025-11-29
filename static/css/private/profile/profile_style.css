@@ -462,6 +462,7 @@ main.profile-main {
     justify-content: center;
     margin-bottom: 5px;
 }
+
 .balance-card .coin-label {
     /* Reuses original span properties */
     font-size: 0.8rem;

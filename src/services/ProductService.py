@@ -10,7 +10,7 @@ def create_product(data,lot_id, image_files):
     with DB_SESSION() as session:
         
         product = ProductModel(
-            productName=data.get("name"),
+            productName=data.get("productName"),
             descriptionProduct=data.get("descriptionProduct"),
             #category=data.get("category"),
             productType=data.get("productType"),
