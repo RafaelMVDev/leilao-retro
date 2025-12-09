@@ -1,65 +1,101 @@
-# Estrutura MVC com Flask
+<p align="center">
+  <!-- Header de imagem do projeto -->
+  <!-- Substitua o link abaixo pela imagem do projeto -->
+  <img src="URL_DA_IMAGEM_AQUI" alt="MarAuction Header" />
+</p>
 
-Este projeto segue uma arquitetura inspirada no padrão **MVC (Model-View-Controller)**, adaptado para o Flask. A ideia é manter uma separação clara entre as camadas de **rotas e renderização (views)**, **lógica de negócio (controllers)** e **acesso a dados (models)**.
+<h1 align="center">🎯 MarAuction</h1>
 
----
-
-## 🧩 Estrutura de Pastas
-
-```
-project/
-│
-├── app.py                  # Ponto de entrada da aplicação Flask
-│
-├── views/                  # Responsável pelas rotas e renderização
-│   ├── __init__.py
-│   ├── login/              # Cada view é uma Blueprint independente
-│   │   ├── login.py        # Rotas específicas (usa funções do controller)
-│   │   ├── templates/      # HTMLs da view
-│   │   │   └── login.html
-│   │   └── static/         # Arquivos estáticos (CSS, JS, imagens) da view
-│   │       ├── login.css
-│   │       └── login.js
-│   └── ...
-│
-├── controllers/            # Lógica de negócio
-│   ├── __init__.py
-│   ├── login_controller.py # Exemplo: funções de autenticação e validação
-│   └── ...
-│
-├── models/                 # Abstrações do banco de dados
-│   ├── __init__.py
-│   ├── usuario.py          # Representa a tabela "usuarios"
-│   └── ...
-│
-└── README.md
-```
+<p align="center">
+  Plataforma de leilões voltada para itens da cultura geek
+</p>
 
 ---
 
-## ⚙️ Funcionamento
+## 📌 Sobre o Projeto
 
-### Views
-- Cada **view** é uma **Blueprint** que contém:
-  - Um arquivo Python (`.py`) com suas rotas;
-  - Uma pasta `templates/` para seus HTMLs;
-  - Uma pasta `static/` para seus JS, CSS e imagens.
+**MarAuction** é uma aplicação web de leilões desenvolvida como **trabalho de finalização do semestre** do **2º ano** do curso técnico em Desenvolvimento de Sistemas.
 
-### Controllers
-- Responsáveis pela **lógica de negócio**;
-- As views chamam funções dos controllers, que centralizam o comportamento da aplicação.
+O sistema tem como foco a criação e gestão de leilões de **itens da cultura geek**, como:
+- Games e consoles
+- Action figures
+- Itens de filmes, séries e animes
+- Colecionáveis em geral
 
+Este projeto foi pensado tanto como **atividade acadêmica** quanto como um **protótipo de aplicação real**, aplicando conceitos de front-end, back-end e banco de dados.
 
-
-### Models
-- Representam as **tabelas do banco de dados**;
-- Cada model possui métodos próprios para criar, buscar e atualizar registros.
-
-```
-
+⚠️ **Importante:** o projeto **ainda não está completo** e segue em desenvolvimento.
 
 ---
 
-## 📄 Licença
+## 🛠️ Tecnologias Utilizadas
 
-Este projeto está sob a licença MIT. Sinta-se à vontade para usar e modificar. ( quem sabe um dia )
+### Front-end
+- HTML5  
+- CSS3  
+- JavaScript  
+
+### Back-end
+- Python  
+- Flask  
+
+### Banco de Dados
+- SQL  
+- SQLAlchemy  
+
+### Outros
+- Jinja2 (templates)
+- Git & GitHub
+- Arquitetura baseada em rotas e renderização no servidor (SSR)
+
+---
+
+## 📂 Funcionalidades (Em Desenvolvimento)
+
+- ✅ Estrutura de criação de leilões
+- ✅ Cadastro de produtos por lote
+- ✅ Interface temática voltada à cultura geek
+- ⏳ Sistema de lances em tempo real
+- ⏳ Autenticação de usuários
+- ⏳ Upload e gerenciamento de imagens
+- ⏳ Validações completas no back-end
+
+---
+
+## 🎓 Contexto Acadêmico
+
+Projeto desenvolvido como parte da avaliação final do **2º semestre**, com o objetivo de integrar:
+- Programação Web
+- Banco de Dados
+- Lógica de Programação
+- Versionamento com Git
+
+O foco principal é o **aprendizado e aplicação prática**, não sendo ainda um produto final destinado à produção.
+
+---
+
+## 🚧 Status do Projeto
+
+> 🚧 **Em desenvolvimento**  
+Algumas funcionalidades estão incompletas ou sujeitas a alterações.
+
+---
+
+## 📌 Próximos Passos
+
+- Finalizar o sistema de lances
+- Melhorar validações de formulários
+- Refatorar partes do código
+- Implementar autenticação
+- Ajustes de UI/UX
+
+---
+
+## 👨‍💻 Autor
+
+**Rafael Morales Villela**  
+Estudante de Desenvolvimento de Sistemas  
+📍 IFSP  
+
+---
+
