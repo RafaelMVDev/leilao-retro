@@ -5,7 +5,7 @@
 
 </p>
 
-<h1 align="center">🎯 MarAuction</h1>
+<h1 align="center">MarAuction</h1>
 
 <p align="center">
   Plataforma de leilões voltada para itens da cultura geek
