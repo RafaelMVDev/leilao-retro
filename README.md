@@ -1,7 +1,7 @@
 <p align="center">
   <!-- Header de imagem do projeto -->
   <!-- Substitua o link abaixo pela imagem do projeto -->
-  <img width="500" height="300" alt="image" src="https://github.com/user-attachments/assets/1a5aed82-d287-432f-844f-3f20c8ffb833" />
+  <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/1a5aed82-d287-432f-844f-3f20c8ffb833" />
 
 </p>
 
