@@ -1,7 +1,8 @@
 <p align="center">
   <!-- Header de imagem do projeto -->
   <!-- Substitua o link abaixo pela imagem do projeto -->
-  <img src="URL_DA_IMAGEM_AQUI" alt="MarAuction Header" />
+  <img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/1a5aed82-d287-432f-844f-3f20c8ffb833" />
+
 </p>
 
 <h1 align="center">🎯 MarAuction</h1>
