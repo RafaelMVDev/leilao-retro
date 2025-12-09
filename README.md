@@ -1,7 +1,7 @@
 <p align="center">
   <!-- Header de imagem do projeto -->
   <!-- Substitua o link abaixo pela imagem do projeto -->
-  <img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/1a5aed82-d287-432f-844f-3f20c8ffb833" />
+  <img width="500" height="300" alt="image" src="https://github.com/user-attachments/assets/1a5aed82-d287-432f-844f-3f20c8ffb833" />
 
 </p>
 
@@ -49,17 +49,6 @@ Este projeto foi pensado tanto como **atividade acadêmica** quanto como um **pr
 - Git & GitHub
 - Arquitetura baseada em rotas e renderização no servidor (SSR)
 
----
-
-## 📂 Funcionalidades (Em Desenvolvimento)
-
-- ✅ Estrutura de criação de leilões
-- ✅ Cadastro de produtos por lote
-- ✅ Interface temática voltada à cultura geek
-- ⏳ Sistema de lances em tempo real
-- ⏳ Autenticação de usuários
-- ⏳ Upload e gerenciamento de imagens
-- ⏳ Validações completas no back-end
 
 ---
 
@@ -73,28 +62,21 @@ Projeto desenvolvido como parte da avaliação final do **2º semestre**, com o 
 
 O foco principal é o **aprendizado e aplicação prática**, não sendo ainda um produto final destinado à produção.
 
----
-
-## 🚧 Status do Projeto
-
-> 🚧 **Em desenvolvimento**  
-Algumas funcionalidades estão incompletas ou sujeitas a alterações.
 
 ---
 
-## 📌 Próximos Passos
+## 👨‍💻 Autores
 
-- Finalizar o sistema de lances
-- Melhorar validações de formulários
-- Refatorar partes do código
-- Implementar autenticação
-- Ajustes de UI/UX
-
----
-
-## 👨‍💻 Autor
-
+**Júlia Calixto Nunes**  
+Estudante de Desenvolvimento de Sistemas  
+📍 IFSP  
+**Luis Henrique de Oliveira Sampaio**  
+Estudante de Desenvolvimento de Sistemas  
+📍 IFSP  
 **Rafael Morales Villela**  
+Estudante de Desenvolvimento de Sistemas  
+📍 IFSP 
+**Rafael Moreira da Conceição**  
 Estudante de Desenvolvimento de Sistemas  
 📍 IFSP  
 
